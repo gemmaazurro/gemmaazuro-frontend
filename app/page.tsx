@@ -1,65 +1,65 @@
-import Image from "next/image";
+import StorefrontShell from '@/components/layout/StorefrontShell';
+import HeroSection from '@/components/sections/HeroSection';
+import FeaturedGrid from '@/components/sections/FeaturedGrid';
+import BrandStory from '@/components/sections/BrandStory';
+import Marquee from '@/components/motion/Marquee';
+import RevealBlock from '@/components/motion/RevealBlock';
+import { Shield, Truck } from 'lucide-react';
 
-export default function Home() {
+const marqItems = [
+  <span key="1" style={{ color: 'var(--color-igi)', fontWeight: 600 }}>IGI Certified</span>,
+  <span key="2">Lab Diamond — not mined</span>,
+  <span key="3" style={{ color: 'var(--color-gold)', fontWeight: 500 }}>18k Gold · Sterling Silver</span>,
+  <span key="4">Customization via WhatsApp</span>,
+  <span key="5">Egypt · Los Angeles</span>,
+  <span key="6" style={{ color: 'var(--color-brand)', fontWeight: 500 }}>Every piece certified</span>,
+  <span key="7">Insured delivery — Cairo</span>,
+];
+
+const igiMarqItems = [
+  <span key="a" style={{ fontSize: 13, fontFamily: 'var(--font-wordmark)', letterSpacing: '0.12em', textTransform: 'uppercase' as const, color: 'var(--color-foreground-muted)' }}>IGI Certified</span>,
+  <span key="b" style={{ fontSize: 13, fontFamily: 'var(--font-wordmark)', letterSpacing: '0.12em', textTransform: 'uppercase' as const, color: 'var(--color-gold)' }}>18k Gold</span>,
+  <span key="c" style={{ fontSize: 13, fontFamily: 'var(--font-wordmark)', letterSpacing: '0.12em', textTransform: 'uppercase' as const, color: 'var(--color-foreground-muted)' }}>Sterling Silver</span>,
+  <span key="d" style={{ fontSize: 13, fontFamily: 'var(--font-wordmark)', letterSpacing: '0.12em', textTransform: 'uppercase' as const, color: 'var(--color-brand)' }}>Lab Diamond</span>,
+  <span key="e" style={{ fontSize: 13, fontFamily: 'var(--font-wordmark)', letterSpacing: '0.12em', textTransform: 'uppercase' as const, color: 'var(--color-foreground-muted)' }}>Los Angeles · Cairo</span>,
+  <span key="f" style={{ fontSize: 13, fontFamily: 'var(--font-wordmark)', letterSpacing: '0.12em', textTransform: 'uppercase' as const, color: 'var(--color-igi)' }}>Every Piece Certified ✦</span>,
+];
+
+const trustItems = [
+  { Icon: Shield, title: 'IGI Certified', desc: 'A certificate accompanies every diamond.' },
+  { Icon: Truck, title: 'Cairo Delivery', desc: 'Complimentary, insured delivery citywide.' },
+  { Icon: Shield, title: 'Lifetime Care', desc: 'Cleaning, resizing & re-certification.' },
+];
+
+export default function HomePage() {
   return (
-    <div className="flex flex-col flex-1 items-center justify-center bg-zinc-50 font-sans dark:bg-black">
-      <main className="flex flex-1 w-full max-w-3xl flex-col items-center justify-between py-32 px-16 bg-white dark:bg-black sm:items-start">
-        <Image
-          className="dark:invert"
-          src="/next.svg"
-          alt="Next.js logo"
-          width={100}
-          height={20}
-          priority
-        />
-        <div className="flex flex-col items-center gap-6 text-center sm:items-start sm:text-left">
-          <h1 className="max-w-xs text-3xl font-semibold leading-10 tracking-tight text-black dark:text-zinc-50">
-            To get started, edit the page.tsx file.
-          </h1>
-          <p className="max-w-md text-lg leading-8 text-zinc-600 dark:text-zinc-400">
-            Looking for a starting point or more instructions? Head over to{" "}
-            <a
-              href="https://vercel.com/templates?framework=next.js&utm_source=create-next-app&utm_medium=appdir-template-tw&utm_campaign=create-next-app"
-              className="font-medium text-zinc-950 dark:text-zinc-50"
-            >
-              Templates
-            </a>{" "}
-            or the{" "}
-            <a
-              href="https://nextjs.org/learn?utm_source=create-next-app&utm_medium=appdir-template-tw&utm_campaign=create-next-app"
-              className="font-medium text-zinc-950 dark:text-zinc-50"
-            >
-              Learning
-            </a>{" "}
-            center.
-          </p>
-        </div>
-        <div className="flex flex-col gap-4 text-base font-medium sm:flex-row">
-          <a
-            className="flex h-12 w-full items-center justify-center gap-2 rounded-full bg-foreground px-5 text-background transition-colors hover:bg-[#383838] dark:hover:bg-[#ccc] md:w-[158px]"
-            href="https://vercel.com/new?utm_source=create-next-app&utm_medium=appdir-template-tw&utm_campaign=create-next-app"
-            target="_blank"
-            rel="noopener noreferrer"
-          >
-            <Image
-              className="dark:invert"
-              src="/vercel.svg"
-              alt="Vercel logomark"
-              width={16}
-              height={16}
-            />
-            Deploy Now
-          </a>
-          <a
-            className="flex h-12 w-full items-center justify-center rounded-full border border-solid border-black/[.08] px-5 transition-colors hover:border-transparent hover:bg-black/[.04] dark:border-white/[.145] dark:hover:bg-[#1a1a1a] md:w-[158px]"
-            href="https://nextjs.org/docs?utm_source=create-next-app&utm_medium=appdir-template-tw&utm_campaign=create-next-app"
-            target="_blank"
-            rel="noopener noreferrer"
-          >
-            Documentation
-          </a>
-        </div>
-      </main>
-    </div>
+    <StorefrontShell>
+      <HeroSection />
+      <div style={{ background: 'var(--color-brand)', padding: '18px 0', overflow: 'hidden' }}>
+        <Marquee items={marqItems} gap={72} speed={42}
+          style={{ fontFamily: 'var(--font-body)', fontSize: 14, letterSpacing: '0.04em', color: '#fff' }} />
+      </div>
+      <section style={{ maxWidth: 'var(--page-width)', margin: '0 auto',
+        padding: '56px clamp(20px,3vw,40px)',
+        display: 'grid', gridTemplateColumns: 'repeat(3,1fr)', gap: 32 }}>
+        {trustItems.map(({ Icon, title, desc }, i) => (
+          <RevealBlock key={i} delay={i * 0.12}>
+            <div style={{ display: 'flex', gap: 16, alignItems: 'flex-start' }}>
+              <span style={{ color: 'var(--color-brand)', flexShrink: 0, marginTop: 2 }}><Icon size={26} /></span>
+              <div>
+                <div style={{ fontFamily: 'var(--font-heading)', fontWeight: 500, fontSize: 17 }}>{title}</div>
+                <div style={{ fontSize: 14, color: 'var(--color-foreground-muted)', marginTop: 5, lineHeight: 1.5 }}>{desc}</div>
+              </div>
+            </div>
+          </RevealBlock>
+        ))}
+      </section>
+      <FeaturedGrid />
+      <BrandStory />
+      <div style={{ background: 'var(--color-surface)', padding: '22px 0',
+        borderTop: '1px solid var(--color-border)', borderBottom: '1px solid var(--color-border)' }}>
+        <Marquee gap={80} speed={55} items={igiMarqItems} />
+      </div>
+    </StorefrontShell>
   );
 }
