@@ -1,6 +1,7 @@
 'use client';
 import React, { useState } from 'react';
 import Image from 'next/image';
+import Link from 'next/link';
 import Badge from '../core/Badge';
 
 /**
@@ -24,12 +25,13 @@ interface ProductCardProps {
   wished?: boolean;
   onWishlist?: () => void;
   onClick?: () => void;
+  href?: string;
   style?: React.CSSProperties;
 }
 
 export default function ProductCard({
   image, imageAlt, hoverImage, name, meta, price, salePrice,
-  igi, soldOut, currency = 'EGP', onWishlist, wished = false, onClick, style, ...rest
+  igi, soldOut, currency = 'EGP', onWishlist, wished = false, onClick, href, style, ...rest
 }: ProductCardProps) {
   const [hover, setHover] = useState(false);
   const [heartPulse, setHeartPulse] = useState(false);
@@ -44,7 +46,6 @@ export default function ProductCard({
 
   return (
     <article
-      onClick={onClick}
       onMouseEnter={() => setHover(true)}
       onMouseLeave={() => setHover(false)}
       style={{
@@ -59,20 +60,47 @@ export default function ProductCard({
         position: 'relative', aspectRatio: '3 / 4', background: '#fff',
         overflow: 'hidden', borderRadius: 'var(--rounded-block)',
       }}>
-        <Image src={image} alt={imageAlt || name} fill
-          style={{
-            objectFit: 'cover',
-            transform: hover && !hoverImage ? 'scale(1.06)' : 'scale(1)',
-            opacity: hover && hoverImage ? 0 : 1,
-            transition: 'transform 0.55s cubic-bezier(0.4,0,0.2,1), opacity 0.3s ease',
-          }} />
-        {hoverImage && (
-          <Image src={hoverImage} alt="" aria-hidden fill
-            style={{
-              objectFit: 'cover',
-              opacity: hover ? 1 : 0,
-              transition: 'opacity 0.35s ease',
-            }} />
+        {href ? (
+          <Link
+            href={href}
+            aria-label={name}
+            onClick={onClick}
+            style={{ position: 'absolute', inset: 0, zIndex: 0 }}
+          >
+            <Image src={image} alt={imageAlt || name} fill sizes="(max-width: 768px) 50vw, (max-width: 1200px) 33vw, 25vw"
+              style={{
+                objectFit: 'cover',
+                transform: hover && !hoverImage ? 'scale(1.06)' : 'scale(1)',
+                opacity: hover && hoverImage ? 0 : 1,
+                transition: 'transform 0.55s cubic-bezier(0.4,0,0.2,1), opacity 0.3s ease',
+              }} />
+            {hoverImage && (
+              <Image src={hoverImage} alt="" aria-hidden fill sizes="(max-width: 768px) 50vw, (max-width: 1200px) 33vw, 25vw"
+                style={{
+                  objectFit: 'cover',
+                  opacity: hover ? 1 : 0,
+                  transition: 'opacity 0.35s ease',
+                }} />
+            )}
+          </Link>
+        ) : (
+          <>
+            <Image src={image} alt={imageAlt || name} fill sizes="(max-width: 768px) 50vw, (max-width: 1200px) 33vw, 25vw"
+              style={{
+                objectFit: 'cover',
+                transform: hover && !hoverImage ? 'scale(1.06)' : 'scale(1)',
+                opacity: hover && hoverImage ? 0 : 1,
+                transition: 'transform 0.55s cubic-bezier(0.4,0,0.2,1), opacity 0.3s ease',
+              }} />
+            {hoverImage && (
+              <Image src={hoverImage} alt="" aria-hidden fill sizes="(max-width: 768px) 50vw, (max-width: 1200px) 33vw, 25vw"
+                style={{
+                  objectFit: 'cover',
+                  opacity: hover ? 1 : 0,
+                  transition: 'opacity 0.35s ease',
+                }} />
+            )}
+          </>
         )}
 
         {soldOut && (
@@ -107,12 +135,25 @@ export default function ProductCard({
       {/* ── Info ── */}
       <div style={{ padding: '1rem 0.875rem 1.125rem' }}>
         {/* Name */}
-        <h3 style={{
-          margin: '0 0 0.35rem',
-          fontFamily: 'var(--font-heading)', fontWeight: 500,
-          fontSize: '0.9375rem', lineHeight: 1.35,
-          color: 'var(--color-foreground)',
-        }}>{name}</h3>
+        {href ? (
+          <h3 style={{
+            margin: '0 0 0.35rem',
+            fontFamily: 'var(--font-heading)', fontWeight: 500,
+            fontSize: '0.9375rem', lineHeight: 1.35,
+            color: 'var(--color-foreground)',
+          }}>
+            <Link href={href} style={{ color: 'inherit', textDecoration: 'none' }}>
+              {name}
+            </Link>
+          </h3>
+        ) : (
+          <h3 style={{
+            margin: '0 0 0.35rem',
+            fontFamily: 'var(--font-heading)', fontWeight: 500,
+            fontSize: '0.9375rem', lineHeight: 1.35,
+            color: 'var(--color-foreground)',
+          }}>{name}</h3>
+        )}
 
         {/* Metal / stone */}
         {meta && (

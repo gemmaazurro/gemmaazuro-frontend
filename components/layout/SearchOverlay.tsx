@@ -1,5 +1,5 @@
 'use client';
-import { useEffect, useRef, useState } from 'react';
+import { useEffect, useRef } from 'react';
 import Image from 'next/image';
 import { Close, Search as SearchIcon } from '@/components/core/Icons';
 import { PRODUCTS } from '@/lib/data';
@@ -10,8 +10,7 @@ import RevealList from '@/components/motion/RevealList';
 const CATS = ['Rings', 'Necklaces', 'Bracelets', 'Earrings'];
 
 export default function SearchOverlay() {
-  const { searchOpen, setSearchOpen, navigate } = useStore();
-  const [query, setQuery] = useState('');
+  const { searchOpen, searchQuery, setSearchOpen, setSearchQuery, navigate } = useStore();
   const inputRef = useRef<HTMLInputElement>(null);
 
   useEffect(() => {
@@ -26,9 +25,9 @@ export default function SearchOverlay() {
     return () => window.removeEventListener('keydown', fn);
   }, [setSearchOpen]);
 
-  const results = query.length > 1
+  const results = searchQuery.length > 1
     ? PRODUCTS.filter(p =>
-        [p.name, p.cat, p.meta, p.stone].join(' ').toLowerCase().includes(query.toLowerCase())
+        [p.name, p.cat, p.meta, p.stone].join(' ').toLowerCase().includes(searchQuery.toLowerCase())
       )
     : [];
 
@@ -59,22 +58,22 @@ export default function SearchOverlay() {
         }}>
           <SearchIcon size={26} style={{ flexShrink: 0, opacity: 0.35 }} />
           <input
-            ref={inputRef} value={query} onChange={e => setQuery(e.target.value)}
+            ref={inputRef} value={searchQuery} onChange={e => setSearchQuery(e.target.value)}
             placeholder="Search rings, necklaces, lab diamond..."
             style={{
               flex: 1, border: 'none', outline: 'none', background: 'transparent',
               fontFamily: 'var(--font-heading)', fontSize: 'clamp(1.5rem,3vw,2.25rem)',
               fontWeight: 400, color: 'var(--color-foreground)', letterSpacing: '-0.02em',
             }} />
-          {query && (
-            <button onClick={() => setQuery('')} style={{
+          {searchQuery && (
+            <button onClick={() => setSearchQuery('')} style={{
               background: 'transparent', border: 'none', cursor: 'pointer',
               color: 'var(--color-foreground-muted)', padding: 8, display: 'flex',
             }}><Close size={18} /></button>
           )}
         </div>
 
-        {!query && (
+        {!searchQuery && (
           <div>
             <p style={{
               fontFamily: 'var(--font-wordmark)', fontSize: 11, letterSpacing: '0.18em',
@@ -82,7 +81,7 @@ export default function SearchOverlay() {
             }}>Browse by category</p>
             <div style={{ display: 'flex', gap: 10, flexWrap: 'wrap' }}>
               {CATS.map(c => (
-                <button key={c} onClick={() => setQuery(c)} style={{
+                <button key={c} onClick={() => setSearchQuery(c)} style={{
                   padding: '10px 22px', borderRadius: 'var(--rounded-button)',
                   border: '1.5px solid var(--color-border-dark)', background: 'transparent',
                   fontFamily: 'var(--font-body)', fontSize: 14, cursor: 'pointer',
@@ -109,6 +108,7 @@ export default function SearchOverlay() {
             <RevealList stagger={0.06}>
               {results.map(p => (
                 <ProductCard key={p.id} image={p.img} name={p.name} meta={p.meta} igi={p.igi}
+                  href={`/products/${p.id}`}
                   price={p.price} salePrice={p.salePrice} currency="EGP"
                   onClick={() => { navigate('pdp', p.id); setSearchOpen(false); }} />
               ))}
@@ -117,9 +117,9 @@ export default function SearchOverlay() {
         </div>
       )}
 
-      {query.length > 1 && results.length === 0 && (
+      {searchQuery.length > 1 && results.length === 0 && (
         <div style={{ maxWidth: 760, margin: '0 auto', padding: '0 clamp(20px,3vw,40px)', textAlign: 'center' }}>
-          <p style={{ fontSize: 16, color: 'var(--color-foreground-muted)' }}>No results for &quot;{query}&quot;</p>
+          <p style={{ fontSize: 16, color: 'var(--color-foreground-muted)' }}>No results for &quot;{searchQuery}&quot;</p>
           <p style={{ fontSize: 14, color: 'var(--color-foreground-muted)', marginTop: 6 }}>
             Try a different term or browse our collections.</p>
         </div>

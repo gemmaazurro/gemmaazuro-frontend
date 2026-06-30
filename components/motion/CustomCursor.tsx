@@ -5,14 +5,13 @@ import { useEffect, useRef } from 'react';
  * CustomCursor — expanding circle with label text.
  * Expands to 52px on [data-cursor] elements, shows label.
  */
-const prefersReduced = () => window.matchMedia('(prefers-reduced-motion: reduce)').matches;
-
 export default function CustomCursor() {
   const ref = useRef<HTMLDivElement>(null);
   const labelRef = useRef<HTMLSpanElement>(null);
 
   useEffect(() => {
-    if (!window.matchMedia('(pointer:fine)').matches || prefersReduced()) return;
+    if (typeof window === 'undefined') return;
+    if (!window.matchMedia('(pointer:fine)').matches) return;
 
     const el = ref.current;
     if (!el) return;
@@ -54,7 +53,14 @@ export default function CustomCursor() {
   }, []);
 
   return (
-    <div ref={ref} aria-hidden className="ga-cursor">
+    <div ref={ref} aria-hidden style={{
+      position: 'fixed', zIndex: 9999, pointerEvents: 'none',
+      width: 0, height: 0, opacity: 0,
+      transform: 'translate(-50%, -50%)',
+      borderRadius: '50%', background: 'var(--color-brand)',
+      display: 'flex', alignItems: 'center', justifyContent: 'center',
+      transition: 'width 0.2s ease, height 0.2s ease, opacity 0.2s ease',
+    }}>
       <span ref={labelRef} style={{
         color: '#fff', fontSize: 10, fontFamily: 'var(--font-body)',
         fontWeight: 500, letterSpacing: '0.04em', textTransform: 'uppercase'

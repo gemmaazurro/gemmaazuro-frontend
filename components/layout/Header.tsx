@@ -1,6 +1,7 @@
 'use client';
 import { useEffect, useRef, useState } from 'react';
 import Image from 'next/image';
+import Link from 'next/link';
 import { Search, Heart, Bag, User, ArrowRight } from '@/components/core/Icons';
 import MagnetEl from '../motion/MagnetEl';
 import CustomCursor from '../motion/CustomCursor';
@@ -31,7 +32,7 @@ function MiniCard({ product, onProduct, visible, delay = 0 }: {
       }}>
       <div style={{ aspectRatio: '3/4', borderRadius: 10, overflow: 'hidden',
         background: 'var(--color-surface)', marginBottom: 10, position: 'relative' }}>
-        <Image src={product.img} alt={product.name} fill style={{
+        <Image src={product.img} alt={product.name} fill sizes="(max-width: 1024px) 33vw, 220px" style={{
           objectFit: 'cover',
           transform: hover ? 'scale(1.07)' : 'scale(1)',
           transition: 'transform 0.5s cubic-bezier(0.4,0,0.2,1)',
@@ -103,21 +104,36 @@ function IconBtn({ icon: Icon, label, badge, onClick }: {
   );
 }
 
-function GhostLink({ label, onClick }: { label: string; onClick?: () => void }) {
+function GhostLink({ label, onClick, href }: { label: string; onClick?: () => void; href?: string }) {
   return (
     <MagnetEl>
-      <button onClick={onClick} style={{
-        background: 'transparent', border: 'none', cursor: 'pointer', padding: '12px 12px',
-        fontFamily: 'var(--font-heading)', fontWeight: 400,
-        fontSize: 'clamp(0.8125rem,0.748rem + 0.127vw,0.9375rem)',
-        letterSpacing: '-0.3px', color: 'var(--color-foreground-muted)',
-        transition: 'color 0.2s ease',
-        whiteSpace: 'nowrap',
-      }}
-      onMouseEnter={e => (e.currentTarget as HTMLButtonElement).style.color='var(--color-foreground)'}
-      onMouseLeave={e => (e.currentTarget as HTMLButtonElement).style.color='var(--color-foreground-muted)'}>
-        {label}
-      </button>
+      {href ? (
+        <Link href={href} style={{
+          background: 'transparent', border: 'none', cursor: 'pointer', padding: '12px 12px',
+          fontFamily: 'var(--font-heading)', fontWeight: 400,
+          fontSize: 'clamp(0.8125rem,0.748rem + 0.127vw,0.9375rem)',
+          letterSpacing: '-0.3px', color: 'var(--color-foreground-muted)',
+          transition: 'color 0.2s ease',
+          whiteSpace: 'nowrap', textDecoration: 'none', display: 'inline-block',
+        }}
+        onMouseEnter={e => (e.currentTarget as HTMLAnchorElement).style.color='var(--color-foreground)'}
+        onMouseLeave={e => (e.currentTarget as HTMLAnchorElement).style.color='var(--color-foreground-muted)'}>
+          {label}
+        </Link>
+      ) : (
+        <button onClick={onClick} style={{
+          background: 'transparent', border: 'none', cursor: 'pointer', padding: '12px 12px',
+          fontFamily: 'var(--font-heading)', fontWeight: 400,
+          fontSize: 'clamp(0.8125rem,0.748rem + 0.127vw,0.9375rem)',
+          letterSpacing: '-0.3px', color: 'var(--color-foreground-muted)',
+          transition: 'color 0.2s ease',
+          whiteSpace: 'nowrap',
+        }}
+        onMouseEnter={e => (e.currentTarget as HTMLButtonElement).style.color='var(--color-foreground)'}
+        onMouseLeave={e => (e.currentTarget as HTMLButtonElement).style.color='var(--color-foreground-muted)'}>
+          {label}
+        </button>
+      )}
     </MagnetEl>
   );
 }
@@ -169,7 +185,7 @@ export default function Header({ cartCount = 0, onCart, onSearch }: {
           display: 'grid', gridTemplateColumns: '1fr auto 1fr', alignItems: 'center',
         }}>
           <nav style={{ display: 'flex', alignItems: 'center', gap: 0 }}>
-            <GhostLink label="Home" onClick={() => navigate('home')} />
+            <GhostLink label="Home" href="/" />
             <span style={{ width: 1, height: 16, background: 'var(--color-border)', margin: '0 4px' }} />
             {NAV_CONFIG.map(item => (
               <NavItem key={item.label} item={item} activeMenu={activeMenu}
@@ -177,10 +193,10 @@ export default function Header({ cartCount = 0, onCart, onSearch }: {
             ))}
           </nav>
 
-          <div onClick={() => navigate('home')} style={{ cursor: 'pointer', justifySelf: 'center', padding: '0 20px' }}>
+          <Link href="/" style={{ cursor: 'pointer', justifySelf: 'center', padding: '0 20px', display: 'block' }}>
             <Image src="/assets/logo-wordmark.png" alt="Gemma Azzurro" width={140} height={21}
-              style={{ display: 'block', transition: 'opacity 0.2s ease' }} />
-          </div>
+              priority sizes="140px" style={{ display: 'block', transition: 'opacity 0.2s ease' }} />
+          </Link>
 
           <div style={{ display: 'flex', alignItems: 'center', gap: 0, justifySelf: 'end' }}>
             <GhostLink label="Contact" />
@@ -287,7 +303,7 @@ export default function Header({ cartCount = 0, onCart, onSearch }: {
                     <MiniCard
                       key={product.id}
                       product={product}
-                      onProduct={() => { navigate('pdp'); setActiveMenu(null); }}
+                      onProduct={(id) => { navigate('pdp', id); setActiveMenu(null); }}
                       visible={!!activeMenu}
                       delay={i * 0.075 + 0.14}
                     />

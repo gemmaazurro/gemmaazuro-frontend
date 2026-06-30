@@ -1,5 +1,6 @@
 'use client';
 import React, { createContext, useContext, useState, ReactNode } from 'react';
+import { useRouter } from 'next/navigation';
 import { Product } from '@/lib/data';
 
 interface CartItem {
@@ -23,22 +24,26 @@ interface StoreContextType {
 
   // Search
   searchOpen: boolean;
+  searchQuery: string;
   setSearchOpen: (open: boolean) => void;
+  setSearchQuery: (q: string) => void;
 
-  // Route
-  route: { name: string; id: string | null };
   navigate: (name: string, id?: string) => void;
 }
 
 const StoreContext = createContext<StoreContextType | undefined>(undefined);
 
 export function StoreProvider({ children }: { children: ReactNode }) {
+  const router = useRouter();
   const [cartItems, setCartItems] = useState<CartItem[]>([]);
   const [wishlist, setWishlist] = useState<string[]>([]);
   const [cartOpen, setCartOpen] = useState(false);
-  const [searchOpen, setSearchOpen] = useState(false);
-  const [route, setRoute] = useState({ name: 'home', id: null as string | null });
-
+  const [searchOpen, setSearchOpenState] = useState(false);
+  const [searchQuery, setSearchQuery] = useState('');
+  const setSearchOpen = (open: boolean) => {
+    setSearchOpenState(open);
+    if (open) setSearchQuery('');
+  };
   const cartCount = cartItems.reduce((s, i) => s + i.qty, 0);
 
   const addToCart = (product: Product) => {
@@ -70,16 +75,22 @@ export function StoreProvider({ children }: { children: ReactNode }) {
     setWishlist(w => w.includes(id) ? w.filter(x => x !== id) : [...w, id]);
 
   const navigate = (name: string, id?: string) => {
-    setRoute({ name, id: id || null });
-    window.scrollTo(0, 0);
+    const href =
+      name === 'pdp' && id ? `/products/${id}` :
+      name === 'collection' ? '/collection' :
+      name === 'wishlist' ? '/wishlist' :
+      name === 'account' ? '/account' :
+      '/';
+
+    router.push(href);
   };
 
   return (
     <StoreContext.Provider value={{
       cartItems, cartCount, cartOpen, addToCart, removeFromCart, updateQty, setCartOpen,
       wishlist, toggleWishlist,
-      searchOpen, setSearchOpen,
-      route, navigate,
+      searchOpen, searchQuery, setSearchOpen, setSearchQuery,
+      navigate,
     }}>
       {children}
     </StoreContext.Provider>

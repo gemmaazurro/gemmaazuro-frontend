@@ -1,11 +1,8 @@
 'use client';
 import Button from '../core/Button';
 import RevealBlock from '../motion/RevealBlock';
-import { useStore } from '@/lib/store';
 
 export default function BrandStory() {
-  const { navigate } = useStore();
-
   return (
     <section style={{ maxWidth: 'var(--page-width)', margin: '0 auto',
       padding: '0 clamp(20px,3vw,40px) 80px' }}>
@@ -22,7 +19,7 @@ export default function BrandStory() {
             We began with sterling silver and gold in Los Angeles. Today Gemma Azzurro is the pioneering
             destination for IGI-certified lab diamonds in Egypt — transparent, exceptional, and made to last.</p>
           <div>
-            <Button variant="secondary" onClick={() => navigate('collection')}>Our Story</Button>
+            <Button variant="secondary" as="a" href="/collection">Our Story</Button>
           </div>
         </RevealBlock>
         <div data-cursor="Explore" style={{

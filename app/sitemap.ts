@@ -1,11 +1,13 @@
 import { MetadataRoute } from 'next';
 import { PRODUCTS } from '@/lib/data';
+import { absoluteUrl } from '@/lib/site';
 
 export default function sitemap(): MetadataRoute.Sitemap {
-  const base = 'https://gemmaazuro-frontend.vercel.app';
   return [
-    { url: base, lastModified: new Date() },
-    { url: `${base}/collection`, lastModified: new Date() },
-    ...PRODUCTS.map(p => ({ url: `${base}/products/${p.id}`, lastModified: new Date() })),
+    { url: absoluteUrl('/'), lastModified: new Date() },
+    { url: absoluteUrl('/collection'), lastModified: new Date() },
+    { url: absoluteUrl('/wishlist'), lastModified: new Date() },
+    { url: absoluteUrl('/account'), lastModified: new Date() },
+    ...PRODUCTS.map((p) => ({ url: absoluteUrl(`/products/${p.id}`), lastModified: new Date() })),
   ];
 }

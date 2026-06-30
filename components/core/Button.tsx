@@ -1,5 +1,6 @@
 'use client';
 import React, { useRef, ButtonHTMLAttributes, AnchorHTMLAttributes, ReactNode } from 'react';
+import Link from 'next/link';
 
 /**
  * Gemma Azzurro primary button. Signature pill shape with a circular
@@ -114,7 +115,12 @@ export default function Button({
   };
 
   if (as === 'a') {
-    return <a href={href} {...(commonProps as AnchorHTMLAttributes<HTMLAnchorElement>)}>{!disabled && fill}{inner}</a>;
+    return (
+      <Link href={href || '#'} {...(commonProps as AnchorHTMLAttributes<HTMLAnchorElement>)}>
+        {!disabled && fill}
+        {inner}
+      </Link>
+    );
   }
   return (
     <button

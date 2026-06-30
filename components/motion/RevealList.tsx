@@ -1,12 +1,19 @@
 'use client';
-import { Children, ReactNode } from 'react';
+import { Children, ReactNode, CSSProperties } from 'react';
 import RevealBlock from './RevealBlock';
 
 /** RevealList — staggered children reveal. */
-export default function RevealList({ children, stagger = 0.08 }: { children: ReactNode; stagger?: number }) {
+interface RevealListProps {
+  children: ReactNode;
+  stagger?: number;
+  wrapStyle?: CSSProperties;
+}
+
+export default function RevealList({ children, stagger = 0.08, wrapStyle }: RevealListProps) {
+  const items = Children.toArray(children);
   return <>
-    {Children.map(children, (child, i) => (
-      <RevealBlock key={i} delay={i * stagger}>{child}</RevealBlock>
+    {items.map((child, i) => (
+      <RevealBlock key={i} delay={i * stagger} style={wrapStyle}>{child}</RevealBlock>
     ))}
   </>;
 }
