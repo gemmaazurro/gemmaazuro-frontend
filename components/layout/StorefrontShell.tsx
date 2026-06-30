@@ -1,20 +1,35 @@
 'use client';
-import { useState, ReactNode } from 'react';
+import { ReactNode } from 'react';
 import PromoBar from './PromoBar';
 import Header from './Header';
 import CartDrawer from './CartDrawer';
 import Footer from './Footer';
+import SearchOverlay from './SearchOverlay';
+import { StoreProvider, useStore } from '@/lib/store';
 
-export default function StorefrontShell({ children }: { children: ReactNode }) {
-  const [cartOpen, setCartOpen] = useState(false);
-  const [cartCount] = useState(0);
+function ShellContent({ children }: { children: ReactNode }) {
+  const { cartCount, setCartOpen, setSearchOpen } = useStore();
+
   return (
     <>
       <PromoBar />
-      <Header cartCount={cartCount} onCart={() => setCartOpen(true)} />
+      <Header
+        cartCount={cartCount}
+        onCart={() => setCartOpen(true)}
+        onSearch={() => setSearchOpen(true)}
+      />
       <main>{children}</main>
       <Footer />
-      <CartDrawer open={cartOpen} onClose={() => setCartOpen(false)} count={cartCount} />
+      <CartDrawer />
+      <SearchOverlay />
     </>
+  );
+}
+
+export default function StorefrontShell({ children }: { children: ReactNode }) {
+  return (
+    <StoreProvider>
+      <ShellContent>{children}</ShellContent>
+    </StoreProvider>
   );
 }

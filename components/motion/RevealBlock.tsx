@@ -1,21 +1,57 @@
 'use client';
-import { useEffect, useRef, ReactNode, CSSProperties } from 'react';
+import { useEffect, useRef, ReactNode, CSSProperties, ElementType } from 'react';
 
-export default function RevealBlock({ children, delay = 0, style }: {
-  children: ReactNode; delay?: number; style?: CSSProperties;
-}) {
-  const ref = useRef<HTMLDivElement>(null);
+/**
+ * RevealBlock — transition-based reveal with IntersectionObserver.
+ * Supports `as` prop for semantic HTML tags.
+ */
+interface RevealBlockProps {
+  children: ReactNode;
+  delay?: number;
+  style?: CSSProperties;
+  as?: ElementType;
+}
+
+const prefersReduced = () => window.matchMedia('(prefers-reduced-motion: reduce)').matches;
+
+export default function RevealBlock({ children, delay = 0, style, as: Tag = 'div' }: RevealBlockProps) {
+  const ref = useRef<HTMLElement>(null);
+
   useEffect(() => {
-    const el = ref.current; if (!el) return;
+    if (prefersReduced()) {
+      if (ref.current) {
+        ref.current.style.opacity = '1';
+        ref.current.style.transform = 'translateY(0)';
+      }
+      return;
+    }
+
+    const el = ref.current;
+    if (!el) return;
+
     const obs = new IntersectionObserver(([entry]) => {
       if (entry.isIntersecting) {
-        el.style.animation = `ga-appear-up 0.4s ease ${delay}s both`;
         el.style.opacity = '1';
+        el.style.transform = 'translateY(0)';
         obs.unobserve(el);
       }
-    }, { threshold: 0.1 });
+    }, { threshold: 0.12 });
+
     obs.observe(el);
     return () => obs.disconnect();
-  }, [delay]);
-  return <div ref={ref} style={{ opacity: 0, ...style }}>{children}</div>;
+  }, []);
+
+  return (
+    <Tag
+      ref={ref}
+      style={{
+        opacity: 0,
+        transform: 'translateY(1.5rem)',
+        transition: prefersReduced() ? 'none' : `opacity 0.55s ease ${delay}s, transform 0.55s ease ${delay}s`,
+        ...style,
+      }}
+    >
+      {children}
+    </Tag>
+  );
 }

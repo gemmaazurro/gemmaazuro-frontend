@@ -1,10 +1,11 @@
 'use client';
 import { useEffect, useRef, useState } from 'react';
 import Image from 'next/image';
-import { Search, Heart, ShoppingBag, User, ArrowRight, Shield } from 'lucide-react';
+import { Search, Heart, Bag, User, ArrowRight } from '@/components/core/Icons';
 import MagnetEl from '../motion/MagnetEl';
 import CustomCursor from '../motion/CustomCursor';
 import { PRODUCTS } from '@/lib/data';
+import { useStore } from '@/lib/store';
 import type { Product } from '@/lib/data';
 
 const NAV_CONFIG = [
@@ -15,8 +16,8 @@ const NAV_CONFIG = [
   { label: 'Piercings', cats: ['Shop All', 'Helix', 'Tragus', 'Lobe', 'Daith'],                     catKey: null },
 ];
 
-function MiniCard({ product, onProduct, visible, delay }: {
-  product: Product; onProduct: (id: string) => void; visible: boolean; delay: number;
+function MiniCard({ product, onProduct, visible, delay = 0 }: {
+  product: Product; onProduct: (id: string) => void; visible: boolean; delay?: number;
 }) {
   const [hover, setHover] = useState(false);
   return (
@@ -29,9 +30,9 @@ function MiniCard({ product, onProduct, visible, delay }: {
         transition: `opacity 0.32s ease ${delay}s, transform 0.42s cubic-bezier(0.075,0.82,0.165,1) ${delay}s`,
       }}>
       <div style={{ aspectRatio: '3/4', borderRadius: 10, overflow: 'hidden',
-        background: 'var(--color-surface)', marginBottom: 10 }}>
-        <img src={product.img} alt={product.name} style={{
-          width: '100%', height: '100%', objectFit: 'cover',
+        background: 'var(--color-surface)', marginBottom: 10, position: 'relative' }}>
+        <Image src={product.img} alt={product.name} fill style={{
+          objectFit: 'cover',
           transform: hover ? 'scale(1.07)' : 'scale(1)',
           transition: 'transform 0.5s cubic-bezier(0.4,0,0.2,1)',
         }} />
@@ -46,38 +47,19 @@ function MiniCard({ product, onProduct, visible, delay }: {
   );
 }
 
-export default function Header({ cartCount = 0, onCart }: {
-  cartCount?: number; onCart?: () => void;
+function NavItem({ item, activeMenu, openMenu, schedClose, navigate }: {
+  item: typeof NAV_CONFIG[number];
+  activeMenu: string | null;
+  openMenu: (name: string) => void;
+  schedClose: () => void;
+  navigate: (name: string) => void;
 }) {
-  const [scrolled, setScrolled] = useState(false);
-  const [activeMenu, setActiveMenu] = useState<string | null>(null);
-  const closeTimer = useRef<ReturnType<typeof setTimeout> | null>(null);
-
-  useEffect(() => {
-    const fn = () => setScrolled(window.scrollY > 60);
-    window.addEventListener('scroll', fn, { passive: true });
-    return () => window.removeEventListener('scroll', fn);
-  }, []);
-
-  const openMenu  = (name: string) => { clearTimeout(closeTimer.current!); setActiveMenu(name); };
-  const schedClose = () => { closeTimer.current = setTimeout(() => setActiveMenu(null), 200); };
-  const cancelClose = () => { if (closeTimer.current) clearTimeout(closeTimer.current); };
-
-  const getProducts = (catKey: string | null) => {
-    const base = catKey ? PRODUCTS.filter(p => p.cat === catKey) : [];
-    const fill = [...base];
-    PRODUCTS.forEach(p => { if (fill.length < 3 && !fill.find(x => x.id === p.id)) fill.push(p); });
-    return fill.slice(0, 3);
-  };
-
-  const currentConfig = NAV_CONFIG.find(n => n.label === activeMenu);
-  const menuProducts = activeMenu ? getProducts(currentConfig?.catKey ?? null) : [];
-
-  const NavItem = ({ item }: { item: typeof NAV_CONFIG[number] }) => (
+  return (
     <MagnetEl>
       <button
         onMouseEnter={() => openMenu(item.label)}
         onMouseLeave={schedClose}
+        onClick={() => { navigate('collection'); }}
         style={{
           background: 'transparent', border: 'none', cursor: 'pointer',
           padding: '12px 13px', display: 'flex', alignItems: 'center', gap: 4,
@@ -98,17 +80,19 @@ export default function Header({ cartCount = 0, onCart }: {
       </button>
     </MagnetEl>
   );
+}
 
-  const IconBtn = ({ icon: C, label, badge, onClick }: {
-    icon: React.ComponentType<{ size?: number }>; label: string; badge?: number; onClick?: () => void;
-  }) => (
+function IconBtn({ icon: Icon, label, badge, onClick }: {
+  icon: React.ComponentType<{ size?: number }>; label: string; badge?: number; onClick?: () => void;
+}) {
+  return (
     <button aria-label={label} onClick={onClick} style={{
       position: 'relative', width: 42, height: 42,
       display: 'flex', alignItems: 'center', justifyContent: 'center',
       background: 'transparent', border: 'none', cursor: 'pointer',
       color: 'var(--color-foreground)',
     }}>
-      <C size={21} />
+      <Icon size={21} />
       {badge !== undefined && badge > 0 && (
         <span style={{ position: 'absolute', top: 5, right: 5, minWidth: 16, height: 16,
           padding: '0 3px', borderRadius: 9999, background: 'var(--color-brand)',
@@ -117,10 +101,12 @@ export default function Header({ cartCount = 0, onCart }: {
       )}
     </button>
   );
+}
 
-  const ghostLink = (label: string) => (
+function GhostLink({ label, onClick }: { label: string; onClick?: () => void }) {
+  return (
     <MagnetEl>
-      <button style={{
+      <button onClick={onClick} style={{
         background: 'transparent', border: 'none', cursor: 'pointer', padding: '12px 12px',
         fontFamily: 'var(--font-heading)', fontWeight: 400,
         fontSize: 'clamp(0.8125rem,0.748rem + 0.127vw,0.9375rem)',
@@ -134,6 +120,37 @@ export default function Header({ cartCount = 0, onCart }: {
       </button>
     </MagnetEl>
   );
+}
+
+export default function Header({ cartCount = 0, onCart, onSearch }: {
+  cartCount?: number;
+  onCart?: () => void;
+  onSearch?: () => void;
+}) {
+  const [scrolled, setScrolled] = useState(false);
+  const [activeMenu, setActiveMenu] = useState<string | null>(null);
+  const closeTimer = useRef<ReturnType<typeof setTimeout> | null>(null);
+  const { navigate } = useStore();
+
+  useEffect(() => {
+    const fn = () => setScrolled(window.scrollY > 60);
+    window.addEventListener('scroll', fn, { passive: true });
+    return () => window.removeEventListener('scroll', fn);
+  }, []);
+
+  const openMenu  = (name: string) => { if (closeTimer.current) clearTimeout(closeTimer.current); setActiveMenu(name); };
+  const schedClose = () => { closeTimer.current = setTimeout(() => setActiveMenu(null), 200); };
+  const cancelClose = () => { if (closeTimer.current) clearTimeout(closeTimer.current); };
+
+  const getProducts = (catKey: string | null) => {
+    const base = catKey ? PRODUCTS.filter(p => p.cat === catKey) : [];
+    const fill = [...base];
+    PRODUCTS.forEach(p => { if (fill.length < 3 && !fill.find(x => x.id === p.id)) fill.push(p); });
+    return fill.slice(0, 3);
+  };
+
+  const currentConfig = NAV_CONFIG.find(n => n.label === activeMenu);
+  const menuProducts = activeMenu ? getProducts(currentConfig?.catKey ?? null) : [];
 
   return (
     <>
@@ -152,23 +169,26 @@ export default function Header({ cartCount = 0, onCart }: {
           display: 'grid', gridTemplateColumns: '1fr auto 1fr', alignItems: 'center',
         }}>
           <nav style={{ display: 'flex', alignItems: 'center', gap: 0 }}>
-            {ghostLink('Home')}
+            <GhostLink label="Home" onClick={() => navigate('home')} />
             <span style={{ width: 1, height: 16, background: 'var(--color-border)', margin: '0 4px' }} />
-            {NAV_CONFIG.map(item => <NavItem key={item.label} item={item} />)}
+            {NAV_CONFIG.map(item => (
+              <NavItem key={item.label} item={item} activeMenu={activeMenu}
+                openMenu={openMenu} schedClose={schedClose} navigate={navigate} />
+            ))}
           </nav>
 
-          <div style={{ cursor: 'pointer', justifySelf: 'center', padding: '0 20px' }}>
+          <div onClick={() => navigate('home')} style={{ cursor: 'pointer', justifySelf: 'center', padding: '0 20px' }}>
             <Image src="/assets/logo-wordmark.png" alt="Gemma Azzurro" width={140} height={21}
               style={{ display: 'block', transition: 'opacity 0.2s ease' }} />
           </div>
 
           <div style={{ display: 'flex', alignItems: 'center', gap: 0, justifySelf: 'end' }}>
-            {ghostLink('Contact')}
+            <GhostLink label="Contact" />
             <span style={{ width: 1, height: 16, background: 'var(--color-border)', margin: '0 4px' }} />
-            <IconBtn icon={Search} label="Search" />
-            <IconBtn icon={User} label="Account" />
-            <IconBtn icon={Heart} label="Wishlist" />
-            <IconBtn icon={ShoppingBag} label="Cart" badge={cartCount} onClick={onCart} />
+            <IconBtn icon={Search} label="Search" onClick={onSearch} />
+            <IconBtn icon={User} label="Account" onClick={() => navigate('account')} />
+            <IconBtn icon={Heart} label="Wishlist" onClick={() => navigate('wishlist')} />
+            <IconBtn icon={Bag} label="Cart" badge={cartCount} onClick={onCart} />
           </div>
         </div>
 
@@ -207,6 +227,7 @@ export default function Header({ cartCount = 0, onCart }: {
                   {activeMenu} — Shop</p>
                 {currentConfig?.cats.map((cat, i) => (
                   <button key={cat}
+                    onClick={() => { navigate('collection'); setActiveMenu(null); }}
                     style={{
                       display: 'flex', alignItems: 'center', justifyContent: 'space-between',
                       padding: '10px 10px 10px 0', background: 'transparent', border: 'none',
@@ -248,6 +269,7 @@ export default function Header({ cartCount = 0, onCart }: {
                     textTransform: 'uppercase', color: 'var(--color-foreground-muted)', margin: 0 }}>
                     Featured pieces</p>
                   <button
+                    onClick={() => { navigate('collection'); setActiveMenu(null); }}
                     style={{
                       background: 'transparent', border: 'none', cursor: 'pointer',
                       display: 'flex', alignItems: 'center', gap: 5,
@@ -265,7 +287,7 @@ export default function Header({ cartCount = 0, onCart }: {
                     <MiniCard
                       key={product.id}
                       product={product}
-                      onProduct={(id: string) => setActiveMenu(null)}
+                      onProduct={() => { navigate('pdp'); setActiveMenu(null); }}
                       visible={!!activeMenu}
                       delay={i * 0.075 + 0.14}
                     />

@@ -1,34 +1,57 @@
 'use client';
-import { useState, InputHTMLAttributes } from 'react';
+import React, { useState, useId, InputHTMLAttributes } from 'react';
 
-export default function Input({ label, ...props }: { label: string } & InputHTMLAttributes<HTMLInputElement>) {
+/**
+ * Floating-label text input. Borderless — uses a filled surface that tints
+ * on focus, with the label animating up and shrinking.
+ */
+interface InputProps extends Omit<InputHTMLAttributes<HTMLInputElement>, 'style'> {
+  label: string;
+  /** Truthy shows error state; a string also renders as a message. */
+  error?: boolean | string;
+  style?: React.CSSProperties;
+}
+
+export default function Input({ label, type = 'text', value, defaultValue, error, id, style, ...rest }: InputProps) {
+  const [val, setVal] = useState(value ?? defaultValue ?? '');
   const [focused, setFocused] = useState(false);
-  const [filled, setFilled] = useState(false);
-  const up = focused || filled;
+  const generatedId = useId();
+  const uid = id || generatedId;
+  const v = value !== undefined ? value : val;
+  const floated = focused || (v && String(v).length > 0);
+
   return (
-    <div style={{ position: 'relative' }}>
-      <label style={{
-        position: 'absolute', left: 16, top: up ? 8 : '50%',
-        transform: up ? 'none' : 'translateY(-50%)',
-        fontSize: up ? 10 : 14,
-        color: focused ? 'var(--color-brand)' : 'var(--color-foreground-muted)',
-        transition: 'all 0.2s ease', pointerEvents: 'none', zIndex: 1,
-        letterSpacing: up ? '0.06em' : 0, textTransform: up ? 'uppercase' : 'none',
-      }}>{label}</label>
-      <input {...props}
-        onFocus={() => setFocused(true)}
-        onBlur={e => { setFocused(false); setFilled(!!e.target.value); }}
-        onChange={e => { setFilled(!!e.target.value); props.onChange?.(e); }}
+    <div style={{ position: 'relative', ...style }}>
+      <input
+        id={uid}
+        type={type}
+        value={v}
+        onChange={(e) => { setVal(e.target.value); rest.onChange?.(e); }}
+        onFocus={(e) => { setFocused(true); rest.onFocus?.(e); }}
+        onBlur={(e) => { setFocused(false); rest.onBlur?.(e); }}
+        {...rest}
         style={{
-          width: '100%', height: 'var(--input-height)', padding: '20px 16px 8px',
-          background: focused ? 'rgba(27,63,173,0.05)' : 'var(--color-surface)',
-          border: 'none',
-          borderBottom: focused ? '2px solid var(--color-brand)' : '2px solid transparent',
-          borderRadius: 'var(--rounded-input)',
-          fontFamily: 'var(--font-body)', fontSize: 15, color: 'var(--color-foreground)',
-          outline: 'none', transition: 'all 0.2s ease',
+          width: '100%', height: 'var(--input-height)', boxSizing: 'border-box',
+          padding: floated ? '1.25rem 1rem 0.35rem' : '0 1rem',
+          fontFamily: 'var(--font-body)', fontSize: '0.9375rem', color: 'var(--color-foreground)',
+          background: error ? 'var(--color-error-bg)' : 'var(--color-surface)',
+          border: 'none', borderRadius: 'var(--rounded-input)',
+          outline: 'none',
+          boxShadow: focused ? (error ? '0 0 0 2px var(--color-error)' : '0 0 0 2px var(--color-foreground)') : 'none',
+          transition: 'box-shadow 0.2s ease, background 0.2s ease, padding 0.2s ease',
         }}
       />
+      <label htmlFor={uid} style={{
+        position: 'absolute', insetInlineStart: '1rem', pointerEvents: 'none',
+        fontFamily: 'var(--font-body)', color: error ? 'var(--color-error)' : 'var(--color-foreground-muted)',
+        transition: 'all 0.2s ease',
+        top: floated ? '0.5rem' : '50%', transform: floated ? 'none' : 'translateY(-50%)',
+        fontSize: floated ? '0.6875rem' : '0.9375rem',
+        letterSpacing: floated ? '0.02em' : 0,
+      }}>{label}</label>
+      {error && typeof error === 'string' && (
+        <span style={{ display: 'block', marginTop: '0.375rem', fontSize: '0.75rem', color: 'var(--color-error)' }}>{error}</span>
+      )}
     </div>
   );
 }

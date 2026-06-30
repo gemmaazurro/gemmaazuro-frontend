@@ -1,20 +1,36 @@
 'use client';
 import { useRef, ReactNode, MouseEvent } from 'react';
 
-export default function MagnetEl({ children }: { children: ReactNode }) {
-  const ref = useRef<HTMLDivElement>(null);
+/** MagnetEl — magnetic hover effect. */
+interface MagnetElProps {
+  children: ReactNode;
+  strength?: number;
+  style?: React.CSSProperties;
+}
+
+const prefersReduced = () => window.matchMedia('(prefers-reduced-motion: reduce)').matches;
+
+export default function MagnetEl({ children, strength = 0.35, style }: MagnetElProps) {
+  const ref = useRef<HTMLSpanElement>(null);
+
   const onMove = (e: MouseEvent) => {
-    const el = ref.current; if (!el) return;
+    if (prefersReduced()) return;
+    const el = ref.current;
+    if (!el) return;
     const r = el.getBoundingClientRect();
-    const x = (e.clientX - r.left - r.width / 2) * 0.15;
-    const y = (e.clientY - r.top - r.height / 2) * 0.15;
-    el.style.transform = `translate(${x}px,${y}px)`;
+    const dx = (e.clientX - r.left - r.width / 2) * strength;
+    const dy = (e.clientY - r.top - r.height / 2) * strength;
+    el.style.transform = `translate(${dx}px, ${dy}px)`;
   };
-  const onLeave = () => { if (ref.current) ref.current.style.transform = ''; };
+
+  const onLeave = () => {
+    if (ref.current) ref.current.style.transform = 'translate(0,0)';
+  };
+
   return (
-    <div ref={ref} onMouseMove={onMove} onMouseLeave={onLeave}
-      style={{ transition: 'transform 0.3s var(--ease-spring)', display: 'inline-flex' }}>
+    <span ref={ref} onMouseMove={onMove} onMouseLeave={onLeave}
+      style={{ display: 'inline-block', transition: 'transform 0.3s ease', ...style }}>
       {children}
-    </div>
+    </span>
   );
 }

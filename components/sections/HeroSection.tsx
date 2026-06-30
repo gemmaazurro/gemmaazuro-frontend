@@ -1,10 +1,12 @@
 'use client';
-import { ArrowRight } from 'lucide-react';
-import Link from 'next/link';
+import { ArrowRight } from '@/components/core/Icons';
 import Button from '../core/Button';
 import SplitWords from '../motion/SplitWords';
+import { useStore } from '@/lib/store';
 
 export default function HeroSection() {
+  const { navigate } = useStore();
+
   return (
     <section style={{
       position: 'relative', minHeight: 'min(92vh, 700px)',
@@ -22,7 +24,7 @@ export default function HeroSection() {
             display: 'inline-block', fontFamily: 'var(--font-wordmark)', fontSize: 12,
             letterSpacing: '0.22em', textTransform: 'uppercase', color: 'rgba(255,255,255,0.82)',
             animation: 'ga-appear-up 0.5s ease 0.1s both', marginBottom: 22,
-          }}>Egypt's Pioneering Lab Diamond House</span>
+          }}>Egypt&apos;s Pioneering Lab Diamond House</span>
           <SplitWords text="Pioneering lab diamonds."
             tag="h1" baseDelay={0.2}
             style={{ fontFamily: 'var(--font-heading)', fontWeight: 500,
@@ -35,10 +37,9 @@ export default function HeroSection() {
             marginBottom: 36, animation: 'ga-appear-up 0.6s ease 0.85s both' }}>
             Every piece IGI-certified — lab diamonds indistinguishable from mined, at a fraction of the cost.</p>
           <div style={{ display: 'flex', gap: 14, flexWrap: 'wrap', animation: 'ga-appear-up 0.5s ease 1.0s both' }}>
-            <Link href="/collection">
-              <Button variant="primary" size="lg" iconRight={<ArrowRight size={18} />}>Shop the Collection</Button>
-            </Link>
-            <Button variant="secondary" size="lg"
+            <Button variant="primary" size="lg" onClick={() => navigate('collection')}
+              iconRight={<ArrowRight size={18} />}>Shop the Collection</Button>
+            <Button variant="secondary" size="lg" onClick={() => navigate('collection')}
               style={{ color: '#fff', borderColor: 'rgba(255,255,255,0.65)' }}>Customize a Piece</Button>
           </div>
         </div>

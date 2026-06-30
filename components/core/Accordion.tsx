@@ -1,38 +1,58 @@
 'use client';
-import { useState, ReactNode } from 'react';
+import React, { useState, ReactNode } from 'react';
 
-export default function Accordion({ items }: { items: { title: string; content: ReactNode }[] }) {
-  const [open, setOpen] = useState<number | null>(null);
+/** Animated accordion — CSS grid height reveal + rotating + icon. */
+interface AccordionProps {
+  title: ReactNode;
+  children?: ReactNode;
+  defaultOpen?: boolean;
+  style?: React.CSSProperties;
+}
+
+export default function Accordion({ title, children, defaultOpen = false, style }: AccordionProps) {
+  const [open, setOpen] = useState(defaultOpen);
+
   return (
-    <div style={{ borderTop: '1px solid var(--color-border)' }}>
-      {items.map((item, i) => (
-        <div key={i} style={{ borderBottom: '1px solid var(--color-border)' }}>
-          <button onClick={() => setOpen(open === i ? null : i)} style={{
-            width: '100%', padding: '18px 0', background: 'none', border: 'none',
-            display: 'flex', justifyContent: 'space-between', alignItems: 'center',
-            fontFamily: 'var(--font-heading)', fontWeight: 500, fontSize: 15,
-            cursor: 'pointer', color: 'var(--color-foreground)', textAlign: 'left',
-          }}>
-            {item.title}
-            <span style={{
-              transform: open === i ? 'rotate(45deg)' : 'rotate(0)',
-              transition: 'transform 0.3s var(--ease-spring)',
-              fontSize: 20, lineHeight: 1, color: 'var(--color-foreground-muted)',
-            }}>+</span>
-          </button>
+    <div style={{ borderTop: '1px solid var(--color-border)', ...style }}>
+      <button
+        aria-expanded={open}
+        onClick={() => setOpen(o => !o)}
+        style={{
+          width: '100%', display: 'flex', alignItems: 'center',
+          justifyContent: 'space-between', gap: 12,
+          background: 'transparent', border: 'none', cursor: 'pointer',
+          padding: '1.125rem 0', textAlign: 'left',
+          fontFamily: 'var(--font-heading)', fontSize: '1rem', fontWeight: 500,
+          color: 'var(--color-foreground)',
+        }}>
+        <span style={{ flex: 1 }}>{title}</span>
+        <span style={{
+          flexShrink: 0, display: 'flex', alignItems: 'center', justifyContent: 'center',
+          width: 20, height: 20,
+          transform: open ? 'rotate(45deg)' : 'rotate(0deg)',
+          transition: 'transform 0.35s cubic-bezier(0.4, 0, 0.2, 1)',
+          color: open ? 'var(--color-brand)' : 'var(--color-foreground)',
+        }}>
+          <svg width="16" height="16" viewBox="0 0 24 24" fill="none" aria-hidden>
+            <path d="M12 5v14M5 12h14" stroke="currentColor" strokeWidth="1.8"
+              strokeLinecap="round" strokeLinejoin="round" />
+          </svg>
+        </span>
+      </button>
+
+      <div style={{
+        display: 'grid',
+        gridTemplateRows: open ? '1fr' : '0fr',
+        transition: 'grid-template-rows 0.38s cubic-bezier(0.4, 0, 0.2, 1)',
+      }}>
+        <div style={{ overflow: 'hidden' }}>
           <div style={{
-            display: 'grid',
-            gridTemplateRows: open === i ? '1fr' : '0fr',
-            transition: 'grid-template-rows 0.35s var(--ease-spring)',
-          }}>
-            <div style={{ overflow: 'hidden' }}>
-              <div style={{ padding: '0 0 18px', fontSize: 14, lineHeight: 1.7, color: 'var(--color-foreground-subtle)' }}>
-                {item.content}
-              </div>
-            </div>
-          </div>
+            paddingBottom: '1.25rem',
+            fontFamily: 'var(--font-body)', fontSize: '0.9375rem',
+            lineHeight: 1.65, color: 'var(--color-foreground-muted)',
+          }}>{children}</div>
         </div>
-      ))}
+      </div>
     </div>
   );
 }

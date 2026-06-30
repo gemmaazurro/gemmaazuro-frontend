@@ -1,13 +1,15 @@
 'use client';
 import { useRef, useEffect } from 'react';
 import Image from 'next/image';
-import { Camera, Video, MapPin, Phone, Clock, ArrowRight, Shield } from 'lucide-react';
+import { Instagram, TikTok, Pin, Phone, Clock, ArrowRight, Shield } from '@/components/core/Icons';
 
-function Footer() {
+const prefersReduced = () => window.matchMedia('(prefers-reduced-motion: reduce)').matches;
+
+export default function Footer() {
   const wrapRef = useRef<HTMLDivElement>(null);
 
   useEffect(() => {
-    if (window.matchMedia('(prefers-reduced-motion: reduce)').matches) return;
+    if (prefersReduced()) return;
     const wrap = wrapRef.current;
     if (!wrap) return;
     const onScroll = () => {
@@ -54,14 +56,14 @@ function Footer() {
               <p style={{ margin: '0 0 24px', fontSize: 14, lineHeight: 1.7, color: 'rgba(255,255,255,0.62)', maxWidth: 260 }}>
                 Pioneering lab-diamond fine jewelry.<br />Founded in Los Angeles, certified in Cairo.</p>
               <div style={{ display: 'flex', gap: 10, marginBottom: 28 }}>
-                {[Camera, Video, MapPin].map((C, i) => (
+                {[Instagram, TikTok, Pin].map((Icon, i) => (
                   <a key={i} href="#" style={{ width: 40, height: 40, borderRadius: 9999,
                     display: 'flex', alignItems: 'center', justifyContent: 'center',
                     border: '1px solid rgba(255,255,255,0.18)', color: 'rgba(255,255,255,0.75)',
                     transition: 'border-color 0.2s, color 0.2s', textDecoration: 'none' }}
                     onMouseEnter={e => { (e.currentTarget as HTMLAnchorElement).style.borderColor='rgba(255,255,255,0.6)'; (e.currentTarget as HTMLAnchorElement).style.color='#fff'; }}
                     onMouseLeave={e => { (e.currentTarget as HTMLAnchorElement).style.borderColor='rgba(255,255,255,0.18)'; (e.currentTarget as HTMLAnchorElement).style.color='rgba(255,255,255,0.75)'; }}>
-                    <C size={18} /></a>
+                    <Icon size={18} /></a>
                 ))}
               </div>
               <div style={{ display: 'inline-flex', alignItems: 'center', gap: 8,
@@ -79,7 +81,7 @@ function Footer() {
               <h4 style={{ margin: '0 0 18px', fontFamily: 'var(--font-heading)', fontWeight: 500, fontSize: 12,
                 letterSpacing: '0.14em', textTransform: 'uppercase', color: 'rgba(255,255,255,0.45)' }}>Visit & Contact</h4>
               <ul style={{ listStyle: 'none', margin: '0 0 24px', padding: 0, display: 'flex', flexDirection: 'column', gap: 12, fontSize: 14, color: 'rgba(255,255,255,0.75)' }}>
-                <li style={{ display: 'flex', gap: 10, alignItems: 'flex-start' }}><MapPin size={16} style={{ flexShrink: 0, marginTop: 1 }} /><span>Zamalek, Cairo · Egypt</span></li>
+                <li style={{ display: 'flex', gap: 10, alignItems: 'flex-start' }}><Pin size={16} style={{ flexShrink: 0, marginTop: 1 }} /><span>Zamalek, Cairo · Egypt</span></li>
                 <li style={{ display: 'flex', gap: 10, alignItems: 'center' }}><Phone size={16} /><span>+20 100 000 0000</span></li>
                 <li style={{ display: 'flex', gap: 10, alignItems: 'center' }}><Clock size={16} /><span>Daily · 11:00 – 22:00</span></li>
               </ul>
@@ -120,5 +122,3 @@ function Footer() {
     </div>
   );
 }
-
-export default Footer;
