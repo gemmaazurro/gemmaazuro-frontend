@@ -9,7 +9,7 @@ interface SplitWordsProps {
   style?: CSSProperties;
 }
 
-const prefersReduced = () => window.matchMedia('(prefers-reduced-motion: reduce)').matches;
+const prefersReduced = () => typeof window !== 'undefined' && window.matchMedia('(prefers-reduced-motion: reduce)').matches;
 
 export default function SplitWords({ text, tag: Tag = 'h1' as ElementType, baseDelay = 0, style }: SplitWordsProps) {
   const words = text.split(' ');

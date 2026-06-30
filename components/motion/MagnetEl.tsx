@@ -8,7 +8,7 @@ interface MagnetElProps {
   style?: React.CSSProperties;
 }
 
-const prefersReduced = () => window.matchMedia('(prefers-reduced-motion: reduce)').matches;
+const prefersReduced = () => typeof window !== 'undefined' && window.matchMedia('(prefers-reduced-motion: reduce)').matches;
 
 export default function MagnetEl({ children, strength = 0.35, style }: MagnetElProps) {
   const ref = useRef<HTMLSpanElement>(null);

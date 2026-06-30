@@ -12,7 +12,7 @@ interface RevealBlockProps {
   as?: ElementType;
 }
 
-const prefersReduced = () => window.matchMedia('(prefers-reduced-motion: reduce)').matches;
+const prefersReduced = () => typeof window !== 'undefined' && window.matchMedia('(prefers-reduced-motion: reduce)').matches;
 
 export default function RevealBlock({ children, delay = 0, style, as: Tag = 'div' }: RevealBlockProps) {
   const ref = useRef<HTMLElement>(null);

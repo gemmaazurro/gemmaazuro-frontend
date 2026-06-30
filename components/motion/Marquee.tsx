@@ -9,7 +9,7 @@ interface MarqueeProps {
   style?: CSSProperties;
 }
 
-const prefersReduced = () => window.matchMedia('(prefers-reduced-motion: reduce)').matches;
+const prefersReduced = () => typeof window !== 'undefined' && window.matchMedia('(prefers-reduced-motion: reduce)').matches;
 
 export default function Marquee({ items = [], gap = 64, speed = 38, style }: MarqueeProps) {
   const doubled = [...items, ...items];
