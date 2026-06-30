@@ -24,6 +24,7 @@ interface ProductCardProps {
   wished?: boolean;
   onWishlist?: () => void;
   onClick?: () => void;
+  style?: React.CSSProperties;
 }
 
 export default function ProductCard({
