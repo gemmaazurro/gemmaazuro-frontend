@@ -1,5 +1,6 @@
 import type { Metadata } from 'next';
 import { Outfit } from 'next/font/google';
+import { Providers } from '@/components/Providers';
 import './globals.css';
 
 const outfit = Outfit({
@@ -25,7 +26,7 @@ export default function RootLayout({ children }: { children: React.ReactNode }) 
   return (
     <html lang="en" className={outfit.variable}>
       <body style={{ minHeight: '100vh', overflowX: 'hidden', fontFamily: 'var(--font-outfit), var(--font-body)' }}>
-        {children}
+        <Providers>{children}</Providers>
       </body>
     </html>
   );
