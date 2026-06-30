@@ -1,5 +1,4 @@
 'use client';
-import { Shield, Truck } from '@/components/core/Icons';
 import StorefrontShell from '@/components/layout/StorefrontShell';
 import HeroSection from '@/components/sections/HeroSection';
 import BrandStory from '@/components/sections/BrandStory';
