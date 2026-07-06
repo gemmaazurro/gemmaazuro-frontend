@@ -2,6 +2,7 @@ import type { Metadata } from 'next';
 import { notFound } from 'next/navigation';
 import { PRODUCTS } from '@/lib/data';
 import StorefrontShell from '@/components/layout/StorefrontShell';
+import PageTransition from '@/components/motion/PageTransition';
 import ProductDetailsClient from '@/components/pages/ProductDetailsClient';
 import { absoluteUrl } from '@/lib/site';
 
@@ -77,9 +78,11 @@ export default async function ProductPage({ params }: { params: Promise<{ id: st
 
   return (
     <StorefrontShell>
-      <div style={{ maxWidth: 'var(--page-width)', margin: '0 auto', padding: '32px clamp(20px,3vw,40px) 64px' }}>
-        <ProductDetailsClient product={p} related={related} thumbs={thumbs} />
-      </div>
+      <PageTransition>
+        <div style={{ maxWidth: 'var(--page-width)', margin: '0 auto', padding: '32px clamp(20px,3vw,40px) 64px' }}>
+          <ProductDetailsClient product={p} related={related} thumbs={thumbs} />
+        </div>
+      </PageTransition>
     </StorefrontShell>
   );
 }

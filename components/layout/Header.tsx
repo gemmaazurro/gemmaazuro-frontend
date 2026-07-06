@@ -2,6 +2,7 @@
 import { useEffect, useRef, useState } from 'react';
 import Image from 'next/image';
 import Link from 'next/link';
+import { usePathname } from 'next/navigation';
 import { Search, Heart, Bag, User, ArrowRight } from '@/components/core/Icons';
 import MagnetEl from '../motion/MagnetEl';
 import CustomCursor from '../motion/CustomCursor';
@@ -144,14 +145,16 @@ export default function Header({ cartCount = 0, onCart, onSearch }: {
   onCart?: () => void;
   onSearch?: () => void;
 }) {
-  const [scrolled, setScrolled] = useState(false);
+  const pathname = usePathname();
+  const isHome = pathname === '/';
+  const [scrollY, setScrollY] = useState(0);
   const [activeMenu, setActiveMenu] = useState<string | null>(null);
   const [mobileOpen, setMobileOpen] = useState(false);
   const closeTimer = useRef<ReturnType<typeof setTimeout> | null>(null);
   const { navigate } = useStore();
 
   useEffect(() => {
-    const fn = () => setScrolled(window.scrollY > 60);
+    const fn = () => setScrollY(window.scrollY);
     window.addEventListener('scroll', fn, { passive: true });
     return () => window.removeEventListener('scroll', fn);
   }, []);
@@ -184,12 +187,21 @@ export default function Header({ cartCount = 0, onCart, onSearch }: {
       `}</style>
       <CustomCursor />
       <header style={{
-        position: 'sticky', top: 0, zIndex: 20,
-        background: scrolled ? 'rgba(255,255,255,0.94)' : 'rgba(255,255,255,0.74)',
-        backdropFilter: 'blur(14px)',
-        boxShadow: (scrolled || activeMenu) ? '0 1px 0 var(--color-border)' : 'none',
-        borderStartStartRadius: 'var(--border-radius)', borderStartEndRadius: 'var(--border-radius)',
-        transition: 'background var(--animation-primary), box-shadow var(--animation-primary)',
+        position: isHome ? 'fixed' : 'sticky', top: 0, left: 0, right: 0, zIndex: 20,
+        background: isHome && scrollY < 100
+          ? 'transparent'
+          : scrollY > 60
+            ? 'rgba(255,255,255,0.94)'
+            : 'rgba(255,255,255,0.74)',
+        backdropFilter: isHome && scrollY < 100 ? 'none' : 'blur(14px)',
+        WebkitBackdropFilter: isHome && scrollY < 100 ? 'none' : 'blur(14px)',
+        borderRadius: 0,
+        boxShadow: (scrollY > 0 || activeMenu) ? '0 1px 0 var(--color-border)' : 'none',
+        transition: 'background 0.4s cubic-bezier(0.4,0,0.2,1), box-shadow 0.3s ease, backdrop-filter 0.4s ease',
+        ...(isHome && scrollY < 100 ? {
+          '--color-foreground': '#fff',
+          '--color-foreground-muted': 'rgba(255,255,255,0.7)',
+        } as React.CSSProperties : {}),
       }}>
         <div style={{
           maxWidth: 'var(--page-width)', margin: '0 auto',
@@ -222,7 +234,11 @@ export default function Header({ cartCount = 0, onCart, onSearch }: {
 
           <Link href="/" style={{ cursor: 'pointer', justifySelf: 'center', padding: '0 20px', display: 'block' }}>
             <Image src="/assets/logo-wordmark.png" alt="Gemma Azzurro" width={140} height={21}
-              priority sizes="140px" style={{ display: 'block', transition: 'opacity 0.2s ease' }} />
+              priority sizes="140px" style={{
+                display: 'block',
+                transition: 'opacity 0.2s ease, filter 0.4s ease',
+                ...(isHome && scrollY < 100 ? { filter: 'brightness(0) invert(1)' } : {}),
+              }} />
           </Link>
 
           <div style={{ display: 'flex', alignItems: 'center', gap: 0, justifySelf: 'end' }}>

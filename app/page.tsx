@@ -1,5 +1,6 @@
 import type { Metadata } from 'next';
 import StorefrontShell from '@/components/layout/StorefrontShell';
+import PageTransition from '@/components/motion/PageTransition';
 import HeroSection from '@/components/sections/HeroSection';
 import BrandStory from '@/components/sections/BrandStory';
 import Marquee from '@/components/motion/Marquee';
@@ -43,32 +44,34 @@ const trustItems = [
 export default function HomePage() {
   return (
     <StorefrontShell>
-      <HeroSection />
-      <div style={{ background: 'var(--color-brand)', padding: '18px 0', overflow: 'hidden' }}>
-        <Marquee items={marqItems} gap={72} speed={42}
-          style={{ fontFamily: 'var(--font-body)', fontSize: 14, letterSpacing: '0.04em', color: '#fff' }} />
-      </div>
-      <section style={{ maxWidth: 'var(--page-width)', margin: '0 auto',
-        padding: '56px clamp(20px,3vw,40px)',
-        display: 'grid', gridTemplateColumns: 'var(--grid-trust)', gap: 32 }}>
-        {trustItems.map(({ Icon, title, desc }, i) => (
-          <RevealBlock key={i} delay={i * 0.12}>
-            <div style={{ display: 'flex', gap: 16, alignItems: 'flex-start' }}>
-              <span style={{ color: 'var(--color-brand)', flexShrink: 0, marginTop: 2 }}><Icon size={26} /></span>
-              <div>
-                <div style={{ fontFamily: 'var(--font-heading)', fontWeight: 500, fontSize: 17 }}>{title}</div>
-                <div style={{ fontSize: 14, color: 'var(--color-foreground-muted)', marginTop: 5, lineHeight: 1.5 }}>{desc}</div>
+      <PageTransition>
+        <HeroSection />
+        <div style={{ background: 'var(--color-brand)', padding: '18px 0', overflow: 'hidden' }}>
+          <Marquee items={marqItems} gap={72} speed={42}
+            style={{ fontFamily: 'var(--font-body)', fontSize: 14, letterSpacing: '0.04em', color: '#fff' }} />
+        </div>
+        <section style={{ maxWidth: 'var(--page-width)', margin: '0 auto',
+          padding: '56px clamp(20px,3vw,40px)',
+          display: 'grid', gridTemplateColumns: 'var(--grid-trust)', gap: 32 }}>
+          {trustItems.map(({ Icon, title, desc }, i) => (
+            <RevealBlock key={i} delay={i * 0.12}>
+              <div style={{ display: 'flex', gap: 16, alignItems: 'flex-start' }}>
+                <span style={{ color: 'var(--color-brand)', flexShrink: 0, marginTop: 2 }}><Icon size={26} /></span>
+                <div>
+                  <div style={{ fontFamily: 'var(--font-heading)', fontWeight: 500, fontSize: 17 }}>{title}</div>
+                  <div style={{ fontSize: 14, color: 'var(--color-foreground-muted)', marginTop: 5, lineHeight: 1.5 }}>{desc}</div>
+                </div>
               </div>
-            </div>
-          </RevealBlock>
-        ))}
-      </section>
-      <HomeFeaturedProducts />
-      <BrandStory />
-      <div style={{ background: 'var(--color-surface)', padding: '22px 0',
-        borderTop: '1px solid var(--color-border)', borderBottom: '1px solid var(--color-border)' }}>
-        <Marquee gap={80} speed={55} items={igiMarqItems} />
-      </div>
+            </RevealBlock>
+          ))}
+        </section>
+        <HomeFeaturedProducts />
+        <BrandStory />
+        <div style={{ background: 'var(--color-surface)', padding: '22px 0',
+          borderTop: '1px solid var(--color-border)', borderBottom: '1px solid var(--color-border)' }}>
+          <Marquee gap={80} speed={55} items={igiMarqItems} />
+        </div>
+      </PageTransition>
     </StorefrontShell>
   );
 }

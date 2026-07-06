@@ -1,5 +1,6 @@
 import type { Metadata } from 'next';
 import StorefrontShell from '@/components/layout/StorefrontShell';
+import PageTransition from '@/components/motion/PageTransition';
 import AccountContent from '@/components/pages/AccountContent';
 
 export const metadata: Metadata = {
@@ -17,7 +18,9 @@ export const metadata: Metadata = {
 export default function AccountPage() {
   return (
     <StorefrontShell>
-      <AccountContent />
+      <PageTransition>
+        <AccountContent />
+      </PageTransition>
     </StorefrontShell>
   );
 }

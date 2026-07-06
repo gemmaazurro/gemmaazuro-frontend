@@ -1,5 +1,6 @@
 import type { Metadata } from 'next';
 import StorefrontShell from '@/components/layout/StorefrontShell';
+import PageTransition from '@/components/motion/PageTransition';
 import CollectionContent from '@/components/pages/CollectionContent';
 
 export const revalidate = 3600;
@@ -15,9 +16,11 @@ export const metadata: Metadata = {
 export default function CollectionPage() {
   return (
     <StorefrontShell>
-      <main style={{ maxWidth: 'var(--page-width)', margin: '0 auto', padding: '40px clamp(20px,3vw,40px) 80px' }}>
-        <CollectionContent />
-      </main>
+      <PageTransition>
+        <main style={{ maxWidth: 'var(--page-width)', margin: '0 auto', padding: '40px clamp(20px,3vw,40px) 80px' }}>
+          <CollectionContent />
+        </main>
+      </PageTransition>
     </StorefrontShell>
   );
 }
