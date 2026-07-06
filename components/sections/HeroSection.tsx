@@ -10,7 +10,7 @@ export default function HeroSection() {
       display: 'flex', alignItems: 'center',
       backgroundImage: "url('/assets/hero-pattern.jpeg')",
       backgroundSize: 'cover', backgroundPosition: 'center',
-      borderRadius: '0 0 var(--border-radius) var(--border-radius)', overflow: 'hidden',
+      overflow: 'hidden',
     }}>
       <div style={{ position: 'absolute', inset: 0,
         background: 'linear-gradient(100deg, rgba(18,22,46,0.58) 0%, rgba(18,22,46,0.2) 100%)' }} />

@@ -178,11 +178,13 @@ export default function Header({ cartCount = 0, onCart, onSearch }: {
       <style>{`
         .ga-mobile-only { display: block; }
         .ga-desktop-only { display: flex; }
+        .ga-logo { width: 180px !important; height: auto !important; }
         @media (min-width: 768px) {
           .ga-mobile-only { display: none !important; }
         }
         @media (max-width: 767px) {
           .ga-desktop-only { display: none !important; }
+          .ga-logo { width: 160px !important; }
         }
       `}</style>
       <CustomCursor />
@@ -206,7 +208,7 @@ export default function Header({ cartCount = 0, onCart, onSearch }: {
         <div style={{
           maxWidth: 'var(--page-width)', margin: '0 auto',
           padding: '0 clamp(16px,2.5vw,36px)', height: 'var(--header-height)',
-          display: 'grid', gridTemplateColumns: '1fr auto 1fr', alignItems: 'center',
+          display: 'grid', gridTemplateColumns: 'auto 1fr auto', alignItems: 'center',
         }}>
           <nav style={{ display: 'flex', alignItems: 'center', gap: 0 }}>
             <button className="ga-mobile-only" onClick={() => setMobileOpen(true)}
@@ -233,8 +235,8 @@ export default function Header({ cartCount = 0, onCart, onSearch }: {
           </nav>
 
           <Link href="/" style={{ cursor: 'pointer', justifySelf: 'center', padding: '0 20px', display: 'block' }}>
-            <Image src="/assets/logo-wordmark.png" alt="Gemma Azzurro" width={140} height={21}
-              priority sizes="140px" style={{
+            <Image src="/assets/logo-wordmark.png" alt="Gemma Azzurro" width={180} height={27}
+              priority sizes="(max-width: 767px) 160px, 180px" className="ga-logo" style={{
                 display: 'block',
                 transition: 'opacity 0.2s ease, filter 0.4s ease',
                 ...(isHome && scrollY < 100 ? { filter: 'brightness(0) invert(1)' } : {}),
@@ -242,12 +244,8 @@ export default function Header({ cartCount = 0, onCart, onSearch }: {
           </Link>
 
           <div style={{ display: 'flex', alignItems: 'center', gap: 0, justifySelf: 'end' }}>
-            <GhostLink label="Contact" />
-            <span style={{ width: 1, height: 16, background: 'var(--color-border)', margin: '0 4px' }} />
             <IconBtn icon={Search} label="Search" onClick={onSearch} />
             <IconBtn icon={User} label="Account" onClick={() => navigate('account')} />
-            <IconBtn icon={Heart} label="Wishlist" onClick={() => navigate('wishlist')} />
-            <IconBtn icon={Bag} label="Cart" badge={cartCount} onClick={onCart} />
           </div>
         </div>
 
@@ -362,6 +360,7 @@ export default function Header({ cartCount = 0, onCart, onSearch }: {
         onClose={() => setMobileOpen(false)}
         onNavigate={navigate}
         categories={CATEGORIES}
+        cartCount={cartCount}
       />
     </>
   );

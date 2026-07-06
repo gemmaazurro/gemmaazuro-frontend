@@ -1,4 +1,5 @@
 'use client';
+import { Bag, Heart, Phone, User } from '@/components/core/Icons';
 import { useEffect, useRef, useCallback } from 'react';
 
 interface MobileNavProps {
@@ -6,6 +7,7 @@ interface MobileNavProps {
   onClose: () => void;
   onNavigate: (path: string) => void;
   categories: string[];
+  cartCount?: number;
 }
 
 const linkBase: React.CSSProperties = {
@@ -27,7 +29,7 @@ const linkBase: React.CSSProperties = {
   WebkitTapHighlightColor: 'transparent',
 };
 
-export default function MobileNav({ open, onClose, onNavigate, categories }: MobileNavProps) {
+export default function MobileNav({ open, onClose, onNavigate, categories, cartCount }: MobileNavProps) {
   const drawerRef = useRef<HTMLDivElement>(null);
   const prevFocusRef = useRef<HTMLElement | null>(null);
 
@@ -244,24 +246,45 @@ export default function MobileNav({ open, onClose, onNavigate, categories }: Mob
           {/* Account */}
           <button
             onClick={() => { onNavigate('account'); onClose(); }}
-            style={linkBase}
+            style={{ ...linkBase, gap: 12 }}
           >
+            <User size={18} />
             Account
           </button>
 
           {/* Wishlist */}
           <button
             onClick={() => { onNavigate('wishlist'); onClose(); }}
-            style={linkBase}
+            style={{ ...linkBase, gap: 12 }}
           >
+            <Heart size={18} />
             Wishlist
+          </button>
+
+          {/* Cart */}
+          <button
+            onClick={() => { onNavigate('cart'); onClose(); }}
+            style={{ ...linkBase, gap: 12 }}
+          >
+            <Bag size={18} />
+            <span style={{ flex: 1 }}>Cart</span>
+            {cartCount !== undefined && cartCount > 0 && (
+              <span style={{
+                minWidth: 20, height: 20,
+                padding: '0 5px', borderRadius: 9999,
+                background: 'var(--color-brand)', color: '#fff',
+                fontSize: 11, fontWeight: 700,
+                display: 'flex', alignItems: 'center', justifyContent: 'center',
+              }}>{cartCount}</span>
+            )}
           </button>
 
           {/* Contact */}
           <button
             onClick={onClose}
-            style={linkBase}
+            style={{ ...linkBase, gap: 12 }}
           >
+            <Phone size={18} />
             Contact
           </button>
         </div>
