@@ -24,7 +24,7 @@ export default function CollectionGrid() {
           </button>
         ))}
       </div>
-      <div style={{ display: 'grid', gridTemplateColumns: 'repeat(3,1fr)', gap: 32 }}>
+      <div style={{ display: 'grid', gridTemplateColumns: 'var(--grid-collection)', gap: 32 }}>
         {filtered.map((p, i) => (
           <div key={p.id} style={{ animation: `ga-appear-up 0.4s ease ${i * 0.07}s both` }}>
             <ProductCard

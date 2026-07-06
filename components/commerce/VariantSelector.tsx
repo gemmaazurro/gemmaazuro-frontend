@@ -71,14 +71,18 @@ export default function VariantSelector({ label, options = [], value, onChange, 
             <button key={o.value} onClick={() => pick(o.value)}
               onMouseEnter={() => setHoveredOpt(o.value)}
               onMouseLeave={() => setHoveredOpt(null)}
+              className="ga-chip-active ga-tap-highlight"
               style={{
                 position: 'relative', overflow: 'hidden',
                 padding: '0.55rem 1.125rem',
+                minHeight: 'var(--chip-min-h)' as any,
                 borderRadius: 'var(--rounded-button)',
                 cursor: 'pointer',
                 background: active ? 'var(--color-brand)' : 'transparent',
                 border: `1.5px solid ${active ? 'var(--color-brand)' : 'var(--color-border-dark)'}`,
                 fontFamily: 'var(--font-body)', fontSize: '0.875rem', fontWeight: active ? 500 : 400,
+                WebkitTapHighlightColor: 'transparent',
+                touchAction: 'manipulation',
                 transition: 'border-color 0.25s ease',
               }}>
               {/* Fill blob — bottom-to-top wipe (matches Button.jsx) */}

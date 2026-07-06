@@ -64,6 +64,7 @@ export default function SearchOverlay() {
               flex: 1, border: 'none', outline: 'none', background: 'transparent',
               fontFamily: 'var(--font-heading)', fontSize: 'clamp(1.5rem,3vw,2.25rem)',
               fontWeight: 400, color: 'var(--color-foreground)', letterSpacing: '-0.02em',
+              height: 48,
             }} />
           {searchQuery && (
             <button onClick={() => setSearchQuery('')} style={{

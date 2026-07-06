@@ -103,7 +103,7 @@ export default function AccountContent() {
           ) : (
             <RevealBlock delay={0.15}>
               <form onSubmit={(e) => { e.preventDefault(); setLoggedIn(true); }} style={{ display: 'flex', flexDirection: 'column', gap: 18 }}>
-                <div style={{ display: 'grid', gridTemplateColumns: '1fr 1fr', gap: 14 }}>
+                <div style={{ display: 'grid', gridTemplateColumns: 'var(--grid-reg-form)', gap: 14 }}>
                   <div><label style={labelStyle}>First name</label>
                     <input required type="text" placeholder="Laila" style={fieldStyle}
                       onChange={(e) => setFirstName(e.target.value || 'Laila')}
@@ -155,7 +155,7 @@ export default function AccountContent() {
         </div>
       </RevealBlock>
 
-      <div style={{ display: 'grid', gridTemplateColumns: '1fr 1fr', gap: 'clamp(16px,3vw,32px)' }}>
+      <div style={{ display: 'grid', gridTemplateColumns: 'var(--grid-dashboard)', gap: 'clamp(16px,3vw,32px)' }}>
         <RevealBlock delay={0.1} style={{ gridColumn: '1/-1' }}>
           <div style={{ background: 'var(--color-surface)', borderRadius: 'var(--rounded-block)', overflow: 'hidden' }}>
             <div style={{ padding: '24px 28px', borderBottom: '1px solid var(--color-border)', display: 'flex', justifyContent: 'space-between', alignItems: 'center' }}>
@@ -163,7 +163,7 @@ export default function AccountContent() {
               <span style={{ fontSize: 13, color: 'var(--color-foreground-muted)' }}>{ORDERS.length} orders</span>
             </div>
             {ORDERS.map((o) => (
-              <div key={o.id} style={{ padding: '20px 28px', borderBottom: '1px solid var(--color-border)', display: 'grid', gridTemplateColumns: 'auto 1fr auto auto', gap: '0 24px', alignItems: 'center' }}>
+              <div key={o.id} style={{ padding: '20px 28px', borderBottom: '1px solid var(--color-border)', display: 'grid', gridTemplateColumns: 'var(--grid-order-history)', gap: '12px 24px', alignItems: 'center' }}>
                 <span style={{ fontFamily: 'var(--font-wordmark)', fontSize: 11, letterSpacing: '0.08em', color: 'var(--color-foreground-muted)' }}>{o.id}</span>
                 <div>
                   <p style={{ margin: '0 0 3px', fontSize: 14, fontWeight: 500 }}>{o.name}</p>

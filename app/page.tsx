@@ -50,7 +50,7 @@ export default function HomePage() {
       </div>
       <section style={{ maxWidth: 'var(--page-width)', margin: '0 auto',
         padding: '56px clamp(20px,3vw,40px)',
-        display: 'grid', gridTemplateColumns: 'repeat(3,1fr)', gap: 32 }}>
+        display: 'grid', gridTemplateColumns: 'var(--grid-trust)', gap: 32 }}>
         {trustItems.map(({ Icon, title, desc }, i) => (
           <RevealBlock key={i} delay={i * 0.12}>
             <div style={{ display: 'flex', gap: 16, alignItems: 'flex-start' }}>

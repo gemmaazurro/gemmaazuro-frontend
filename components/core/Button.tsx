@@ -56,6 +56,7 @@ export default function Button({
     justifyContent: 'center',
     gap: '0.625rem',
     padding: pads[size],
+    minHeight: 'var(--btn-min-h)' as any,
     fontFamily: 'var(--font-body)',
     fontWeight: 500,
     fontSize: fontSizes[size],
@@ -69,6 +70,7 @@ export default function Button({
     opacity: disabled ? 0.6 : 1,
     overflow: 'hidden',
     textDecoration: 'none',
+    touchAction: 'manipulation',
     transition: 'box-shadow 0.3s ease, opacity 0.2s ease, transform 0.1s ease',
     WebkitTapHighlightColor: 'transparent',
     ...style,
@@ -107,11 +109,13 @@ export default function Button({
     </span>
   );
 
+  const { className: externalClassName, ...restProps } = rest as any;
   const commonProps = {
     style: base,
+    className: ['ga-btn-active', externalClassName].filter(Boolean).join(' '),
     onMouseEnter: onEnter,
     onMouseLeave: onLeave,
-    ...rest
+    ...restProps,
   };
 
   if (as === 'a') {

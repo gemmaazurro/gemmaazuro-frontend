@@ -1,6 +1,6 @@
 'use client';
 
-import { useMemo, useState } from 'react';
+import { useMemo, useState, useRef } from 'react';
 import Image from 'next/image';
 import { Shield, Heart } from '@/components/core/Icons';
 import type { Product } from '@/lib/data';
@@ -29,6 +29,31 @@ export default function ProductDetailsClient({ product, related, thumbs }: Produ
   const wished = wishlist.includes(product.id);
 
   const currentImage = useMemo(() => thumbs[thumbIdx] || product.img, [thumbIdx, thumbs, product.img]);
+  const isTouch = typeof window !== 'undefined' && 'ontouchstart' in window;
+  const [fullscreenIdx, setFullscreenIdx] = useState(-1);
+  const touchStartX = useRef(0);
+  const touchStartY = useRef(0);
+
+  const handleTouchStart = (e: React.TouchEvent) => {
+    if (e.touches.length === 1) {
+      touchStartX.current = e.touches[0].clientX;
+      touchStartY.current = e.touches[0].clientY;
+    }
+  };
+
+  const handleTouchEnd = (e: React.TouchEvent) => {
+    if (e.changedTouches.length === 1) {
+      const diffX = touchStartX.current - e.changedTouches[0].clientX;
+      const diffY = touchStartY.current - e.changedTouches[0].clientY;
+      if (Math.abs(diffX) > Math.abs(diffY) && Math.abs(diffX) > 50) {
+        if (diffX > 0 && fullscreenIdx < thumbs.length - 1) {
+          setFullscreenIdx(fullscreenIdx + 1);
+        } else if (diffX < 0 && fullscreenIdx > 0) {
+          setFullscreenIdx(fullscreenIdx - 1);
+        }
+      }
+    }
+  };
 
   const onMove = (event: React.MouseEvent) => {
     const rect = event.currentTarget.getBoundingClientRect();
@@ -44,9 +69,9 @@ export default function ProductDetailsClient({ product, related, thumbs }: Produ
         Home · {product.cat} · <span style={{ color: 'var(--color-foreground)' }}>{product.name}</span>
       </RevealBlock>
 
-      <div style={{ display: 'grid', gridTemplateColumns: '1.1fr 1fr', gap: 'clamp(28px,5vw,72px)', alignItems: 'start' }}>
-        <RevealBlock delay={0.05} style={{ display: 'flex', gap: 14, position: 'sticky', top: 120 }}>
-          <div style={{ display: 'flex', flexDirection: 'column', gap: 10 }}>
+      <div style={{ display: 'grid', gridTemplateColumns: 'var(--grid-pdp)', gap: 'clamp(28px,5vw,72px)', alignItems: 'start' }}>
+        <RevealBlock delay={0.05} style={{ display: 'flex', gap: 14, position: 'var(--pdp-gallery-pos)' as any, top: 120 }}>
+          <div style={{ display: 'flex', flexDirection: 'var(--pdp-gallery-flex-dir)' as any, gap: 10, overflow: 'var(--pdp-thumb-overflow)' as any }}>
             {thumbs.map((src, i) => (
               <div
                 key={src}
@@ -75,9 +100,10 @@ export default function ProductDetailsClient({ product, related, thumbs }: Produ
             ))}
           </div>
           <div
-            onMouseEnter={() => setZoom(true)}
-            onMouseLeave={() => setZoom(false)}
+            onMouseEnter={() => !isTouch && setZoom(true)}
+            onMouseLeave={() => !isTouch && setZoom(false)}
             onMouseMove={onMove}
+            onClick={() => { if (isTouch) setFullscreenIdx(thumbIdx); }}
             data-cursor={zoom ? '' : 'Zoom'}
             style={{
               flex: 1,
@@ -241,7 +267,7 @@ export default function ProductDetailsClient({ product, related, thumbs }: Produ
             You may also like
           </h2>
         </RevealBlock>
-        <div style={{ display: 'grid', gridTemplateColumns: 'repeat(4,1fr)', gap: 28 }}>
+        <div style={{ display: 'grid', gridTemplateColumns: 'var(--grid-related)', gap: 28 }}>
           <RevealList stagger={0.08}>
             {related.map((item) => (
               <ProductCard
@@ -262,6 +288,84 @@ export default function ProductDetailsClient({ product, related, thumbs }: Produ
           </RevealList>
         </div>
       </section>
+
+      {fullscreenIdx >= 0 && (
+        <div
+          style={{
+            position: 'fixed', inset: 0, zIndex: 9999,
+            background: '#000',
+            display: 'flex', alignItems: 'center', justifyContent: 'center',
+            touchAction: 'none',
+          }}
+          onClick={() => setFullscreenIdx(-1)}
+          onTouchStart={handleTouchStart}
+          onTouchEnd={handleTouchEnd}
+        >
+          <div style={{ position: 'relative', width: '100%', height: '100%', maxWidth: '100vw', maxHeight: '100vh' }}>
+            <Image
+              src={thumbs[fullscreenIdx] || product.img}
+              alt={product.name}
+              fill
+              style={{ objectFit: 'contain', padding: 20 }}
+              sizes="100vw"
+              priority
+            />
+          </div>
+          <button
+            aria-label="Close fullscreen"
+            onClick={(e) => { e.stopPropagation(); setFullscreenIdx(-1); }}
+            style={{
+              position: 'absolute', top: 16, right: 16,
+              width: 44, height: 44, borderRadius: '50%',
+              background: 'rgba(255,255,255,0.15)', border: 'none',
+              color: '#fff', fontSize: 24, cursor: 'pointer',
+              display: 'flex', alignItems: 'center', justifyContent: 'center',
+              zIndex: 10000, WebkitTapHighlightColor: 'transparent',
+            }}
+          >
+            ✕
+          </button>
+          {fullscreenIdx > 0 && (
+            <button
+              aria-label="Previous image"
+              onClick={(e) => { e.stopPropagation(); setFullscreenIdx(fullscreenIdx - 1); }}
+              style={{
+                position: 'absolute', left: 12, top: '50%', transform: 'translateY(-50%)',
+                width: 44, height: 44, borderRadius: '50%',
+                background: 'rgba(255,255,255,0.15)', border: 'none',
+                color: '#fff', fontSize: 20, cursor: 'pointer',
+                display: 'flex', alignItems: 'center', justifyContent: 'center',
+                WebkitTapHighlightColor: 'transparent',
+              }}
+            >
+              ‹
+            </button>
+          )}
+          {fullscreenIdx < thumbs.length - 1 && (
+            <button
+              aria-label="Next image"
+              onClick={(e) => { e.stopPropagation(); setFullscreenIdx(fullscreenIdx + 1); }}
+              style={{
+                position: 'absolute', right: 12, top: '50%', transform: 'translateY(-50%)',
+                width: 44, height: 44, borderRadius: '50%',
+                background: 'rgba(255,255,255,0.15)', border: 'none',
+                color: '#fff', fontSize: 20, cursor: 'pointer',
+                display: 'flex', alignItems: 'center', justifyContent: 'center',
+                WebkitTapHighlightColor: 'transparent',
+              }}
+            >
+              ›
+            </button>
+          )}
+          <div style={{
+            position: 'absolute', bottom: 24, left: '50%', transform: 'translateX(-50%)',
+            color: 'rgba(255,255,255,0.6)', fontSize: 14,
+            fontFamily: 'var(--font-body)',
+          }}>
+            {fullscreenIdx + 1} / {thumbs.length}
+          </div>
+        </div>
+      )}
     </>
   );
 }

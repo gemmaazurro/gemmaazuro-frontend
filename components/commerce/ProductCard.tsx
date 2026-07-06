@@ -35,6 +35,7 @@ export default function ProductCard({
 }: ProductCardProps) {
   const [hover, setHover] = useState(false);
   const [heartPulse, setHeartPulse] = useState(false);
+  const isTouch = typeof window !== 'undefined' && 'ontouchstart' in window;
   const fmt = (n: number | string) => typeof n === 'number' ? n.toLocaleString('en-US') + '\u00a0' + currency : n;
 
   const handleWishlist = (e: React.MouseEvent) => {
@@ -46,8 +47,9 @@ export default function ProductCard({
 
   return (
     <article
-      onMouseEnter={() => setHover(true)}
-      onMouseLeave={() => setHover(false)}
+      onMouseEnter={() => !isTouch && setHover(true)}
+      onMouseLeave={() => !isTouch && setHover(false)}
+      className="ga-tap-scale"
       style={{
         position: 'relative', background: 'var(--color-background)',
         borderRadius: 'var(--rounded-card)', overflow: 'hidden',
@@ -71,10 +73,10 @@ export default function ProductCard({
               style={{
                 objectFit: 'cover',
                 transform: hover && !hoverImage ? 'scale(1.06)' : 'scale(1)',
-                opacity: hover && hoverImage ? 0 : 1,
+                opacity: hover && hoverImage && !isTouch ? 0 : 1,
                 transition: 'transform 0.55s cubic-bezier(0.4,0,0.2,1), opacity 0.3s ease',
               }} />
-            {hoverImage && (
+            {hoverImage && !isTouch && (
               <Image src={hoverImage} alt="" aria-hidden fill sizes="(max-width: 768px) 50vw, (max-width: 1200px) 33vw, 25vw"
                 style={{
                   objectFit: 'cover',
@@ -89,10 +91,10 @@ export default function ProductCard({
               style={{
                 objectFit: 'cover',
                 transform: hover && !hoverImage ? 'scale(1.06)' : 'scale(1)',
-                opacity: hover && hoverImage ? 0 : 1,
+                opacity: hover && hoverImage && !isTouch ? 0 : 1,
                 transition: 'transform 0.55s cubic-bezier(0.4,0,0.2,1), opacity 0.3s ease',
               }} />
-            {hoverImage && (
+            {hoverImage && !isTouch && (
               <Image src={hoverImage} alt="" aria-hidden fill sizes="(max-width: 768px) 50vw, (max-width: 1200px) 33vw, 25vw"
                 style={{
                   objectFit: 'cover',
@@ -115,7 +117,7 @@ export default function ProductCard({
           onClick={handleWishlist}
           style={{
             position: 'absolute', top: '0.875rem', insetInlineEnd: '0.875rem',
-            width: 40, height: 40, display: 'flex', alignItems: 'center', justifyContent: 'center',
+            width: 44, height: 44, display: 'flex', alignItems: 'center', justifyContent: 'center',
             borderRadius: 'var(--rounded-full)', border: 'none', cursor: 'pointer',
             background: wished ? 'rgba(255,255,255,0.96)' : 'rgba(255,255,255,0.82)',
             backdropFilter: 'blur(6px)',

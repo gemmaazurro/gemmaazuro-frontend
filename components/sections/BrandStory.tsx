@@ -6,10 +6,10 @@ export default function BrandStory() {
   return (
     <section style={{ maxWidth: 'var(--page-width)', margin: '0 auto',
       padding: '0 clamp(20px,3vw,40px) 80px' }}>
-      <div style={{ display: 'grid', gridTemplateColumns: '1fr 1fr', gap: 'clamp(24px,5vw,80px)',
+      <div style={{ display: 'grid', gridTemplateColumns: 'var(--grid-brand-story)', gap: 'clamp(24px,5vw,80px)',
         alignItems: 'stretch', background: 'var(--color-surface)',
         borderRadius: 'var(--border-radius)', overflow: 'hidden', minHeight: 420 }}>
-        <RevealBlock style={{ padding: 'clamp(36px,5vw,72px)', display: 'flex', flexDirection: 'column', justifyContent: 'center' }}>
+        <RevealBlock style={{ order: 'var(--brand-order-text)' as any, padding: 'clamp(36px,5vw,72px)', display: 'flex', flexDirection: 'column', justifyContent: 'center' }}>
           <span style={{ fontFamily: 'var(--font-wordmark)', fontSize: 11, letterSpacing: '0.2em',
             textTransform: 'uppercase', color: 'var(--color-brand)', display: 'block', marginBottom: 14 }}>
             Los Angeles · Cairo</span>
@@ -23,6 +23,7 @@ export default function BrandStory() {
           </div>
         </RevealBlock>
         <div data-cursor="Explore" style={{
+          order: 'var(--brand-order-img)' as any,
           backgroundImage: "url('/assets/hero-pattern.jpeg')",
           backgroundSize: 'cover', backgroundPosition: 'center', minHeight: 380,
           transform: 'scale(1.04)',

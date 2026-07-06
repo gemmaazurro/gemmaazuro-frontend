@@ -11,6 +11,12 @@ const outfit = Outfit({
   display: 'swap',
 });
 
+export const viewport = {
+  width: 'device-width',
+  initialScale: 1,
+  maximumScale: 5,
+};
+
 export const metadata: Metadata = {
   metadataBase: new URL(getSiteUrl()),
   title: { default: 'Gemma Azzurro — Lab Diamond Fine Jewelry Cairo', template: '%s | Gemma Azzurro' },

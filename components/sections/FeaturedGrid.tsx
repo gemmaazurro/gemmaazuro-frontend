@@ -25,7 +25,7 @@ export default function FeaturedGrid() {
           </Link>
         </div>
       </RevealBlock>
-      <div style={{ display: 'grid', gridTemplateColumns: 'repeat(4,1fr)', gap: 28 }}>
+      <div style={{ display: 'grid', gridTemplateColumns: 'var(--grid-featured-section)', gap: 28 }}>
         {featured.map((p, i) => (
           <div key={p.id} style={{ opacity: 0, animation: `ga-appear-up 0.4s ease ${i * 0.1}s both` }}>
             <ProductCard

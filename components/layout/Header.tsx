@@ -5,11 +5,12 @@ import Link from 'next/link';
 import { Search, Heart, Bag, User, ArrowRight } from '@/components/core/Icons';
 import MagnetEl from '../motion/MagnetEl';
 import CustomCursor from '../motion/CustomCursor';
-import { PRODUCTS } from '@/lib/data';
+import { PRODUCTS, CATEGORIES } from '@/lib/data';
 import { useStore } from '@/lib/store';
 import type { Product } from '@/lib/data';
+import MobileNav from './MobileNav';
 
-const NAV_CONFIG = [
+export const NAV_CONFIG = [
   { label: 'Rings',     cats: ['Shop All', 'Solitaire', 'Pavé Bands', 'Eternity', 'Stackables'],   catKey: 'Rings' },
   { label: 'Necklaces', cats: ['Shop All', 'Pendants', 'Tennis', 'Drop Styles', 'Layering Chains'], catKey: 'Necklaces' },
   { label: 'Bracelets', cats: ['Shop All', 'Tennis Bracelets', 'Bangles', 'Links', 'Chains'],        catKey: 'Bracelets' },
@@ -145,6 +146,7 @@ export default function Header({ cartCount = 0, onCart, onSearch }: {
 }) {
   const [scrolled, setScrolled] = useState(false);
   const [activeMenu, setActiveMenu] = useState<string | null>(null);
+  const [mobileOpen, setMobileOpen] = useState(false);
   const closeTimer = useRef<ReturnType<typeof setTimeout> | null>(null);
   const { navigate } = useStore();
 
@@ -170,6 +172,16 @@ export default function Header({ cartCount = 0, onCart, onSearch }: {
 
   return (
     <>
+      <style>{`
+        .ga-mobile-only { display: block; }
+        .ga-desktop-only { display: flex; }
+        @media (min-width: 768px) {
+          .ga-mobile-only { display: none !important; }
+        }
+        @media (max-width: 767px) {
+          .ga-desktop-only { display: none !important; }
+        }
+      `}</style>
       <CustomCursor />
       <header style={{
         position: 'sticky', top: 0, zIndex: 20,
@@ -185,12 +197,27 @@ export default function Header({ cartCount = 0, onCart, onSearch }: {
           display: 'grid', gridTemplateColumns: '1fr auto 1fr', alignItems: 'center',
         }}>
           <nav style={{ display: 'flex', alignItems: 'center', gap: 0 }}>
-            <GhostLink label="Home" href="/" />
-            <span style={{ width: 1, height: 16, background: 'var(--color-border)', margin: '0 4px' }} />
-            {NAV_CONFIG.map(item => (
-              <NavItem key={item.label} item={item} activeMenu={activeMenu}
-                openMenu={openMenu} schedClose={schedClose} navigate={navigate} />
-            ))}
+            <button className="ga-mobile-only" onClick={() => setMobileOpen(true)}
+              aria-label="Open navigation menu"
+              style={{
+                background: 'transparent', border: 'none', cursor: 'pointer',
+                width: 42, height: 42, display: 'flex', alignItems: 'center',
+                justifyContent: 'center', color: 'var(--color-foreground)',
+                WebkitTapHighlightColor: 'transparent',
+              }}>
+              <svg width="22" height="22" viewBox="0 0 24 24" fill="none"
+                stroke="currentColor" strokeWidth="2" strokeLinecap="round">
+                <path d="M3 6h18"/><path d="M3 12h18"/><path d="M3 18h18"/>
+              </svg>
+            </button>
+            <div className="ga-desktop-only" style={{ display: 'flex', alignItems: 'center', gap: 0 }}>
+              <GhostLink label="Home" href="/" />
+              <span style={{ width: 1, height: 16, background: 'var(--color-border)', margin: '0 4px' }} />
+              {NAV_CONFIG.map(item => (
+                <NavItem key={item.label} item={item} activeMenu={activeMenu}
+                  openMenu={openMenu} schedClose={schedClose} navigate={navigate} />
+              ))}
+            </div>
           </nav>
 
           <Link href="/" style={{ cursor: 'pointer', justifySelf: 'center', padding: '0 20px', display: 'block' }}>
@@ -314,6 +341,12 @@ export default function Header({ cartCount = 0, onCart, onSearch }: {
           )}
         </div>
       </header>
+      <MobileNav
+        open={mobileOpen}
+        onClose={() => setMobileOpen(false)}
+        onNavigate={navigate}
+        categories={CATEGORIES}
+      />
     </>
   );
 }

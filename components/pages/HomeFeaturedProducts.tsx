@@ -60,7 +60,7 @@ export default function HomeFeaturedProducts() {
           </Button>
         </div>
       </RevealBlock>
-      <div style={{ display: 'grid', gridTemplateColumns: 'repeat(4,1fr)', gap: 28 }}>
+      <div style={{ display: 'grid', gridTemplateColumns: 'var(--grid-home-featured)', gap: 28 }}>
         <RevealList stagger={0.1}>
           {featured.map((p) => (
             <ProductCard

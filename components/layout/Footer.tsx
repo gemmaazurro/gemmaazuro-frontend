@@ -49,13 +49,13 @@ export default function Footer() {
         padding: '88px 0 0',
       }}>
         <div style={{ maxWidth: 'var(--page-width)', margin: '0 auto', padding: '0 clamp(20px,3vw,40px)' }}>
-          <div style={{ display: 'grid', gridTemplateColumns: '1.4fr 1fr 1fr 1.4fr', gap: 'clamp(28px,4vw,64px)', paddingBottom: 64 }}>
+          <div style={{ display: 'grid', gridTemplateColumns: 'var(--grid-footer)', gap: 'clamp(28px,4vw,64px)', paddingBottom: 64 }}>
             <div>
               <Image src="/assets/logo-wordmark-white.png" alt="Gemma Azzurro" width={140} height={22}
                 style={{ marginBottom: 20, display: 'block' }} />
               <p style={{ margin: '0 0 24px', fontSize: 14, lineHeight: 1.7, color: 'rgba(255,255,255,0.62)', maxWidth: 260 }}>
                 Pioneering lab-diamond fine jewelry.<br />Founded in Los Angeles, certified in Cairo.</p>
-              <div style={{ display: 'flex', gap: 10, marginBottom: 28 }}>
+              <div style={{ display: 'flex', gap: 10, marginBottom: 28, justifyContent: 'var(--footer-social-justify)' as any }}>
                 {[Instagram, TikTok, Pin].map((Icon, i) => (
                   <a key={i} href="#" style={{ width: 40, height: 40, borderRadius: 9999,
                     display: 'flex', alignItems: 'center', justifyContent: 'center',
@@ -107,11 +107,11 @@ export default function Footer() {
           <div style={{
             padding: '22px 0',
             borderTop: '1px solid rgba(255,255,255,0.1)',
-            display: 'flex', justifyContent: 'space-between', flexWrap: 'wrap', gap: 12,
+            display: 'flex', justifyContent: 'var(--footer-bottom-justify)' as any, flexDirection: 'var(--footer-bottom-flex)' as any, flexWrap: 'wrap', gap: 12,
             fontSize: 13, color: 'rgba(255,255,255,0.45)',
           }}>
             <span>&copy; {new Date().getFullYear()} Gemma Azzurro Jewelry — Egypt · Los Angeles</span>
-            <span style={{ display: 'flex', gap: 20 }}>
+            <span style={{ display: 'flex', gap: 12, justifyContent: 'var(--footer-social-justify)' as any, width: '100%' }}>
               {['Visa', 'InstaPay', 'Cash on Delivery', 'IGI Certified'].map(t => (
                 <span key={t}>{t}</span>
               ))}

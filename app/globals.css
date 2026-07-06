@@ -13,6 +13,11 @@
   --font-heading: var(--font-outfit, 'Outfit', 'Helvetica Neue', Arial, sans-serif);
   --font-body: var(--font-outfit, 'Outfit', 'Helvetica Neue', Arial, sans-serif);
   --font-wordmark: var(--font-outfit, 'Outfit', 'Helvetica Neue', Arial, sans-serif);
+  --bp-sm: 640px;
+  --bp-md: 768px;
+  --bp-lg: 1024px;
+  --bp-xl: 1280px;
+  --bp-2xl: 1536px;
 }
 
 /* Base reset */
@@ -35,3 +40,92 @@ a { color: inherit; text-decoration: none; }
   mix-blend-mode: multiply;
 }
 @media (hover: none) { .ga-cursor { display: none; } }
+
+/* Mobile-first utility classes */
+.mobile-stack { display: flex; flex-direction: column; }
+@media (min-width: 768px) {
+  .mobile-stack { flex-direction: row; }
+}
+
+@media (max-width: 767px) {
+  :root {
+    --section-pad-y: clamp(2.5rem, 6vw, 4rem);
+    --grid-gap: clamp(20px, 4vw, 32px);
+    --title-lg: clamp(2rem, 8vw, 3rem);
+    --title-md: clamp(1.75rem, 6vw, 2.5rem);
+  }
+}
+
+/* ── Phase 3: Responsive Grid Variables (mobile-first) ── */
+:root {
+  --grid-trust: 1fr;
+  --grid-home-featured: repeat(auto-fill, minmax(160px, 1fr));
+  --grid-pdp: 1fr;
+  --grid-related: repeat(2, 1fr);
+  --grid-reg-form: 1fr;
+  --grid-dashboard: 1fr;
+  --grid-order-history: 1fr;
+  --grid-footer: 1fr;
+  --grid-brand-story: 1fr;
+  --grid-collection: repeat(auto-fill, minmax(160px, 1fr));
+  --grid-featured-section: repeat(auto-fill, minmax(160px, 1fr));
+  --grid-footer-bottom: 1fr;
+  --brand-order-text: 2;
+  --brand-order-img: 1;
+  --pdp-gallery-pos: static;
+  --pdp-gallery-flex-dir: row;
+  --pdp-gallery-overflow: auto hidden;
+  --pdp-thumb-overflow: auto hidden;
+  --footer-social-justify: center;
+  --footer-bottom-justify: center;
+  --footer-bottom-flex: column;
+  --thumb-scrollbar: none;
+}
+@media (min-width: 768px) {
+  :root {
+    --grid-trust: repeat(3, 1fr);
+    --grid-home-featured: repeat(auto-fill, minmax(220px, 1fr));
+    --grid-pdp: 1.1fr 1fr;
+    --grid-reg-form: 1fr 1fr;
+    --grid-dashboard: 1fr 1fr;
+    --grid-order-history: auto 1fr auto auto;
+    --grid-footer: 1.4fr 1fr 1fr 1.4fr;
+    --grid-brand-story: 1fr 1fr;
+    --grid-footer-bottom: auto;
+    --brand-order-text: 1;
+    --brand-order-img: 2;
+    --pdp-gallery-pos: sticky;
+    --pdp-gallery-flex-dir: column;
+    --pdp-gallery-overflow: visible;
+    --pdp-thumb-overflow: visible;
+    --footer-social-justify: flex-start;
+    --footer-bottom-justify: space-between;
+    --footer-bottom-flex: row;
+    --thumb-scrollbar: initial;
+  }
+}
+@media (min-width: 1024px) {
+  :root {
+    --grid-home-featured: repeat(4, 1fr);
+    --grid-related: repeat(4, 1fr);
+  }
+}
+
+/* ── Phase 4: Touch Interaction Utilities ── */
+.ga-tap-scale:active { transform: scale(0.97); }
+.ga-btn-active:active { transform: scale(0.98); }
+.ga-chip-active:active { transform: scale(0.97); }
+.ga-chip-active:focus-visible { outline: 2px solid var(--color-brand); outline-offset: 2px; }
+.ga-tap-highlight { -webkit-tap-highlight-color: transparent; }
+
+/* Min heights for touch targets */
+:root {
+  --btn-min-h: 44px;
+  --chip-min-h: 44px;
+}
+@media (min-width: 768px) {
+  :root {
+    --btn-min-h: auto;
+    --chip-min-h: auto;
+  }
+}

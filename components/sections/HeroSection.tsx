@@ -15,7 +15,7 @@ export default function HeroSection() {
       <div style={{ position: 'absolute', inset: 0,
         background: 'linear-gradient(100deg, rgba(18,22,46,0.58) 0%, rgba(18,22,46,0.2) 100%)' }} />
       <div style={{ position: 'relative', maxWidth: 'var(--page-width)', width: '100%',
-        margin: '0 auto', padding: '80px clamp(20px,3vw,40px)' }}>
+        margin: '0 auto', padding: 'clamp(2rem,5vw,4rem) clamp(20px,3vw,40px)' }}>
         <div style={{ maxWidth: 640 }}>
           <span style={{
             display: 'inline-block', fontFamily: 'var(--font-wordmark)', fontSize: 12,
@@ -33,7 +33,7 @@ export default function HeroSection() {
           <p style={{ fontSize: 17, lineHeight: 1.6, color: 'rgba(255,255,255,0.85)', maxWidth: 480,
             marginBottom: 36, animation: 'ga-appear-up 0.6s ease 0.85s both' }}>
             Every piece IGI-certified — lab diamonds indistinguishable from mined, at a fraction of the cost.</p>
-          <div style={{ display: 'flex', gap: 14, flexWrap: 'wrap', animation: 'ga-appear-up 0.5s ease 1.0s both' }}>
+          <div className="mobile-stack" style={{ gap: 14, animation: 'ga-appear-up 0.5s ease 1.0s both' }}>
             <Button variant="primary" size="lg" as="a" href="/collection"
               iconRight={<ArrowRight size={18} />}>Shop the Collection</Button>
             <Button variant="secondary" size="lg" as="a" href="/collection"
