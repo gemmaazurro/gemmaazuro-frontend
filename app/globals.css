@@ -1,12 +1,91 @@
 @import "tailwindcss";
 
-/* ── Gemma Azzurro Design System — single source of truth ── */
-/* Token files imported directly from design-extract (canonical values) */
-@import "../design-extract/claudedesign/Gemma Azzurro Design System/tokens/colors.css";
-@import "../design-extract/claudedesign/Gemma Azzurro Design System/tokens/typography.css";
-@import "../design-extract/claudedesign/Gemma Azzurro Design System/tokens/spacing.css";
-@import "../design-extract/claudedesign/Gemma Azzurro Design System/tokens/shape.css";
-@import "../design-extract/claudedesign/Gemma Azzurro Design System/tokens/motion.css";
+/* ── Gemma Azzurro Design System — single source of truth (inlined) ── */
+
+/* Color System */
+:root {
+  --color-brand: #1B3FAD; --color-brand-dark: #132E82; --color-brand-light: #E8EEFF;
+  --color-background: #FFFFFF; --color-surface: #F5F5F7; --color-surface-tint: rgba(29,29,31,0.043);
+  --color-foreground: #1D1D1F; --color-foreground-muted: rgba(29,29,31,0.5); --color-foreground-subtle: rgba(29,29,31,0.6);
+  --color-border: rgba(29,29,31,0.10); --color-border-dark: rgba(29,29,31,0.40); --color-border-light: rgba(29,29,31,0.06);
+  --color-gold: #C9A84C; --color-silver: #A8A9AD;
+  --color-igi: #0F6B35; --color-igi-bg: #E8F5ED;
+  --color-price: #1D1D1F; --color-sale-price: #B64400; --color-rating: #F59E0B; --color-whatsapp: #25D366;
+  --color-error: #BE123C; --color-error-bg: #FFF1F2; --color-success: #4D7C0F; --color-success-bg: #F7FEE7;
+  --color-footer-bg: #1D1D1F; --color-footer-text: #FFFFFF;
+  --color-focus: #0066CC;
+  --text-body: var(--color-foreground); --text-muted: var(--color-foreground-muted);
+  --link-color: var(--color-brand); --surface-page: var(--color-background);
+  --surface-card: var(--color-background); --surface-raised: var(--color-surface);
+  --button-bg: var(--color-brand); --button-text: #FFFFFF;
+}
+
+/* Typography Scale */
+:root {
+  --font-weight-normal: 400; --font-weight-medium: 500; --font-weight-semibold: 600; --font-weight-bold: 700;
+  --text-3xs: 0.625rem; --text-2xs: 0.6875rem; --text-xs: 0.75rem; --text-2sm: 0.8125rem; --text-sm: 0.875rem;
+  --text-base: 1rem; --text-lg: 1.125rem; --text-xl: 1.25rem; --text-2xl: 1.5rem;
+  --text-3xl: 1.875rem; --text-4xl: 2.25rem; --text-5xl: 3rem; --text-6xl: 3.75rem; --text-7xl: 4.5rem; --text-8xl: 6rem;
+  --title-sm: clamp(var(--text-2xl), 2.526vw, var(--text-5xl));
+  --title-md: clamp(2rem, 3.368vw, 4rem);
+  --title-lg: clamp(2.5rem, 3.368vw, 4rem);
+  --title-xl: clamp(3rem, 7.813vw, 5rem);
+  --fluid-base-to-xl: clamp(1rem, 0.873rem + 0.3175vw, 1.25rem);
+  --fluid-lg-to-2xl: clamp(1.125rem, 0.9722rem + 0.4444vw, 1.5rem);
+  --leading-tight: 1; --leading-snug: 1.2; --leading-relaxed: 1.6;
+  --tracking-none: 0em; --tracking-nav: -0.6px; --tracking-wordmark: 0.18em;
+}
+
+/* Spacing System */
+:root {
+  --sp-0\.5: 0.125rem; --sp-1: 0.25rem; --sp-1\.5: 0.375rem;
+  --sp-2: 0.5rem; --sp-2\.5: 0.625rem; --sp-3: 0.75rem;
+  --sp-3\.5: 0.875rem; --sp-4: 1rem; --sp-4\.5: 1.125rem;
+  --sp-5: 1.25rem; --sp-6: 1.5rem; --sp-7: 1.75rem;
+  --sp-8: 2rem; --sp-10: 2.5rem; --sp-12: 3rem;
+  --sp-13: 3.25rem; --sp-14: 3.5rem; --sp-16: 4rem;
+  --sp-20: 5rem; --sp-24: 6rem; --sp-28: 7rem;
+  --sp-32: 8rem; --sp-40: 10rem; --sp-48: 12rem;
+  --page-width: 1520px; --page-padding: clamp(1.25rem, 2.526vw, 3rem);
+  --grid-gap: clamp(40px, 5vw, 60px);
+  --topbar-height: 3rem; --header-height: 103px; --input-height: 3.25rem;
+  --section-pad-y: clamp(5rem, 8vw, 6.5rem);
+  --gap-card: var(--sp-4); --gap-section: var(--section-pad-y);
+}
+
+/* Shape: Radius, Border, Shadow */
+:root {
+  --rounded-button: 3.75rem; --rounded-input: 0.75rem;
+  --rounded-card: clamp(0.625rem, 1.053vw, 1.25rem);
+  --rounded-block: clamp(0.625rem, 1.053vw, 1.25rem);
+  --rounded-full: 9999px;
+  --border-radius: clamp(1rem, 1.578vw, 1.875rem);
+  --border-radius-small: 0.5rem;
+  --border-width-button: 2px; --border-hairline: 1px;
+  --shadow-focus: 0 0 0 3px rgba(0,102,204,0.4);
+}
+
+/* Motion */
+:root {
+  --animation-short: 0.15s ease; --animation-fast: 0.2s ease;
+  --animation-nav: 0.3s ease; --animation-primary: 0.3s ease; --animation-smooth: 0.4s ease;
+  --ease-default: cubic-bezier(0.25, 0.1, 0.25, 1);
+  --ease-fill: cubic-bezier(0.4, 0, 0.2, 1);
+  --ease-spring: cubic-bezier(0.075, 0.82, 0.165, 1);
+  --ease-elastic: cubic-bezier(0.19, 1, 0.22, 1);
+}
+
+@keyframes ga-appear-up { 0% { opacity: 0; transform: translateY(1rem); } 100% { opacity: 1; transform: translateY(0); } }
+@keyframes ga-appear-down { 0% { opacity: 0; transform: translateY(-1rem); } 100% { opacity: 1; transform: translateY(0); } }
+@keyframes ga-fade-in { 0% { opacity: 0; } 100% { opacity: 1; } }
+@keyframes ga-scroll-left { 0% { transform: translate3d(0,0,0); } 100% { transform: translate3d(-50%,0,0); } }
+@keyframes ga-spin { 100% { transform: rotate(1turn); } }
+@keyframes ga-blur-in { 0% { opacity: 0; filter: blur(8px); transform: scale(1.02); } 100% { opacity: 1; filter: blur(0); transform: scale(1); } }
+@keyframes ga-scale-in { 0% { opacity: 0; transform: scale(0.6); } 100% { opacity: 1; transform: scale(1); } }
+
+@media (prefers-reduced-motion: reduce) {
+  *, *::before, *::after { animation-duration: 0.001ms !important; animation-iteration-count: 1 !important; transition-duration: 0.001ms !important; }
+}
 
 /* Bridge Next.js font variable into design system font tokens */
 :root {
