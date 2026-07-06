@@ -55,7 +55,13 @@ export default function HomePage() {
           display: 'grid', gridTemplateColumns: 'var(--grid-trust)', gap: 32 }}>
           {trustItems.map(({ Icon, title, desc }, i) => (
             <RevealBlock key={i} delay={i * 0.12}>
-              <div style={{ display: 'flex', gap: 16, alignItems: 'flex-start' }}>
+              <div style={{
+                display: 'flex', gap: 16, alignItems: 'flex-start',
+                background: 'var(--color-surface)',
+                borderRadius: 'var(--border-radius)',
+                padding: 'clamp(20px, 3vw, 28px)',
+                boxShadow: 'var(--shadow-card-subtle)',
+              }}>
                 <span style={{ color: 'var(--color-brand)', flexShrink: 0, marginTop: 2 }}><Icon size={26} /></span>
                 <div>
                   <div style={{ fontFamily: 'var(--font-heading)', fontWeight: 500, fontSize: 17 }}>{title}</div>

@@ -53,7 +53,10 @@ export default function ProductCard({
       style={{
         position: 'relative', background: 'var(--color-background)',
         borderRadius: 'var(--rounded-card)', overflow: 'hidden',
-        fontFamily: 'var(--font-body)', cursor: 'pointer', ...style,
+        fontFamily: 'var(--font-body)', cursor: 'pointer',
+        boxShadow: hover ? 'var(--shadow-raised)' : 'var(--shadow-card)',
+        transition: 'box-shadow 0.35s cubic-bezier(0.25,0.46,0.45,0.94)',
+        ...style,
       }}
       {...rest}
     >

@@ -200,6 +200,7 @@ export default function Header({ cartCount = 0, onCart, onSearch }: {
         borderRadius: 0,
         boxShadow: (scrollY > 0 || activeMenu) ? '0 1px 0 var(--color-border)' : 'none',
         transition: 'background 0.4s cubic-bezier(0.4,0,0.2,1), box-shadow 0.3s ease, backdrop-filter 0.4s ease',
+        color: isHome && scrollY < 100 ? '#fff' : 'inherit',
         ...(isHome && scrollY < 100 ? {
           '--color-foreground': '#fff',
           '--color-foreground-muted': 'rgba(255,255,255,0.7)',
@@ -224,9 +225,9 @@ export default function Header({ cartCount = 0, onCart, onSearch }: {
                 <path d="M3 6h18"/><path d="M3 12h18"/><path d="M3 18h18"/>
               </svg>
             </button>
-            <div className="ga-desktop-only" style={{ display: 'flex', alignItems: 'center', gap: 0 }}>
+            <div className="ga-desktop-only" style={{ display: 'flex', alignItems: 'center', gap: 'clamp(2px, 0.4vw, 6px)' }}>
               <GhostLink label="Home" href="/" />
-              <span style={{ width: 1, height: 16, background: 'var(--color-border)', margin: '0 4px' }} />
+              <span style={{ width: 1, height: 16, background: 'var(--color-border)', margin: '0 8px' }} />
               {NAV_CONFIG.map(item => (
                 <NavItem key={item.label} item={item} activeMenu={activeMenu}
                   openMenu={openMenu} schedClose={schedClose} navigate={navigate} />
@@ -243,7 +244,7 @@ export default function Header({ cartCount = 0, onCart, onSearch }: {
               }} />
           </Link>
 
-          <div style={{ display: 'flex', alignItems: 'center', gap: 0, justifySelf: 'end' }}>
+          <div style={{ display: 'flex', alignItems: 'center', gap: 'clamp(0, 0.3vw, 4px)', justifySelf: 'end' }}>
             <IconBtn icon={Search} label="Search" onClick={onSearch} />
             <IconBtn icon={User} label="Account" onClick={() => navigate('account')} />
           </div>

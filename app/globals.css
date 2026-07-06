@@ -18,6 +18,11 @@
   --bp-lg: 1024px;
   --bp-xl: 1280px;
   --bp-2xl: 1536px;
+  /* ── Shadow / Elevation Tokens ── */
+  --shadow-card: rgba(29,29,31,0.10) 0 0 0 1px;
+  --shadow-card-subtle: rgba(29,29,31,0.06) 0 0 0 1px;
+  --shadow-raised: 0 12px 32px -12px rgba(29,29,31,0.18);
+  --shadow-hover: 0 16px 40px -12px rgba(29,29,31,0.22);
 }
 
 /* Base reset */

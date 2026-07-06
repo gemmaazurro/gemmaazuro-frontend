@@ -8,7 +8,8 @@ export default function BrandStory() {
       padding: '0 clamp(20px,3vw,40px) 80px' }}>
       <div style={{ display: 'grid', gridTemplateColumns: 'var(--grid-brand-story)', gap: 'clamp(24px,5vw,80px)',
         alignItems: 'stretch', background: 'var(--color-surface)',
-        borderRadius: 'var(--border-radius)', overflow: 'hidden', minHeight: 420 }}>
+        borderRadius: 'var(--border-radius)', overflow: 'hidden', minHeight: 420,
+        boxShadow: 'var(--shadow-raised)' }}>
         <RevealBlock style={{ order: 'var(--brand-order-text)' as any, padding: 'clamp(36px,5vw,72px)', display: 'flex', flexDirection: 'column', justifyContent: 'center' }}>
           <span style={{ fontFamily: 'var(--font-wordmark)', fontSize: 11, letterSpacing: '0.2em',
             textTransform: 'uppercase', color: 'var(--color-brand)', display: 'block', marginBottom: 14 }}>
