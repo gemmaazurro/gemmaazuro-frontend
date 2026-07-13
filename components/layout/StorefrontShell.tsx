@@ -30,7 +30,7 @@ export default function StorefrontShell({ children }: { children: ReactNode }) {
           height, so compensate with padding-top (topbar + header on inner pages; home's hero
           is intentionally full-bleed behind the transparent-then-blurred header). */}
       <main style={{
-        position: 'relative', zIndex: 1, background: 'var(--color-background)', minHeight: '100vh',
+        position: 'relative', zIndex: 1, background: 'var(--color-background)', minHeight: '100dvh',
         paddingTop: isHome ? 0 : 'calc(var(--topbar-height) + var(--header-height))',
       }}>
         {children}

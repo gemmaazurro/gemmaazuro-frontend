@@ -116,7 +116,7 @@ export default function CollectionContent() {
         />
       </div>
 
-      <div key={key} style={{ display: 'grid', gridTemplateColumns: 'repeat(auto-fill, minmax(256px, 1fr))', gap: 32 }}>
+      <div key={key} style={{ display: 'grid', gridTemplateColumns: 'var(--grid-collection)', gap: 32 }}>
         <RevealList stagger={0.07}>
           {sorted.map((p) => (
             <ProductCard

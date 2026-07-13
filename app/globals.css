@@ -35,14 +35,15 @@
   --color-error: #F87171; --color-error-bg: rgba(248,113,113,0.14); --color-success: #86D95B; --color-success-bg: rgba(134,217,91,0.14);
   --color-footer-bg: #0A0A0B; --color-footer-text: #FFFFFF;
   --color-focus: #5AA6FF;
+  /* Card border/elevation shadows were rgba(near-black) everywhere with no dark-mode
+     equivalent — invisible against a near-black card background. Light-tinted border for
+     the resting/subtle states, a soft glow (not a dark shadow, which reads as nothing here)
+     for the raised/hover elevation states. */
+  --shadow-card: rgba(255,255,255,0.14) 0 0 0 1px;
+  --shadow-card-subtle: rgba(255,255,255,0.08) 0 0 0 1px;
+  --shadow-raised: 0 12px 32px -12px rgba(0,0,0,0.5), 0 0 0 1px rgba(255,255,255,0.1);
+  --shadow-hover: 0 16px 40px -12px rgba(0,0,0,0.6), 0 0 0 1px rgba(255,255,255,0.16);
   color-scheme: dark;
-}
-
-/* Animated theme switch — background/text/border crossfade instead of a hard cut.
-   prefers-reduced-motion already forces all transition-duration to ~0 further down. */
-html, body, * , *::before, *::after {
-  transition: background-color 0.4s var(--ease-default, ease), color 0.4s var(--ease-default, ease),
-    border-color 0.4s var(--ease-default, ease), fill 0.4s var(--ease-default, ease), stroke 0.4s var(--ease-default, ease);
 }
 
 /* Typography Scale */
@@ -135,7 +136,7 @@ html, body, * , *::before, *::after {
 
 html { font-family: var(--font-body); color: var(--color-foreground); background: var(--color-background); -webkit-font-smoothing: antialiased; scrollbar-width: none; -ms-overflow-style: none; }
 html::-webkit-scrollbar { display: none; }
-body { min-height: 100vh; overflow-x: hidden; margin: 0; scrollbar-width: none; -ms-overflow-style: none; }
+body { min-height: 100vh; min-height: 100dvh; overflow-x: hidden; margin: 0; scrollbar-width: none; -ms-overflow-style: none; }
 body::-webkit-scrollbar { display: none; }
 /* Any internal scroll container (drawers, overlays, horizontal rails) inherits the same hide. */
 * { scrollbar-width: none; -ms-overflow-style: none; }
@@ -194,6 +195,7 @@ a { color: inherit; text-decoration: none; }
     --title-md: clamp(2rem, 3.368vw, 4rem);
     --grid-trust: repeat(3, 1fr);
     --grid-home-featured: repeat(auto-fill, minmax(220px, 1fr));
+    --grid-collection: repeat(auto-fill, minmax(220px, 1fr));
     --grid-pdp: 1.1fr 1fr;
     --grid-reg-form: 1fr 1fr;
     --grid-dashboard: 1fr 1fr;

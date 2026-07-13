@@ -6,7 +6,7 @@ import { TextEffect } from '../core/text-effect';
 export default function HeroSection() {
   return (
     <section style={{
-      position: 'relative', minHeight: 'min(92vh, 700px)',
+      position: 'relative', minHeight: 'min(92dvh, 700px)',
       display: 'flex', alignItems: 'center',
       backgroundImage: "url('/assets/hero-pattern.jpeg')",
       backgroundSize: 'cover', backgroundPosition: 'center',
