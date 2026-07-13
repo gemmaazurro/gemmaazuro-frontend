@@ -45,15 +45,16 @@ export default function HomePage() {
   return (
     <StorefrontShell>
       <PageTransition>
-        <HeroSection />
-        <div style={{ background: 'var(--color-brand)', padding: '18px 0' }}>
-          <InfiniteSlider gap={72} speed={50} speedOnHover={20}
-            style={{ fontFamily: 'var(--font-body)', fontSize: 14, letterSpacing: '0.04em', color: '#fff' }}>
-            {marqItems.map((item, i) => (
-              <span key={i} style={{ whiteSpace: 'nowrap', display: 'flex', alignItems: 'center', gap: 10 }}>{item}</span>
-            ))}
-          </InfiniteSlider>
-        </div>
+        <HeroSection ribbon={
+          <div style={{ background: 'var(--color-brand)', padding: '18px 0' }}>
+            <InfiniteSlider gap={72} speed={50} speedOnHover={20}
+              style={{ fontFamily: 'var(--font-body)', fontSize: 14, letterSpacing: '0.04em', color: '#fff' }}>
+              {marqItems.map((item, i) => (
+                <span key={i} style={{ whiteSpace: 'nowrap', display: 'flex', alignItems: 'center', gap: 10 }}>{item}</span>
+              ))}
+            </InfiniteSlider>
+          </div>
+        } />
         <HomeFeaturedProducts />
         <BrandStory />
         <section style={{ maxWidth: 'var(--page-width)', margin: '0 auto',

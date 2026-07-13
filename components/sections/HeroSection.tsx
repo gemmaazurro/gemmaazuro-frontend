@@ -1,20 +1,34 @@
 'use client';
+import type { ReactNode } from 'react';
 import { ArrowRight } from '@/components/core/Icons';
 import Button from '../core/Button';
 import { TextEffect } from '../core/text-effect';
 
-export default function HeroSection() {
+interface HeroSectionProps {
+  /** Marquee ribbon rendered directly under the hero copy, inside the same sized unit —
+      keeps hero+ribbon as one guaranteed-visible block regardless of device (see svh below). */
+  ribbon?: ReactNode;
+}
+
+export default function HeroSection({ ribbon }: HeroSectionProps) {
   return (
     <section style={{
-      position: 'relative', minHeight: 'min(92vh, 700px)',
-      display: 'flex', alignItems: 'center',
+      position: 'relative',
+      // svh (small viewport height) is the SMALLEST the viewport can ever be — i.e. as if the
+      // mobile browser's address bar is always showing. Unlike vh (inconsistent per device/
+      // browser as the bar collapses) or dvh (recalculates live as the bar hides/shows, causing
+      // a visible jump), svh is static: content sized to it is guaranteed fully visible no
+      // matter the toolbar state, with zero live-resize glitching.
+      minHeight: 'min(92svh, 700px)',
+      display: 'flex', flexDirection: 'column',
       backgroundImage: "url('/assets/hero-pattern.jpeg')",
       backgroundSize: 'cover', backgroundPosition: 'center',
       overflow: 'hidden',
     }}>
       <div style={{ position: 'absolute', inset: 0,
         background: 'linear-gradient(100deg, rgba(18,22,46,0.58) 0%, rgba(18,22,46,0.2) 100%)' }} />
-      <div style={{ position: 'relative', maxWidth: 'var(--page-width)', width: '100%',
+      <div style={{ position: 'relative', flex: 1, display: 'flex', alignItems: 'center',
+        maxWidth: 'var(--page-width)', width: '100%',
         margin: '0 auto', padding: 'clamp(2rem,5vw,4rem) clamp(20px,3vw,40px)' }}>
         <div style={{ maxWidth: 640 }}>
           <span style={{
@@ -43,6 +57,7 @@ export default function HeroSection() {
           </div>
         </div>
       </div>
+      {ribbon && <div style={{ position: 'relative' }}>{ribbon}</div>}
     </section>
   );
 }
