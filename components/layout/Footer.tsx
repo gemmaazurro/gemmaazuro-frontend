@@ -1,29 +1,25 @@
 'use client';
 import { useRef, useEffect } from 'react';
 import Image from 'next/image';
-import { Instagram, TikTok, Pin, Phone, Clock, ArrowRight, Shield } from '@/components/core/Icons';
-
-const prefersReduced = () => window.matchMedia('(prefers-reduced-motion: reduce)').matches;
+import { Instagram, TikTok, Pin, Phone, Clock, ArrowRight } from '@/components/core/Icons';
 
 export default function Footer() {
-  const wrapRef = useRef<HTMLDivElement>(null);
+  const footerRef = useRef<HTMLElement>(null);
 
+  // Publish the real rendered footer height as a CSS var so StorefrontShell can pull
+  // <main> up over it by the same amount (the "reveal under the page" sticky trick) —
+  // no scroll listener, no JS-driven transform, just CSS sticky + a measured offset.
   useEffect(() => {
-    if (prefersReduced()) return;
-    const wrap = wrapRef.current;
-    if (!wrap) return;
-    const onScroll = () => {
-      const maxScroll = document.documentElement.scrollHeight - window.innerHeight;
-      const remaining = maxScroll - window.scrollY;
-      const windowHeight = window.innerHeight;
-      if (remaining < windowHeight * 1.2) {
-        const progress = Math.max(0, Math.min(1, 1 - remaining / (windowHeight * 1.2)));
-        const ty = -(1 - progress) * 80;
-        wrap.style.transform = `translateY(${ty}px)`;
-      }
+    const el = footerRef.current;
+    if (!el) return;
+    const setHeight = () => {
+      document.documentElement.style.setProperty('--footer-height', `${el.offsetHeight}px`);
     };
-    window.addEventListener('scroll', onScroll, { passive: true });
-    return () => window.removeEventListener('scroll', onScroll);
+    setHeight();
+    const ro = new ResizeObserver(setHeight);
+    ro.observe(el);
+    window.addEventListener('resize', setHeight);
+    return () => { ro.disconnect(); window.removeEventListener('resize', setHeight); };
   }, []);
 
   const col = (title: string, items: string[]) => (
@@ -42,8 +38,8 @@ export default function Footer() {
   );
 
   return (
-    <div ref={wrapRef} style={{ position: 'relative', zIndex: 2, willChange: 'transform' }}>
-      <footer style={{
+    <div style={{ position: 'sticky', bottom: 0, zIndex: 0 }}>
+      <footer ref={footerRef} style={{
         background: 'var(--color-footer-bg)', color: 'var(--color-footer-text)',
         borderStartStartRadius: 'var(--border-radius)', borderStartEndRadius: 'var(--border-radius)',
         padding: '88px 0 0',
@@ -66,16 +62,10 @@ export default function Footer() {
                     <Icon size={18} /></a>
                 ))}
               </div>
-              <div style={{ display: 'inline-flex', alignItems: 'center', gap: 8,
-                padding: '8px 14px', borderRadius: 'var(--rounded-full)',
-                border: '1px solid var(--color-igi)', color: 'var(--color-igi)',
-                background: 'rgba(15,107,53,0.12)', fontSize: 13 }}>
-                <Shield size={14} />IGI Certified Partner
-              </div>
             </div>
 
             {col('Shop', ['Rings', 'Necklaces', 'Bracelets', 'Earrings', 'Piercings'])}
-            {col('House', ['About Us', 'IGI Certification', 'Returns & Exchange', 'Contact Us', 'Visit Us'])}
+            {col('House', ['About Us', 'Returns & Exchange', 'Contact Us', 'Visit Us'])}
 
             <div>
               <h4 style={{ margin: '0 0 18px', fontFamily: 'var(--font-heading)', fontWeight: 500, fontSize: 12,
@@ -112,7 +102,7 @@ export default function Footer() {
           }}>
             <span>&copy; {new Date().getFullYear()} Gemma Azzurro Jewelry — Egypt · Los Angeles</span>
             <span style={{ display: 'flex', gap: 12, justifyContent: 'var(--footer-social-justify)' as any, width: '100%' }}>
-              {['Visa', 'InstaPay', 'Cash on Delivery', 'IGI Certified'].map(t => (
+              {['Visa', 'InstaPay', 'Cash on Delivery'].map(t => (
                 <span key={t}>{t}</span>
               ))}
             </span>

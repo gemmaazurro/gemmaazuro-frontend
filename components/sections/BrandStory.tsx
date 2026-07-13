@@ -18,7 +18,7 @@ export default function BrandStory() {
             From a silver atelier in LA to Egypt&apos;s first lab-diamond house.</h2>
           <p style={{ margin: '0 0 28px', fontSize: 16, lineHeight: 1.7, color: 'var(--color-foreground-subtle)' }}>
             We began with sterling silver and gold in Los Angeles. Today Gemma Azzurro is the pioneering
-            destination for IGI-certified lab diamonds in Egypt — transparent, exceptional, and made to last.</p>
+            destination for lab diamonds in Egypt — transparent, exceptional, and made to last.</p>
           <div>
             <Button variant="secondary" as="a" href="/collection">Our Story</Button>
           </div>

@@ -2,7 +2,7 @@
 
 import { useMemo, useState, useRef } from 'react';
 import Image from 'next/image';
-import { Shield, Heart } from '@/components/core/Icons';
+import { Heart } from '@/components/core/Icons';
 import type { Product } from '@/lib/data';
 import Accordion from '@/components/core/Accordion';
 import Rating from '@/components/commerce/Rating';
@@ -164,31 +164,6 @@ export default function ProductDetailsClient({ product, related, thumbs }: Produ
             )}
           </div>
 
-          <div
-            style={{
-              background: 'var(--color-igi-bg)',
-              borderRadius: 'var(--rounded-card)',
-              padding: '16px 20px',
-              marginBottom: 28,
-              display: 'flex',
-              gap: 14,
-              alignItems: 'flex-start',
-            }}
-          >
-            <span style={{ color: 'var(--color-igi)', flexShrink: 0, marginTop: 2 }}>
-              <Shield size={22} />
-            </span>
-            <div style={{ fontSize: 14, lineHeight: 1.6, color: 'var(--color-igi)' }}>
-              <strong style={{ fontWeight: 600, display: 'block', marginBottom: 2 }}>IGI Certified Lab Diamond</strong>
-              <span style={{ opacity: 0.85 }}>
-                {product.color} · {product.clarity} · {product.carat} · {product.cut} cut
-              </span>
-              <br />
-              <span style={{ opacity: 0.7 }}>Certificate #{product.cert}</span>
-              <span style={{ marginLeft: 14, cursor: 'pointer', textDecoration: 'underline' }}>Verify on IGI →</span>
-            </div>
-          </div>
-
           <VariantSelector
             label="Metal"
             style={{ marginBottom: 20 }}
@@ -245,9 +220,6 @@ export default function ProductDetailsClient({ product, related, thumbs }: Produ
             </Accordion>
             <Accordion title="Shipping & Returns">
               Complimentary insured delivery across Cairo. 14-day returns — contact us or visit the Zamalek atelier.
-            </Accordion>
-            <Accordion title="IGI Certificate">
-              Certificate #{product.cert}. A printed certificate and QR verification code accompany your piece.
             </Accordion>
           </div>
         </RevealBlock>

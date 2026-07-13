@@ -8,7 +8,11 @@ import RevealBlock from '@/components/motion/RevealBlock';
 import { Shield, Truck } from '@/components/core/Icons';
 import HomeFeaturedProducts from '@/components/pages/HomeFeaturedProducts';
 
-export const revalidate = 3600;
+// Next 16 Cache Components (cacheComponents: true in next.config.ts) replaces the old
+// `export const revalidate` segment config — this page has no server data fetch of its
+// own (HomeFeaturedProducts reads the static PRODUCTS array client-side), so there's
+// nothing here that needs a `use cache` boundary; see lib/products-cache.ts for the
+// one that exists (PDP metadata + static params).
 
 export const metadata: Metadata = {
   alternates: {
@@ -17,28 +21,24 @@ export const metadata: Metadata = {
 };
 
 const marqItems = [
-  <span key="1" style={{ color: 'var(--color-igi)', fontWeight: 600 }}>IGI Certified</span>,
   <span key="2">Lab Diamond — not mined</span>,
   <span key="3" style={{ color: 'var(--color-gold)', fontWeight: 500 }}>18k Gold · Sterling Silver</span>,
   <span key="4">Customization via WhatsApp</span>,
   <span key="5">Egypt · Los Angeles</span>,
-  <span key="6" style={{ color: 'var(--color-brand)', fontWeight: 500 }}>Every piece certified</span>,
   <span key="7">Insured delivery — Cairo</span>,
 ];
 
 const igiMarqItems = [
-  <span key="a" style={{ fontSize: 13, fontFamily: 'var(--font-wordmark)', letterSpacing: '0.12em', textTransform: 'uppercase' as const, color: 'var(--color-foreground-muted)' }}>IGI Certified</span>,
   <span key="b" style={{ fontSize: 13, fontFamily: 'var(--font-wordmark)', letterSpacing: '0.12em', textTransform: 'uppercase' as const, color: 'var(--color-gold)' }}>18k Gold</span>,
   <span key="c" style={{ fontSize: 13, fontFamily: 'var(--font-wordmark)', letterSpacing: '0.12em', textTransform: 'uppercase' as const, color: 'var(--color-foreground-muted)' }}>Sterling Silver</span>,
   <span key="d" style={{ fontSize: 13, fontFamily: 'var(--font-wordmark)', letterSpacing: '0.12em', textTransform: 'uppercase' as const, color: 'var(--color-brand)' }}>Lab Diamond</span>,
   <span key="e" style={{ fontSize: 13, fontFamily: 'var(--font-wordmark)', letterSpacing: '0.12em', textTransform: 'uppercase' as const, color: 'var(--color-foreground-muted)' }}>Los Angeles · Cairo</span>,
-  <span key="f" style={{ fontSize: 13, fontFamily: 'var(--font-wordmark)', letterSpacing: '0.12em', textTransform: 'uppercase' as const, color: 'var(--color-igi)' }}>Every Piece Certified ✦</span>,
 ];
 
 const trustItems = [
-  { Icon: Shield, title: 'IGI Certified', desc: 'A certificate accompanies every diamond.' },
   { Icon: Truck, title: 'Cairo Delivery', desc: 'Complimentary, insured delivery citywide.' },
-  { Icon: Shield, title: 'Lifetime Care', desc: 'Cleaning, resizing & re-certification.' },
+  { Icon: Shield, title: 'Lifetime Care', desc: 'Cleaning, resizing & polishing.' },
+  { Icon: Shield, title: 'Custom & Engrave', desc: 'Personalize any piece via WhatsApp.' },
 ];
 
 export default function HomePage() {

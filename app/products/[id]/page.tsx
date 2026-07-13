@@ -1,20 +1,19 @@
 import type { Metadata } from 'next';
 import { notFound } from 'next/navigation';
-import { PRODUCTS } from '@/lib/data';
+import { getProducts, getProductById } from '@/lib/products-cache';
 import StorefrontShell from '@/components/layout/StorefrontShell';
 import PageTransition from '@/components/motion/PageTransition';
 import ProductDetailsClient from '@/components/pages/ProductDetailsClient';
 import { absoluteUrl } from '@/lib/site';
 
-export const revalidate = 3600;
-
 export async function generateStaticParams() {
-  return PRODUCTS.map((product) => ({ id: product.id }));
+  const products = await getProducts();
+  return products.map((product) => ({ id: product.id }));
 }
 
 export async function generateMetadata({ params }: { params: Promise<{ id: string }> }): Promise<Metadata> {
   const { id } = await params;
-  const product = PRODUCTS.find((item) => item.id === id);
+  const product = await getProductById(id);
 
   if (!product) {
     return {
@@ -27,7 +26,7 @@ export async function generateMetadata({ params }: { params: Promise<{ id: strin
   }
 
   const title = `${product.name} | Gemma Azzurro`;
-  const description = `${product.meta}. ${product.igi}. IGI-certified lab diamond fine jewelry from Gemma Azzurro.`;
+  const description = `${product.meta}. Lab diamond fine jewelry from Gemma Azzurro.`;
 
   return {
     title,
@@ -60,7 +59,7 @@ export async function generateMetadata({ params }: { params: Promise<{ id: strin
 
 export default async function ProductPage({ params }: { params: Promise<{ id: string }> }) {
   const { id } = await params;
-  const p = PRODUCTS.find((item) => item.id === id);
+  const [p, PRODUCTS] = await Promise.all([getProductById(id), getProducts()]);
 
   if (!p) {
     notFound();
@@ -76,9 +75,30 @@ export default async function ProductPage({ params }: { params: Promise<{ id: st
     PRODUCTS[(currentIndex + 2) % PRODUCTS.length].img,
   ];
 
+  const productJsonLd = {
+    '@context': 'https://schema.org',
+    '@type': 'Product',
+    name: p.name,
+    image: absoluteUrl(p.img),
+    description: p.meta,
+    category: p.cat,
+    offers: {
+      '@type': 'Offer',
+      priceCurrency: 'EGP',
+      price: p.salePrice ?? p.price,
+      availability: 'https://schema.org/InStock',
+      url: absoluteUrl(`/products/${p.id}`),
+    },
+  };
+
   return (
     <StorefrontShell>
       <PageTransition>
+        <script
+          type="application/ld+json"
+          // eslint-disable-next-line react/no-danger
+          dangerouslySetInnerHTML={{ __html: JSON.stringify(productJsonLd) }}
+        />
         <div style={{ maxWidth: 'var(--page-width)', margin: '0 auto', padding: '32px clamp(20px,3vw,40px) 64px' }}>
           <ProductDetailsClient product={p} related={related} thumbs={thumbs} />
         </div>

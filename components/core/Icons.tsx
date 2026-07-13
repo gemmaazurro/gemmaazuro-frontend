@@ -41,6 +41,9 @@ export const Instagram = createIcon(['M7 3h10a4 4 0 0 1 4 4v10a4 4 0 0 1-4 4H7a4
 export const Pin = createIcon(['M12 21s7-5.7 7-11a7 7 0 1 0-14 0c0 5.3 7 11 7 11z', 'M12 12a2.5 2.5 0 1 0 0-5 2.5 2.5 0 0 0 0 5z']);
 export const Phone = createIcon(['M5 4h3l2 5-2 1a12 12 0 0 0 5 5l1-2 5 2v3a2 2 0 0 1-2 2A16 16 0 0 1 3 6a2 2 0 0 1 2-2z']);
 export const Clock = createIcon(['M12 21a9 9 0 1 0 0-18 9 9 0 0 0 0 18z', 'M12 7v5l3 2']);
+export const Sun = createIcon(['M12 4V2', 'M12 22v-2', 'M4.93 4.93l1.41 1.41', 'M17.66 17.66l1.41 1.41',
+  'M2 12h2', 'M20 12h2', 'M4.93 19.07l1.41-1.41', 'M17.66 6.34l1.41-1.41', 'M12 17a5 5 0 1 0 0-10 5 5 0 0 0 0 10z']);
+export const Moon = createIcon(['M20 14.5A8.5 8.5 0 1 1 9.5 4a7 7 0 0 0 10.5 10.5z']);
 
 export const TikTok: FC<IconProps> = ({ size = 22, ...props }) => (
   <svg width={size} height={size} viewBox="0 0 24 24" fill="currentColor" {...props}>

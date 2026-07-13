@@ -2,7 +2,6 @@
 import { useState, useEffect } from 'react';
 
 const MESSAGES = [
-  'Complimentary IGI certificate with every piece',
   'Free insured delivery across Cairo',
   'Customization & engraving via WhatsApp',
 ];

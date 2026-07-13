@@ -32,7 +32,7 @@ export default function HeroSection() {
               fontSize: 'clamp(1.5rem, 3vw, 2.25rem)', lineHeight: 1, color: 'rgba(255,255,255,0.88)', marginBottom: 30 }} />
           <p style={{ fontSize: 17, lineHeight: 1.6, color: 'rgba(255,255,255,0.85)', maxWidth: 480,
             marginBottom: 36, animation: 'ga-appear-up 0.6s ease 0.85s both' }}>
-            Every piece IGI-certified — lab diamonds indistinguishable from mined, at a fraction of the cost.</p>
+            Lab diamonds indistinguishable from mined, at a fraction of the cost.</p>
           <div className="mobile-stack" style={{ gap: 14, animation: 'ga-appear-up 0.5s ease 1.0s both' }}>
             <Button variant="primary" size="lg" as="a" href="/collection"
               iconRight={<ArrowRight size={18} />}>Shop the Collection</Button>

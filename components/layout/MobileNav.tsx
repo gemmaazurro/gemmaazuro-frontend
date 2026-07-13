@@ -1,6 +1,7 @@
 'use client';
 import { Bag, Heart, Phone, User } from '@/components/core/Icons';
 import { useEffect, useRef, useCallback } from 'react';
+import ThemeToggle from '../core/ThemeToggle';
 
 interface MobileNavProps {
   open: boolean;
@@ -287,20 +288,12 @@ export default function MobileNav({ open, onClose, onNavigate, categories, cartC
             <Phone size={18} />
             Contact
           </button>
-        </div>
 
-        {/* Footer area with IGI certification */}
-        <div
-          style={{
-            padding: 20,
-            borderTop: '1px solid var(--color-border)',
-            fontSize: 12,
-            color: 'var(--color-foreground-muted)',
-            textAlign: 'center',
-            fontFamily: 'var(--font-body)',
-          }}
-        >
-          All pieces IGI certified
+          {/* Theme */}
+          <div style={{ ...linkBase, gap: 12, borderBottom: 'none', cursor: 'default' }}>
+            <span style={{ flex: 1 }}>Theme</span>
+            <ThemeToggle />
+          </div>
         </div>
       </div>
     </>

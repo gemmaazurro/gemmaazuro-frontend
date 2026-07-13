@@ -169,13 +169,6 @@ export default function ProductCard({
           }}>{meta}</p>
         )}
 
-        {/* IGI badge — own row, full breathing room */}
-        {igi && (
-          <div style={{ marginBottom: '0.75rem' }}>
-            <Badge variant="igi">{igi === true ? 'IGI Certified' : igi}</Badge>
-          </div>
-        )}
-
         {/* Price */}
         <div style={{ display: 'flex', alignItems: 'baseline', gap: '0.5rem' }}>
           {salePrice ? (

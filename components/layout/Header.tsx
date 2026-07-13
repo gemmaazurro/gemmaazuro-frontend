@@ -6,6 +6,7 @@ import { usePathname } from 'next/navigation';
 import { Search, Heart, Bag, User, ArrowRight } from '@/components/core/Icons';
 import MagnetEl from '../motion/MagnetEl';
 import CustomCursor from '../motion/CustomCursor';
+import ThemeToggle from '../core/ThemeToggle';
 import { PRODUCTS, CATEGORIES } from '@/lib/data';
 import { useStore } from '@/lib/store';
 import type { Product } from '@/lib/data';
@@ -193,8 +194,8 @@ export default function Header({ cartCount = 0, onCart, onSearch }: {
         background: isHome && scrollY < 100
           ? 'transparent'
           : scrollY > 60
-            ? 'rgba(255,255,255,0.94)'
-            : 'rgba(255,255,255,0.74)',
+            ? 'color-mix(in srgb, var(--color-background) 94%, transparent)'
+            : 'color-mix(in srgb, var(--color-background) 74%, transparent)',
         backdropFilter: isHome && scrollY < 100 ? 'none' : 'blur(14px)',
         WebkitBackdropFilter: isHome && scrollY < 100 ? 'none' : 'blur(14px)',
         borderRadius: 0,
@@ -245,6 +246,7 @@ export default function Header({ cartCount = 0, onCart, onSearch }: {
           </Link>
 
           <div style={{ display: 'flex', alignItems: 'center', gap: 'clamp(0, 0.3vw, 4px)', justifySelf: 'end' }}>
+            <ThemeToggle />
             <IconBtn icon={Search} label="Search" onClick={onSearch} />
             <IconBtn icon={User} label="Account" onClick={() => navigate('account')} />
           </div>
@@ -264,7 +266,7 @@ export default function Header({ cartCount = 0, onCart, onSearch }: {
               : 'translateX(-50%) translateY(-10px) scale(0.99)',
             pointerEvents: activeMenu ? 'auto' : 'none',
             transition: 'opacity 0.26s ease, transform 0.34s cubic-bezier(0.075,0.82,0.165,1)',
-            background: '#fff',
+            background: 'var(--color-background)',
             borderRadius: '0 0 var(--border-radius) var(--border-radius)',
             boxShadow: '0 20px 60px rgba(0,0,0,0.09), 0 4px 12px rgba(0,0,0,0.05)',
             border: '1px solid var(--color-border)',
@@ -312,13 +314,6 @@ export default function Header({ cartCount = 0, onCart, onSearch }: {
                     )}
                   </button>
                 ))}
-                <div style={{ marginTop: 'auto', paddingTop: 20 }}>
-                  <div style={{ padding: '10px 12px', background: 'var(--color-igi-bg)',
-                    borderRadius: 'var(--rounded-card)', fontSize: 11, color: 'var(--color-igi)',
-                    fontWeight: 500, lineHeight: 1.5 }}>
-                    All pieces IGI certified
-                  </div>
-                </div>
               </div>
 
               <div style={{ padding: '30px 28px 28px' }}>

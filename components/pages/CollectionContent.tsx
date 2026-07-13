@@ -46,7 +46,7 @@ export default function CollectionContent() {
           {active === 'All' ? 'Lab Diamond Jewelry' : active}
         </h1>
         <p style={{ margin: '0 0 28px', color: 'var(--color-foreground-muted)', fontSize: 15 }}>
-          {sorted.length} pieces · all IGI-certified
+          {sorted.length} pieces
         </p>
       </RevealBlock>
 

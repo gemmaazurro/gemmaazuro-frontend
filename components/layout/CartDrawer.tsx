@@ -64,7 +64,7 @@ export default function CartDrawer() {
               <p style={{ margin: 0, fontFamily: 'var(--font-heading)', fontSize: 20, fontWeight: 400 }}>
                 Your bag is empty</p>
               <p style={{ margin: 0, fontSize: 14, color: 'var(--color-foreground-muted)', textAlign: 'center', lineHeight: 1.6 }}>
-                Every piece IGI-certified — lab diamonds crafted for a lifetime.</p>
+                Lab diamonds crafted for a lifetime.</p>
               <button onClick={() => setCartOpen(false)} style={{
                 padding: '12px 28px', borderRadius: 'var(--rounded-button)',
                 background: 'var(--color-brand)', color: '#fff', border: 'none',
@@ -90,9 +90,6 @@ export default function CartDrawer() {
                     {item.product.name}</p>
                   <p style={{ margin: '0 0 6px', fontSize: 13, color: 'var(--color-foreground-muted)' }}>
                     {item.product.meta}</p>
-                  <p style={{ margin: 0, fontSize: 11, color: 'var(--color-igi)',
-                    fontFamily: 'var(--font-wordmark)', letterSpacing: '0.06em' }}>
-                    {item.product.igi}</p>
                 </div>
                 <div style={{ display: 'flex', alignItems: 'center', justifyContent: 'space-between', marginTop: 10 }}>
                   <div style={{
@@ -141,7 +138,7 @@ export default function CartDrawer() {
             }}>
               <Shield size={15} style={{ color: 'var(--color-igi)', flexShrink: 0 }} />
               <span style={{ fontSize: 13, color: 'var(--color-igi)' }}>
-                Every piece IGI certified — certificate included</span>
+                IGI certificate issued within 2 days of purchase</span>
             </div>
             <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'baseline', marginBottom: 16 }}>
               <span style={{ fontSize: 15, color: 'var(--color-foreground-muted)' }}>Subtotal</span>

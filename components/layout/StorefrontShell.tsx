@@ -21,7 +21,15 @@ export default function StorefrontShell({ children }: { children: ReactNode }) {
         onCart={() => setCartOpen(true)}
         onSearch={() => setSearchOpen(true)}
       />
-      <main>{children}</main>
+      {/* position + z-index + negative margin pull main up over the sticky footer below it,
+          so the footer reveals underneath as the user scrolls past the end of the page content
+          (see Footer.tsx — it publishes --footer-height via ResizeObserver). */}
+      <main style={{
+        position: 'relative',
+        zIndex: 1,
+        background: 'var(--color-background)',
+        marginBottom: 'calc(-1 * var(--footer-height, 0px))',
+      }}>{children}</main>
       <Footer />
       <CartDrawer />
       <SearchOverlay />
