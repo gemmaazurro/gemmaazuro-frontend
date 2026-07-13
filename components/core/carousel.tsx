@@ -141,7 +141,15 @@ export function CarouselNavigation({ className, classNameButton, alwaysShow, sty
 export function CarouselIndicator({ className, style }: { className?: string; style?: React.CSSProperties }) {
   const { selectedIndex, scrollTo, count } = useCarousel();
   return (
-    <div className={className} style={{ display: 'flex', gap: 6, ...style }}>
+    // mix-blend-mode doesn't reliably invert here (embla's transformed scroll track puts the
+    // slide images in a separate compositing layer from this sibling, so blending against them
+    // is inconsistent across browsers) — same dark scrim backdrop the nav arrows already use
+    // guarantees contrast on every slide regardless of image brightness.
+    <div className={className} style={{
+      display: 'flex', alignItems: 'center', gap: 6,
+      padding: '6px 10px', borderRadius: 9999, background: 'rgba(0,0,0,0.55)',
+      ...style,
+    }}>
       {Array.from({ length: count }).map((_, i) => (
         <button
           key={i}
@@ -151,10 +159,7 @@ export function CarouselIndicator({ className, style }: { className?: string; st
           style={{
             width: i === selectedIndex ? 18 : 6, height: 6, borderRadius: 9999,
             border: 'none', padding: 0, cursor: 'pointer',
-            background: i === selectedIndex ? '#fff' : 'rgba(255,255,255,0.7)',
-            // Inverts against whatever's behind it (light or dark image) instead of
-            // relying on a fixed white — guarantees contrast on every slide.
-            mixBlendMode: 'difference',
+            background: i === selectedIndex ? '#fff' : 'rgba(255,255,255,0.5)',
             transition: 'width 0.25s ease, background 0.25s ease',
           }}
         />
