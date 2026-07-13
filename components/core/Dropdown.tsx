@@ -1,10 +1,13 @@
 'use client';
-import React, { useState, useRef, useEffect, ReactNode } from 'react';
+import React, { ReactNode } from 'react';
+import { DropdownMenu } from 'radix-ui';
 
 /**
- * Custom animated dropdown menu.
- * Pass a `trigger` element; clicking it opens a floating panel
- * with animated item list. Closes on outside click or item select.
+ * Animated dropdown menu — same public API as before (trigger/items/align), now built on
+ * Radix's DropdownMenu primitive (the same primitive shadcn/ui's dropdown-menu wraps; this
+ * project has no shadcn/Tailwind-utility setup, so the open/close animation + our own design
+ * tokens are wired directly here instead of via shadcn's generated component + Tailwind classes).
+ * Radix emits `data-state="open"|"closed"` on Content — the keyframes below key off that.
  */
 interface DropdownItem {
   label?: string;
@@ -23,78 +26,57 @@ interface DropdownProps {
 }
 
 export default function Dropdown({ trigger, items = [], align = 'left', style }: DropdownProps) {
-  const [open, setOpen] = useState(false);
-  const ref = useRef<HTMLDivElement>(null);
-
-  useEffect(() => {
-    if (!open) return;
-    const fn = (e: MouseEvent) => { if (ref.current && !ref.current.contains(e.target as Node)) setOpen(false); };
-    document.addEventListener('mousedown', fn);
-    return () => document.removeEventListener('mousedown', fn);
-  }, [open]);
-
-  useEffect(() => {
-    const fn = (e: KeyboardEvent) => { if (e.key === 'Escape') setOpen(false); };
-    window.addEventListener('keydown', fn);
-    return () => window.removeEventListener('keydown', fn);
-  }, []);
-
   return (
-    <div ref={ref} style={{ position: 'relative', display: 'inline-block', ...style }}>
-      <div onClick={() => setOpen(o => !o)} style={{ cursor: 'pointer', userSelect: 'none' }}>
-        {trigger}
-      </div>
-
-      <div style={{
-        position: 'absolute',
-        top: 'calc(100% + 6px)',
-        [align === 'right' ? 'right' : 'left']: 0,
-        minWidth: 200,
-        zIndex: 50,
-        background: 'var(--color-background)',
-        borderRadius: 'var(--rounded-card)',
-        boxShadow: '0 8px 32px rgba(0,0,0,0.10), 0 2px 6px rgba(0,0,0,0.06)',
-        border: '1px solid var(--color-border)',
-        overflow: 'hidden',
-        opacity: open ? 1 : 0,
-        transform: open ? 'translateY(0) scale(1)' : 'translateY(-6px) scale(0.97)',
-        pointerEvents: open ? 'auto' : 'none',
-        transition: 'opacity 0.22s ease, transform 0.28s cubic-bezier(0.075,0.82,0.165,1)',
-      }}>
-        <div style={{ padding: '6px 0' }}>
-          {items.map((item, i) => {
-            if (item.separator) {
-              return (
-                <div key={i} style={{
-                  height: 1, background: 'var(--color-border)',
-                  margin: '4px 12px',
-                }} />
-              );
-            }
-            return (
-              <button key={i}
-                onClick={() => { item.onClick?.(); setOpen(false); }}
+    <DropdownMenu.Root>
+      <style>{`
+        @keyframes ga-dd-in { from { opacity: 0; transform: translateY(-6px) scale(0.97); } to { opacity: 1; transform: translateY(0) scale(1); } }
+        @keyframes ga-dd-out { from { opacity: 1; transform: translateY(0) scale(1); } to { opacity: 0; transform: translateY(-6px) scale(0.97); } }
+        .ga-dd-content[data-state="open"] { animation: ga-dd-in 0.22s cubic-bezier(0.075,0.82,0.165,1) both; }
+        .ga-dd-content[data-state="closed"] { animation: ga-dd-out 0.16s ease both; }
+      `}</style>
+      <DropdownMenu.Trigger asChild>
+        <div style={{ cursor: 'pointer', userSelect: 'none', display: 'inline-block', ...style }}>
+          {trigger}
+        </div>
+      </DropdownMenu.Trigger>
+      <DropdownMenu.Portal>
+        <DropdownMenu.Content
+          align={align === 'right' ? 'end' : 'start'}
+          sideOffset={6}
+          className="ga-dd-content"
+          style={{
+            minWidth: 200,
+            zIndex: 50,
+            background: 'var(--color-background)',
+            borderRadius: 'var(--rounded-card)',
+            boxShadow: '0 8px 32px rgba(0,0,0,0.10), 0 2px 6px rgba(0,0,0,0.06)',
+            border: '1px solid var(--color-border)',
+            overflow: 'hidden',
+            padding: '6px 0',
+          }}
+        >
+          {items.map((item, i) =>
+            item.separator ? (
+              <DropdownMenu.Separator
+                key={i}
+                style={{ height: 1, background: 'var(--color-border)', margin: '4px 12px' }}
+              />
+            ) : (
+              <DropdownMenu.Item
+                key={i}
+                onSelect={() => item.onClick?.()}
                 style={{
                   display: 'flex', alignItems: 'center', gap: 10,
-                  width: '100%', padding: '0.65rem 1rem',
-                  background: 'transparent', border: 'none', cursor: 'pointer',
-                  fontFamily: 'var(--font-body)', fontSize: '0.9375rem', textAlign: 'left',
+                  padding: '0.65rem 1rem', cursor: 'pointer', outline: 'none',
+                  fontFamily: 'var(--font-body)', fontSize: '0.9375rem',
                   color: item.destructive ? 'var(--color-error)' : 'var(--color-foreground)',
-                  opacity: open ? 1 : 0,
-                  transform: open ? 'translateY(0)' : 'translateY(4px)',
-                  transition: [
-                    `opacity 0.22s ease ${i * 0.04}s`,
-                    `transform 0.28s cubic-bezier(0.075,0.82,0.165,1) ${i * 0.04}s`,
-                    'background 0.12s ease',
-                  ].join(', '),
+                  transition: 'background 0.12s ease',
                 }}
-                onMouseEnter={e => e.currentTarget.style.background = 'var(--color-surface)'}
-                onMouseLeave={e => e.currentTarget.style.background = 'transparent'}
+                onMouseEnter={(e) => { (e.currentTarget as HTMLDivElement).style.background = 'var(--color-surface)'; }}
+                onMouseLeave={(e) => { (e.currentTarget as HTMLDivElement).style.background = 'transparent'; }}
               >
                 {item.icon && (
-                  <span style={{ flexShrink: 0, opacity: 0.5, lineHeight: 0, color: 'inherit' }}>
-                    {item.icon}
-                  </span>
+                  <span style={{ flexShrink: 0, opacity: 0.5, lineHeight: 0, color: 'inherit' }}>{item.icon}</span>
                 )}
                 <span style={{ flex: 1 }}>{item.label}</span>
                 {item.badge && (
@@ -105,11 +87,11 @@ export default function Dropdown({ trigger, items = [], align = 'left', style }:
                     letterSpacing: '0.04em',
                   }}>{item.badge}</span>
                 )}
-              </button>
-            );
-          })}
-        </div>
-      </div>
-    </div>
+              </DropdownMenu.Item>
+            )
+          )}
+        </DropdownMenu.Content>
+      </DropdownMenu.Portal>
+    </DropdownMenu.Root>
   );
 }

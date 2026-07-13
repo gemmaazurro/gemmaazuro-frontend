@@ -1,13 +1,32 @@
 'use client';
-import { useState, useEffect } from 'react';
+import { useRef, useState, useEffect } from 'react';
 import Image from 'next/image';
 import { Instagram, TikTok, Pin, Phone, Clock, ArrowRight } from '@/components/core/Icons';
 
 export default function Footer() {
+  const footerRef = useRef<HTMLElement>(null);
   // Computed client-side only — `new Date()` during prerender/SSR trips Cache Components'
   // non-deterministic-value check (no Suspense boundary above this client component).
   const [year, setYear] = useState<number | null>(null);
   useEffect(() => setYear(new Date().getFullYear()), []);
+
+  // Publish the real rendered footer height as a CSS var — StorefrontShell uses it to size
+  // a transparent spacer (real extra scroll room) so the fixed, lower-z-index footer reveals
+  // itself as <main>'s solid, higher-z-index background scrolls up past it (see StorefrontShell.tsx
+  // for why this needs `position: fixed` + a real spacer, not `sticky` + a negative margin —
+  // the negative-margin version cancels the exact scroll range needed to ever reveal it).
+  useEffect(() => {
+    const el = footerRef.current;
+    if (!el) return;
+    const setHeight = () => {
+      document.documentElement.style.setProperty('--footer-height', `${el.offsetHeight}px`);
+    };
+    setHeight();
+    const ro = new ResizeObserver(setHeight);
+    ro.observe(el);
+    window.addEventListener('resize', setHeight);
+    return () => { ro.disconnect(); window.removeEventListener('resize', setHeight); };
+  }, []);
 
   const col = (title: string, items: string[]) => (
     <div>
@@ -25,7 +44,7 @@ export default function Footer() {
   );
 
   return (
-    <footer style={{
+    <footer ref={footerRef} style={{
       background: 'var(--color-footer-bg)', color: 'var(--color-footer-text)',
       borderStartStartRadius: 'var(--border-radius)', borderStartEndRadius: 'var(--border-radius)',
       padding: '88px 0 0',

@@ -4,8 +4,16 @@ import { useMemo, useState } from 'react';
 import ProductCard from '@/components/commerce/ProductCard';
 import RevealBlock from '@/components/motion/RevealBlock';
 import RevealList from '@/components/motion/RevealList';
+import Dropdown from '@/components/core/Dropdown';
+import { ChevronDown } from '@/components/core/Icons';
 import { CATEGORIES, PRODUCTS } from '@/lib/data';
 import { useStore } from '@/lib/store';
+
+const SORT_OPTIONS = [
+  { value: 'featured', label: 'Featured' },
+  { value: 'low', label: 'Price · Low to High' },
+  { value: 'high', label: 'Price · High to Low' },
+];
 
 export default function CollectionContent() {
   const { wishlist, toggleWishlist, navigate } = useStore();
@@ -84,25 +92,28 @@ export default function CollectionContent() {
             </button>
           ))}
         </div>
-        <select
-          value={sort}
-          onChange={(event) => setSort(event.target.value)}
-          style={{
-            height: 44,
-            padding: '0 18px',
-            borderRadius: 'var(--rounded-button)',
-            border: '1px solid var(--color-border-dark)',
-            background: 'var(--color-background)',
-            fontFamily: 'var(--font-body)',
-            fontSize: 14,
-            color: 'var(--color-foreground)',
-            cursor: 'pointer',
-          }}
-        >
-          <option value="featured">Featured</option>
-          <option value="low">Price · Low to High</option>
-          <option value="high">Price · High to Low</option>
-        </select>
+        <Dropdown
+          align="right"
+          trigger={
+            <div
+              style={{
+                display: 'flex', alignItems: 'center', gap: 10,
+                height: 44, padding: '0 18px',
+                borderRadius: 'var(--rounded-button)',
+                border: '1px solid var(--color-border-dark)',
+                background: 'var(--color-background)',
+                fontFamily: 'var(--font-body)', fontSize: 14, color: 'var(--color-foreground)',
+              }}
+            >
+              {SORT_OPTIONS.find((o) => o.value === sort)?.label}
+              <ChevronDown size={16} style={{ opacity: 0.6 }} />
+            </div>
+          }
+          items={SORT_OPTIONS.map((o) => ({
+            label: o.label,
+            onClick: () => setSort(o.value),
+          }))}
+        />
       </div>
 
       <div key={key} style={{ display: 'grid', gridTemplateColumns: 'repeat(auto-fill, minmax(256px, 1fr))', gap: 32 }}>
