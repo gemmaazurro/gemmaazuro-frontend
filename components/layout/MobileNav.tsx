@@ -1,5 +1,5 @@
 'use client';
-import { Bag, Heart, Phone, User, Search } from '@/components/core/Icons';
+import { Bag, Heart, Phone, User } from '@/components/core/Icons';
 import { useEffect, useRef, useCallback } from 'react';
 import ThemeToggle from '../core/ThemeToggle';
 
@@ -7,7 +7,6 @@ interface MobileNavProps {
   open: boolean;
   onClose: () => void;
   onNavigate: (path: string) => void;
-  onSearch?: () => void;
   categories: string[];
   cartCount?: number;
 }
@@ -31,7 +30,7 @@ const linkBase: React.CSSProperties = {
   WebkitTapHighlightColor: 'transparent',
 };
 
-export default function MobileNav({ open, onClose, onNavigate, onSearch, categories, cartCount }: MobileNavProps) {
+export default function MobileNav({ open, onClose, onNavigate, categories, cartCount }: MobileNavProps) {
   const drawerRef = useRef<HTMLDivElement>(null);
   const prevFocusRef = useRef<HTMLElement | null>(null);
 
@@ -176,15 +175,6 @@ export default function MobileNav({ open, onClose, onNavigate, onSearch, categor
 
         {/* Navigation links */}
         <div style={{ flex: 1, overflowY: 'auto' }}>
-          {/* Search */}
-          <button
-            onClick={() => { onSearch?.(); onClose(); }}
-            style={{ ...linkBase, gap: 12 }}
-          >
-            <Search size={18} />
-            Search
-          </button>
-
           {/* Home */}
           <button
             onClick={() => { onNavigate('home'); onClose(); }}

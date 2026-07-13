@@ -22,10 +22,11 @@ export default function HomeFeaturedProducts() {
     >
       <RevealBlock>
         <div
+          className="mobile-stack"
           style={{
-            display: 'flex',
             justifyContent: 'space-between',
-            alignItems: 'flex-end',
+            alignItems: 'flex-start',
+            gap: 16,
             marginBottom: 32,
           }}
         >
@@ -55,7 +56,8 @@ export default function HomeFeaturedProducts() {
               The Solitaire Edit
             </h2>
           </div>
-          <Button variant="ghost" as="a" href="/collection" iconRight={<ArrowRight size={16} />}>
+          <Button variant="ghost" as="a" href="/collection" iconRight={<ArrowRight size={16} />}
+            style={{ whiteSpace: 'nowrap', flexShrink: 0 }}>
             View all
           </Button>
         </div>

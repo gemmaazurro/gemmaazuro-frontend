@@ -379,7 +379,6 @@ export default function Header({ cartCount = 0, onCart, onSearch }: {
         open={mobileOpen}
         onClose={() => setMobileOpen(false)}
         onNavigate={navigate}
-        onSearch={onSearch}
         categories={CATEGORIES}
         cartCount={cartCount}
       />
