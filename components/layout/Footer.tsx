@@ -1,10 +1,14 @@
 'use client';
-import { useRef, useEffect } from 'react';
+import { useRef, useState, useEffect } from 'react';
 import Image from 'next/image';
 import { Instagram, TikTok, Pin, Phone, Clock, ArrowRight } from '@/components/core/Icons';
 
 export default function Footer() {
   const footerRef = useRef<HTMLElement>(null);
+  // Computed client-side only — `new Date()` during prerender/SSR trips Cache Components'
+  // non-deterministic-value check (no Suspense boundary above this client component).
+  const [year, setYear] = useState<number | null>(null);
+  useEffect(() => setYear(new Date().getFullYear()), []);
 
   // Publish the real rendered footer height as a CSS var so StorefrontShell can pull
   // <main> up over it by the same amount (the "reveal under the page" sticky trick) —
@@ -100,7 +104,7 @@ export default function Footer() {
             display: 'flex', justifyContent: 'var(--footer-bottom-justify)' as any, flexDirection: 'var(--footer-bottom-flex)' as any, flexWrap: 'wrap', gap: 12,
             fontSize: 13, color: 'rgba(255,255,255,0.45)',
           }}>
-            <span>&copy; {new Date().getFullYear()} Gemma Azzurro Jewelry — Egypt · Los Angeles</span>
+            <span>&copy; {year ?? ''} Gemma Azzurro Jewelry — Egypt · Los Angeles</span>
             <span style={{ display: 'flex', gap: 12, justifyContent: 'var(--footer-social-justify)' as any, width: '100%' }}>
               {['Visa', 'InstaPay', 'Cash on Delivery'].map(t => (
                 <span key={t}>{t}</span>
