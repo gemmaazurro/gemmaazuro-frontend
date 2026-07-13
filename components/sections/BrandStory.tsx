@@ -1,6 +1,14 @@
 'use client';
+import Image from 'next/image';
 import Button from '../core/Button';
 import RevealBlock from '../motion/RevealBlock';
+import { Carousel, CarouselContent, CarouselItem, CarouselNavigation, CarouselIndicator } from '../core/carousel';
+import { PRODUCTS } from '@/lib/data';
+
+const STORY_IMAGES = [
+  { src: '/assets/hero-pattern.jpeg', alt: 'Gemma Azzurro' },
+  ...PRODUCTS.slice(0, 4).map((p) => ({ src: p.img, alt: p.name })),
+];
 
 export default function BrandStory() {
   return (
@@ -23,13 +31,25 @@ export default function BrandStory() {
             <Button variant="secondary" as="a" href="/collection">Our Story</Button>
           </div>
         </RevealBlock>
-        <div data-cursor="Explore" style={{
-          order: 'var(--brand-order-img)' as any,
-          backgroundImage: "url('/assets/hero-pattern.jpeg')",
-          backgroundSize: 'cover', backgroundPosition: 'center', minHeight: 380,
-          transform: 'scale(1.04)',
-          transition: 'transform 8s ease',
-        }} />
+        <Carousel
+          className="ga-brand-carousel"
+          data-cursor="Explore"
+          style={{ order: 'var(--brand-order-img)' as any, minHeight: 380 }}
+        >
+          <CarouselContent style={{ height: '100%' }}>
+            {STORY_IMAGES.map((img, i) => (
+              <CarouselItem key={i} style={{ position: 'relative' }}>
+                <Image src={img.src} alt={img.alt} fill sizes="(max-width: 1024px) 100vw, 50vw"
+                  style={{ objectFit: 'cover' }} priority={i === 0} />
+              </CarouselItem>
+            ))}
+          </CarouselContent>
+          <CarouselNavigation
+            style={{ position: 'absolute', bottom: 20, right: 20, zIndex: 2 }}
+            alwaysShow
+          />
+          <CarouselIndicator style={{ position: 'absolute', bottom: 26, left: 20, zIndex: 2 }} />
+        </Carousel>
       </div>
     </section>
   );

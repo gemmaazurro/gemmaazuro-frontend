@@ -33,6 +33,7 @@ export const User = createIcon(['M12 12a4 4 0 1 0 0-8 4 4 0 0 0 0 8z', 'M5 20a7 
 export const Menu = createIcon(['M3 6h18', 'M3 12h18', 'M3 18h18']);
 export const Close = createIcon(['M6 6l12 12', 'M18 6L6 18']);
 export const ChevronRight = createIcon(['M9 6l6 6-6 6']);
+export const ChevronLeft = createIcon(['M15 6l-6 6 6 6']);
 export const ChevronDown = createIcon(['M6 9l6 6 6-6']);
 export const ArrowRight = createIcon(['M5 12h14', 'M13 6l6 6-6 6']);
 export const Truck = createIcon(['M3 7h11v8H3z', 'M14 10h4l3 3v2h-7z', 'M7.5 18.5a1.5 1.5 0 1 0 0-3 1.5 1.5 0 0 0 0 3z', 'M17.5 18.5a1.5 1.5 0 1 0 0-3 1.5 1.5 0 0 0 0 3z']);
