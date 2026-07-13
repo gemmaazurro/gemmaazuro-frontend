@@ -305,7 +305,7 @@ export default function Header({ cartCount = 0, onCart, onSearch }: {
                       borderBottom: i < currentConfig.cats.length - 1 ? '1px solid var(--color-border)' : 'none',
                       opacity: activeMenu ? 1 : 0,
                       transform: activeMenu ? 'translateX(0)' : 'translateX(-12px)',
-                      transition: `opacity 0.28s ease ${i * 0.045 + 0.08}s, transform 0.35s cubic-bezier(0.075,0.82,0.165,1) ${i * 0.045 + 0.08}s, color 0.15s ease, padding 0.15s ease`,
+                      transition: `opacity 0.16s ease ${i * 0.02}s, transform 0.2s cubic-bezier(0.075,0.82,0.165,1) ${i * 0.02}s, color 0.15s ease, padding 0.15s ease`,
                     }}
                     onMouseEnter={e => {
                       (e.currentTarget as HTMLButtonElement).style.color = 'var(--color-brand)';
