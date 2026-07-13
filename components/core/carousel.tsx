@@ -151,7 +151,10 @@ export function CarouselIndicator({ className, style }: { className?: string; st
           style={{
             width: i === selectedIndex ? 18 : 6, height: 6, borderRadius: 9999,
             border: 'none', padding: 0, cursor: 'pointer',
-            background: i === selectedIndex ? '#fff' : 'rgba(255,255,255,0.5)',
+            background: i === selectedIndex ? '#fff' : 'rgba(255,255,255,0.7)',
+            // Inverts against whatever's behind it (light or dark image) instead of
+            // relying on a fixed white — guarantees contrast on every slide.
+            mixBlendMode: 'difference',
             transition: 'width 0.25s ease, background 0.25s ease',
           }}
         />
