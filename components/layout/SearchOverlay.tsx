@@ -1,6 +1,7 @@
 'use client';
-import { useEffect, useRef } from 'react';
+import { useEffect, useRef, useState } from 'react';
 import Image from 'next/image';
+import { useTheme } from 'next-themes';
 import { Close, Search as SearchIcon } from '@/components/core/Icons';
 import { PRODUCTS } from '@/lib/data';
 import { useStore } from '@/lib/store';
@@ -12,6 +13,10 @@ const CATS = ['Rings', 'Necklaces', 'Bracelets', 'Earrings'];
 export default function SearchOverlay() {
   const { searchOpen, searchQuery, setSearchOpen, setSearchQuery, navigate } = useStore();
   const inputRef = useRef<HTMLInputElement>(null);
+  const { resolvedTheme } = useTheme();
+  const [mounted, setMounted] = useState(false);
+  useEffect(() => setMounted(true), []);
+  const isDark = mounted && resolvedTheme === 'dark';
 
   useEffect(() => {
     if (searchOpen) {
@@ -41,20 +46,21 @@ export default function SearchOverlay() {
     }}>
       <div style={{
         display: 'flex', alignItems: 'center', justifyContent: 'space-between',
-        padding: '0 clamp(20px,3vw,40px)', height: 'var(--header-height)',
+        padding: '0 clamp(20px,3vw,40px)', height: 'clamp(64px, 15vw, 103px)',
         borderBottom: '1px solid var(--color-border)',
       }}>
-        <Image src="/assets/logo-wordmark.png" alt="Gemma Azzurro" width={140} height={20} style={{ display: 'block' }} />
+        <Image src={isDark ? '/assets/logo-wordmark-white.png' : '/assets/logo-wordmark.png'}
+          alt="Gemma Azzurro" width={140} height={20} style={{ display: 'block' }} />
         <button onClick={() => setSearchOpen(false)} style={{
           width: 44, height: 44, display: 'flex', alignItems: 'center', justifyContent: 'center',
           background: 'transparent', border: 'none', cursor: 'pointer', color: 'var(--color-foreground)',
         }}><Close size={22} /></button>
       </div>
 
-      <div style={{ maxWidth: 760, margin: '0 auto', padding: '52px clamp(20px,3vw,40px) 0' }}>
+      <div style={{ maxWidth: 760, margin: '0 auto', padding: 'clamp(24px,6vw,52px) clamp(20px,3vw,40px) 0' }}>
         <div style={{
           display: 'flex', alignItems: 'center', gap: 18,
-          borderBottom: '2px solid var(--color-foreground)', paddingBottom: 18, marginBottom: 52,
+          borderBottom: '2px solid var(--color-foreground)', paddingBottom: 18, marginBottom: 'clamp(28px,6vw,52px)',
         }}>
           <SearchIcon size={26} style={{ flexShrink: 0, opacity: 0.35 }} />
           <input
