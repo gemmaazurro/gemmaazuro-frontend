@@ -17,7 +17,9 @@ export default function PromoBar() {
     return () => clearInterval(t);
   }, []);
   return (
-    <div style={{ background: 'var(--color-surface)', color: 'var(--color-foreground)',
+    <div style={{
+      position: 'fixed', top: 0, left: 0, right: 0, zIndex: 21,
+      background: 'var(--color-surface)', color: 'var(--color-foreground)',
       height: 'var(--topbar-height)', display: 'flex', alignItems: 'center', justifyContent: 'center',
       fontSize: 13, letterSpacing: '0.02em', userSelect: 'none' }}>
       <span style={{ opacity: fade ? 1 : 0, transition: 'opacity 0.3s ease' }}>{MESSAGES[idx]}</span>

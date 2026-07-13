@@ -54,6 +54,8 @@ export default function HomePage() {
             ))}
           </InfiniteSlider>
         </div>
+        <HomeFeaturedProducts />
+        <BrandStory />
         <section style={{ maxWidth: 'var(--page-width)', margin: '0 auto',
           padding: '56px clamp(20px,3vw,40px)',
           display: 'grid', gridTemplateColumns: 'var(--grid-trust)', gap: 32 }}>
@@ -75,8 +77,6 @@ export default function HomePage() {
             </RevealBlock>
           ))}
         </section>
-        <HomeFeaturedProducts />
-        <BrandStory />
         <div style={{ background: 'var(--color-surface)', padding: '22px 0',
           borderTop: '1px solid var(--color-border)', borderBottom: '1px solid var(--color-border)' }}>
           <InfiniteSlider gap={80} speed={36} speedOnHover={16}>

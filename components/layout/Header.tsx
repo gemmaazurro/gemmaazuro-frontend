@@ -3,6 +3,7 @@ import { useEffect, useRef, useState } from 'react';
 import Image from 'next/image';
 import Link from 'next/link';
 import { usePathname } from 'next/navigation';
+import { useTheme } from 'next-themes';
 import { Search, Heart, Bag, User, ArrowRight } from '@/components/core/Icons';
 import MagnetEl from '../motion/MagnetEl';
 import CustomCursor from '../motion/CustomCursor';
@@ -153,6 +154,12 @@ export default function Header({ cartCount = 0, onCart, onSearch }: {
   const [mobileOpen, setMobileOpen] = useState(false);
   const closeTimer = useRef<ReturnType<typeof setTimeout> | null>(null);
   const { navigate } = useStore();
+  const { resolvedTheme } = useTheme();
+  const [mounted, setMounted] = useState(false);
+  useEffect(() => setMounted(true), []);
+  const isDark = mounted && resolvedTheme === 'dark';
+  const overHero = isHome && scrollY < 100;
+  const useWhiteLogo = overHero || isDark;
 
   useEffect(() => {
     const fn = () => setScrollY(window.scrollY);
@@ -190,19 +197,19 @@ export default function Header({ cartCount = 0, onCart, onSearch }: {
       `}</style>
       <CustomCursor />
       <header style={{
-        position: isHome ? 'fixed' : 'sticky', top: 0, left: 0, right: 0, zIndex: 20,
-        background: isHome && scrollY < 100
+        position: 'fixed', top: isHome ? 0 : 'var(--topbar-height)', left: 0, right: 0, zIndex: 20,
+        background: overHero
           ? 'transparent'
           : scrollY > 60
             ? 'color-mix(in srgb, var(--color-background) 94%, transparent)'
             : 'color-mix(in srgb, var(--color-background) 74%, transparent)',
-        backdropFilter: isHome && scrollY < 100 ? 'none' : 'blur(14px)',
-        WebkitBackdropFilter: isHome && scrollY < 100 ? 'none' : 'blur(14px)',
+        backdropFilter: overHero ? 'none' : 'blur(14px)',
+        WebkitBackdropFilter: overHero ? 'none' : 'blur(14px)',
         borderRadius: 0,
         boxShadow: (scrollY > 0 || activeMenu) ? '0 1px 0 var(--color-border)' : 'none',
         transition: 'background 0.4s cubic-bezier(0.4,0,0.2,1), box-shadow 0.3s ease, backdrop-filter 0.4s ease',
-        color: isHome && scrollY < 100 ? '#fff' : 'inherit',
-        ...(isHome && scrollY < 100 ? {
+        color: overHero ? '#fff' : 'inherit',
+        ...(overHero ? {
           '--color-foreground': '#fff',
           '--color-foreground-muted': 'rgba(255,255,255,0.7)',
         } as React.CSSProperties : {}),
@@ -210,9 +217,9 @@ export default function Header({ cartCount = 0, onCart, onSearch }: {
         <div style={{
           maxWidth: 'var(--page-width)', margin: '0 auto',
           padding: '0 clamp(16px,2.5vw,36px)', height: 'var(--header-height)',
-          display: 'grid', gridTemplateColumns: 'auto 1fr auto', alignItems: 'center',
+          display: 'grid', gridTemplateColumns: '1fr 1fr 1fr', alignItems: 'center',
         }}>
-          <nav style={{ display: 'flex', alignItems: 'center', gap: 0 }}>
+          <nav style={{ display: 'flex', alignItems: 'center', gap: 0, justifySelf: 'start' }}>
             <button className="ga-mobile-only" onClick={() => setMobileOpen(true)}
               aria-label="Open navigation menu"
               style={{
@@ -237,11 +244,11 @@ export default function Header({ cartCount = 0, onCart, onSearch }: {
           </nav>
 
           <Link href="/" style={{ cursor: 'pointer', justifySelf: 'center', padding: '0 20px', display: 'block' }}>
-            <Image src="/assets/logo-wordmark.png" alt="Gemma Azzurro" width={180} height={27}
+            <Image src={useWhiteLogo ? '/assets/logo-wordmark-white.png' : '/assets/logo-wordmark.png'}
+              alt="Gemma Azzurro" width={180} height={27}
               priority sizes="(max-width: 767px) 160px, 180px" className="ga-logo" style={{
                 display: 'block',
-                transition: 'opacity 0.2s ease, filter 0.4s ease',
-                ...(isHome && scrollY < 100 ? { filter: 'brightness(0) invert(1)' } : {}),
+                transition: 'opacity 0.2s ease',
               }} />
           </Link>
 

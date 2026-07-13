@@ -1,24 +1,27 @@
 'use client';
 import React, {
-  createContext, useContext, useEffect, useRef, useState,
-  ReactNode, Children,
+  createContext, useContext, useEffect, useState,
+  ReactNode,
 } from 'react';
-import { motion, useMotionValue, animate } from 'motion/react';
+import useEmblaCarousel from 'embla-carousel-react';
 import { ChevronLeft, ChevronRight } from './Icons';
 
 /**
- * Drag-to-swipe carousel, API-compatible with motion-primitives' Carousel
+ * Carousel, API-shaped after motion-primitives' Carousel
  * (https://motion-primitives.com/docs/carousel) — Root/Content/Item/Navigation/Indicator.
- * Built on `motion`'s drag (already a dependency, see infinite-slider.tsx) instead of
- * pulling in embla-carousel-react, since this project has no Tailwind-utility/shadcn setup
- * to hang the original's classNames off of — styling goes through our own design tokens.
+ * Uses embla-carousel-react underneath (the same engine motion-primitives' own carousel
+ * wraps) for real touch/mouse drag with momentum — a hand-rolled drag reimplementation
+ * isn't worth the risk of feeling subtly different from the real thing.
  */
 interface CarouselCtx {
-  index: number;
-  setIndex: (i: number) => void;
+  selectedIndex: number;
+  scrollTo: (i: number) => void;
+  scrollPrev: () => void;
+  scrollNext: () => void;
+  canScrollPrev: boolean;
+  canScrollNext: boolean;
   count: number;
-  registerCount: (n: number) => void;
-  containerRef: React.RefObject<HTMLDivElement | null>;
+  emblaRef: ReturnType<typeof useEmblaCarousel>[0];
 }
 const CarouselContext = createContext<CarouselCtx | null>(null);
 const useCarousel = () => {
@@ -27,22 +30,48 @@ const useCarousel = () => {
   return ctx;
 };
 
-export function Carousel({ children, index: controlledIndex, onIndexChange, className, style, ...rest }: {
+export function Carousel({ children, index, onIndexChange, className, style, ...rest }: {
   children: ReactNode;
   index?: number;
   onIndexChange?: (i: number) => void;
   className?: string;
   style?: React.CSSProperties;
 } & React.HTMLAttributes<HTMLDivElement>) {
-  const [uncontrolledIndex, setUncontrolledIndex] = useState(0);
-  const index = controlledIndex ?? uncontrolledIndex;
-  const setIndex = (i: number) => { setUncontrolledIndex(i); onIndexChange?.(i); };
+  const [emblaRef, emblaApi] = useEmblaCarousel({ loop: false });
+  const [selectedIndex, setSelectedIndex] = useState(0);
+  const [canScrollPrev, setCanScrollPrev] = useState(false);
+  const [canScrollNext, setCanScrollNext] = useState(false);
   const [count, setCount] = useState(0);
-  const containerRef = useRef<HTMLDivElement>(null);
+
+  useEffect(() => {
+    if (!emblaApi) return;
+    const onSelect = () => {
+      const i = emblaApi.selectedScrollSnap();
+      setSelectedIndex(i);
+      setCanScrollPrev(emblaApi.canScrollPrev());
+      setCanScrollNext(emblaApi.canScrollNext());
+      onIndexChange?.(i);
+    };
+    setCount(emblaApi.scrollSnapList().length);
+    onSelect();
+    emblaApi.on('select', onSelect);
+    emblaApi.on('reInit', onSelect);
+    return () => { emblaApi.off('select', onSelect); emblaApi.off('reInit', onSelect); };
+  }, [emblaApi, onIndexChange]);
+
+  useEffect(() => {
+    if (emblaApi && index !== undefined) emblaApi.scrollTo(index);
+  }, [emblaApi, index]);
 
   return (
-    <CarouselContext.Provider value={{ index, setIndex, count, registerCount: setCount, containerRef }}>
-      <div ref={containerRef} className={className} style={{ position: 'relative', overflow: 'hidden', ...style }} {...rest}>
+    <CarouselContext.Provider value={{
+      selectedIndex,
+      scrollTo: (i) => emblaApi?.scrollTo(i),
+      scrollPrev: () => emblaApi?.scrollPrev(),
+      scrollNext: () => emblaApi?.scrollNext(),
+      canScrollPrev, canScrollNext, count, emblaRef,
+    }}>
+      <div className={className} style={{ position: 'relative', overflow: 'hidden', ...style }} {...rest}>
         {children}
       </div>
     </CarouselContext.Provider>
@@ -52,46 +81,13 @@ export function Carousel({ children, index: controlledIndex, onIndexChange, clas
 export function CarouselContent({ children, className, style }: {
   children: ReactNode; className?: string; style?: React.CSSProperties;
 }) {
-  const { index, setIndex, containerRef, registerCount } = useCarousel();
-  const items = Children.toArray(children);
-  const [width, setWidth] = useState(0);
-  const x = useMotionValue(0);
-
-  useEffect(() => { registerCount(items.length); }, [items.length, registerCount]);
-
-  useEffect(() => {
-    const el = containerRef.current;
-    if (!el) return;
-    const measure = () => setWidth(el.offsetWidth);
-    measure();
-    const ro = new ResizeObserver(measure);
-    ro.observe(el);
-    return () => ro.disconnect();
-  }, [containerRef]);
-
-  useEffect(() => {
-    const controls = animate(x, -index * width, { type: 'spring', stiffness: 300, damping: 32 });
-    return () => controls.stop();
-  }, [index, width, x]);
-
+  const { emblaRef } = useCarousel();
   return (
-    <motion.div
-      className={className}
-      style={{ display: 'flex', width: '100%', height: '100%', cursor: items.length > 1 ? 'grab' : 'default', x, ...style }}
-      drag={items.length > 1 ? 'x' : false}
-      dragConstraints={{ left: -width * Math.max(items.length - 1, 0), right: 0 }}
-      dragElastic={0.08}
-      whileDrag={{ cursor: 'grabbing' }}
-      onDragEnd={(_, info) => {
-        const threshold = width * 0.2;
-        let next = index;
-        if (info.offset.x < -threshold) next = Math.min(index + 1, items.length - 1);
-        else if (info.offset.x > threshold) next = Math.max(index - 1, 0);
-        setIndex(next);
-      }}
-    >
-      {children}
-    </motion.div>
+    <div ref={emblaRef} style={{ overflow: 'hidden', width: '100%', height: '100%' }}>
+      <div className={className} style={{ display: 'flex', height: '100%', ...style }}>
+        {children}
+      </div>
+    </div>
   );
 }
 
@@ -99,7 +95,7 @@ export function CarouselItem({ children, className, style }: {
   children: ReactNode; className?: string; style?: React.CSSProperties;
 }) {
   return (
-    <div className={className} style={{ flex: '0 0 100%', width: '100%', height: '100%', ...style }}>
+    <div className={className} style={{ flex: '0 0 100%', minWidth: 0, height: '100%', ...style }}>
       {children}
     </div>
   );
@@ -117,18 +113,15 @@ const navButtonStyle = (visible: boolean): React.CSSProperties => ({
 export function CarouselNavigation({ className, classNameButton, alwaysShow, style }: {
   className?: string; classNameButton?: string; alwaysShow?: boolean; style?: React.CSSProperties;
 }) {
-  const { index, setIndex, count } = useCarousel();
-  const atStart = index === 0;
-  const atEnd = index >= count - 1;
-
+  const { scrollPrev, scrollNext, canScrollPrev, canScrollNext } = useCarousel();
   return (
     <div className={className} style={{ display: 'flex', gap: 8, ...style }}>
       <button
         type="button"
         aria-label="Previous slide"
         className={classNameButton}
-        onClick={() => setIndex(Math.max(index - 1, 0))}
-        style={navButtonStyle(alwaysShow || !atStart)}
+        onClick={scrollPrev}
+        style={navButtonStyle(alwaysShow || canScrollPrev)}
       >
         <ChevronLeft size={18} />
       </button>
@@ -136,8 +129,8 @@ export function CarouselNavigation({ className, classNameButton, alwaysShow, sty
         type="button"
         aria-label="Next slide"
         className={classNameButton}
-        onClick={() => setIndex(Math.min(index + 1, count - 1))}
-        style={navButtonStyle(alwaysShow || !atEnd)}
+        onClick={scrollNext}
+        style={navButtonStyle(alwaysShow || canScrollNext)}
       >
         <ChevronRight size={18} />
       </button>
@@ -146,7 +139,7 @@ export function CarouselNavigation({ className, classNameButton, alwaysShow, sty
 }
 
 export function CarouselIndicator({ className, style }: { className?: string; style?: React.CSSProperties }) {
-  const { index, setIndex, count } = useCarousel();
+  const { selectedIndex, scrollTo, count } = useCarousel();
   return (
     <div className={className} style={{ display: 'flex', gap: 6, ...style }}>
       {Array.from({ length: count }).map((_, i) => (
@@ -154,11 +147,11 @@ export function CarouselIndicator({ className, style }: { className?: string; st
           key={i}
           type="button"
           aria-label={`Go to slide ${i + 1}`}
-          onClick={() => setIndex(i)}
+          onClick={() => scrollTo(i)}
           style={{
-            width: i === index ? 18 : 6, height: 6, borderRadius: 9999,
+            width: i === selectedIndex ? 18 : 6, height: 6, borderRadius: 9999,
             border: 'none', padding: 0, cursor: 'pointer',
-            background: i === index ? '#fff' : 'rgba(255,255,255,0.5)',
+            background: i === selectedIndex ? '#fff' : 'rgba(255,255,255,0.5)',
             transition: 'width 0.25s ease, background 0.25s ease',
           }}
         />

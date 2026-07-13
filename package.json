@@ -10,6 +10,7 @@
   },
   "dependencies": {
     "@tanstack/react-query": "^5",
+    "embla-carousel-react": "^8.5.2",
     "lucide-react": "^1.22.0",
     "motion": "^12.4.0",
     "next": "^16.2.9",
