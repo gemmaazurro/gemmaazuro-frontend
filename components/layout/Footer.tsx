@@ -48,20 +48,18 @@ export default function Footer() {
       background: 'var(--color-footer-bg)', color: 'var(--color-footer-text)',
       borderStartStartRadius: 'var(--border-radius)', borderStartEndRadius: 'var(--border-radius)',
       padding: '88px 0 0',
-      display: 'flex', flexDirection: 'column',
     }}>
       <style>{`
-        /* Mobile: fill the full device viewport when revealed — the footer's natural content
-           height was shorter than one screen, so the reveal-under-page effect only uncovered a
-           partial-height footer with dead space above it instead of a deliberate full-screen
-           moment. svh (not vh/dvh — see HeroSection.tsx for why) guarantees this regardless of
-           mobile browser toolbar state. Desktop keeps its natural (shorter) height. */
+        /* Mobile floor only — a min-height guarantee, NOT a flex/space-between layout change.
+           An earlier attempt made the footer flex-column with justify-content:space-between to
+           "fill" the screen, which force-distributed a gap into the middle of the content on any
+           device whose natural content is shorter than one screen — mobile stopped matching
+           desktop's plain, predictable block flow. Normal flow everywhere; this is just a floor. */
         @media (max-width: 767px) {
           .ga-footer { min-height: 100svh; }
         }
       `}</style>
-        <div style={{ maxWidth: 'var(--page-width)', margin: '0 auto', padding: '0 clamp(20px,3vw,40px)',
-          width: '100%', flex: 1, display: 'flex', flexDirection: 'column', justifyContent: 'space-between' }}>
+        <div style={{ maxWidth: 'var(--page-width)', margin: '0 auto', padding: '0 clamp(20px,3vw,40px)' }}>
           <div style={{ display: 'grid', gridTemplateColumns: 'var(--grid-footer)', gap: 'clamp(28px,4vw,64px)', paddingBottom: 64 }}>
             <div>
               <Image src="/assets/logo-wordmark-white.png" alt="Gemma Azzurro" width={140} height={22}
