@@ -198,7 +198,7 @@ export default function Header({ cartCount = 0, onCart, onSearch }: {
         }
         @media (max-width: 767px) {
           .ga-desktop-only { display: none !important; }
-          .ga-logo { width: 128px !important; }
+          .ga-logo { width: 160px !important; }
         }
       `}</style>
       <CustomCursor />
@@ -262,9 +262,17 @@ export default function Header({ cartCount = 0, onCart, onSearch }: {
           </Link>
 
           <div style={{ display: 'flex', alignItems: 'center', gap: 'clamp(0, 0.3vw, 4px)', justifySelf: 'end' }}>
-            <ThemeToggle />
+            {/* Mobile topbar is hamburger + logo + search only — theme toggle and account are
+                already in the drawer (MobileNav.tsx); three icons plus hamburger plus logo in
+                one mobile-width row read as cluttered. Desktop keeps all three since there's
+                room and no drawer duplicate. */}
+            <div className="ga-desktop-only" style={{ display: 'flex', alignItems: 'center', gap: 'inherit' }}>
+              <ThemeToggle />
+            </div>
             <IconBtn icon={Search} label="Search" onClick={onSearch} />
-            <IconBtn icon={User} label="Account" onClick={() => navigate('account')} />
+            <div className="ga-desktop-only" style={{ display: 'flex', alignItems: 'center', gap: 'inherit' }}>
+              <IconBtn icon={User} label="Account" onClick={() => navigate('account')} />
+            </div>
           </div>
         </div>
 
