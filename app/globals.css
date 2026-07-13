@@ -136,7 +136,7 @@
 
 html { font-family: var(--font-body); color: var(--color-foreground); background: var(--color-background); -webkit-font-smoothing: antialiased; scrollbar-width: none; -ms-overflow-style: none; }
 html::-webkit-scrollbar { display: none; }
-body { min-height: 100vh; min-height: 100dvh; overflow-x: hidden; margin: 0; scrollbar-width: none; -ms-overflow-style: none; }
+body { min-height: 100vh; overflow-x: hidden; margin: 0; scrollbar-width: none; -ms-overflow-style: none; }
 body::-webkit-scrollbar { display: none; }
 /* Any internal scroll container (drawers, overlays, horizontal rails) inherits the same hide. */
 * { scrollbar-width: none; -ms-overflow-style: none; }
