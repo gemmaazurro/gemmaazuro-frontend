@@ -2,6 +2,7 @@
 import React, { useState } from 'react';
 import Image from 'next/image';
 import Link from 'next/link';
+import { Heart } from 'lucide-react';
 import Badge from '../core/Badge';
 
 /**
@@ -35,6 +36,7 @@ export default function ProductCard({
 }: ProductCardProps) {
   const [hover, setHover] = useState(false);
   const [heartPulse, setHeartPulse] = useState(false);
+  const [heartHover, setHeartHover] = useState(false);
   const isTouch = typeof window !== 'undefined' && 'ontouchstart' in window;
   const fmt = (n: number | string) => typeof n === 'number' ? n.toLocaleString('en-US') + '\u00a0' + currency : n;
 
@@ -114,28 +116,25 @@ export default function ProductCard({
           </div>
         )}
 
-        {/* Wishlist heart */}
+        {/* Wishlist heart — lucide's Heart (properly centered by construction, unlike the
+            hand-drawn path this replaced) with a warmer red + a hover tint for affordance. */}
         <button
           aria-label={wished ? 'Remove from wishlist' : 'Add to wishlist'}
           onClick={handleWishlist}
+          onMouseEnter={() => setHeartHover(true)}
+          onMouseLeave={() => setHeartHover(false)}
           style={{
             position: 'absolute', top: '0.875rem', insetInlineEnd: '0.875rem',
             width: 44, height: 44, display: 'flex', alignItems: 'center', justifyContent: 'center',
             borderRadius: 'var(--rounded-full)', border: 'none', cursor: 'pointer',
             background: wished ? 'rgba(255,255,255,0.96)' : 'rgba(255,255,255,0.82)',
             backdropFilter: 'blur(6px)',
-            color: wished ? '#e53e3e' : 'var(--color-foreground)',
-            transform: heartPulse ? 'scale(1.38)' : 'scale(1)',
+            color: wished ? '#e11d48' : heartHover ? '#e11d48' : 'var(--color-foreground)',
+            transform: heartPulse ? 'scale(1.38)' : heartHover ? 'scale(1.08)' : 'scale(1)',
             transition: 'transform 0.35s cubic-bezier(0.075,0.82,0.165,1), color 0.2s ease, background 0.2s ease',
-            boxShadow: wished ? '0 0 0 1.5px rgba(229,62,62,0.25)' : 'none',
+            boxShadow: wished ? '0 0 0 1.5px rgba(225,29,72,0.25)' : 'none',
           }}>
-          {/* Measured via getBBox(): path spans x:[1.92,18.08] y:[5,21] → center (10,13), not
-              the nominal (12,12) — viewBox shifted by (-2,+1) so it renders truly centered. */}
-          <svg width="18" height="18" viewBox="-2 1 24 24"
-            fill={wished ? 'currentColor' : 'none'}
-            stroke="currentColor" strokeWidth="1.6" strokeLinejoin="round">
-            <path d="M12 21s-7-4.5-9.5-9C1 8.5 2.5 5 6 5c2 0 3.2 1.2 4 2.3C10.8 6.2 12 5 14 5c3.5 0 5 3.5 3.5 7-2.5 4.5-9.5 9-9.5 9z" />
-          </svg>
+          <Heart size={18} strokeWidth={1.8} fill={wished ? 'currentColor' : 'none'} />
         </button>
       </div>
 
