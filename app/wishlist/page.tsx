@@ -3,8 +3,6 @@ import StorefrontShell from '@/components/layout/StorefrontShell';
 import PageTransition from '@/components/motion/PageTransition';
 import WishlistContent from '@/components/pages/WishlistContent';
 
-export const dynamic = 'force-static';
-
 export const metadata: Metadata = {
   title: 'Wishlist',
   description: 'View your saved Gemma Azzurro pieces.',
