@@ -129,9 +129,9 @@ export default function ProductCard({
             transition: 'transform 0.35s cubic-bezier(0.075,0.82,0.165,1), color 0.2s ease, background 0.2s ease',
             boxShadow: wished ? '0 0 0 1.5px rgba(229,62,62,0.25)' : 'none',
           }}>
-          {/* viewBox shifted so the heart glyph's actual bounding box (x:1-21, y:5-21 —
-              not symmetric around the nominal 24x24 canvas) sits truly centered in the button. */}
-          <svg width="18" height="18" viewBox="-1 1 24 24"
+          {/* Measured via getBBox(): path spans x:[1.92,18.08] y:[5,21] → center (10,13), not
+              the nominal (12,12) — viewBox shifted by (-2,+1) so it renders truly centered. */}
+          <svg width="18" height="18" viewBox="-2 1 24 24"
             fill={wished ? 'currentColor' : 'none'}
             stroke="currentColor" strokeWidth="1.6" strokeLinejoin="round">
             <path d="M12 21s-7-4.5-9.5-9C1 8.5 2.5 5 6 5c2 0 3.2 1.2 4 2.3C10.8 6.2 12 5 14 5c3.5 0 5 3.5 3.5 7-2.5 4.5-9.5 9-9.5 9z" />
