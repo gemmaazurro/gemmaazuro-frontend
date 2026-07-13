@@ -12,19 +12,27 @@ interface HeroSectionProps {
 
 export default function HeroSection({ ribbon }: HeroSectionProps) {
   return (
-    <section style={{
+    <section className="ga-hero" style={{
       position: 'relative',
-      // svh (small viewport height) is the SMALLEST the viewport can ever be — i.e. as if the
-      // mobile browser's address bar is always showing. Unlike vh (inconsistent per device/
-      // browser as the bar collapses) or dvh (recalculates live as the bar hides/shows, causing
-      // a visible jump), svh is static: content sized to it is guaranteed fully visible no
-      // matter the toolbar state, with zero live-resize glitching.
-      minHeight: 'min(92svh, 700px)',
       display: 'flex', flexDirection: 'column',
       backgroundImage: "url('/assets/hero-pattern.jpeg')",
       backgroundSize: 'cover', backgroundPosition: 'center',
       overflow: 'hidden',
     }}>
+      <style>{`
+        /* svh (small viewport height) is the SMALLEST the viewport can ever be — i.e. as if the
+           mobile browser's address bar is always showing. Unlike vh (inconsistent per device/
+           browser as the bar collapses) or dvh (recalculates live as the bar hides/shows,
+           visibly jumping), svh is static: content sized to it is always fully visible no
+           matter the toolbar state, with zero live-resize glitching.
+           Mobile: fill the FULL screen (hero+ribbon flush with the bottom edge) — a partial-
+           height hero reads as a bug on a phone. Desktop: a contained, composed hero (92% capped
+           at 700px) so the next section peeks in, which doesn't apply on a full-bleed mobile view. */
+        .ga-hero { min-height: 100svh; }
+        @media (min-width: 768px) {
+          .ga-hero { min-height: min(92svh, 700px); }
+        }
+      `}</style>
       <div style={{ position: 'absolute', inset: 0,
         background: 'linear-gradient(100deg, rgba(18,22,46,0.58) 0%, rgba(18,22,46,0.2) 100%)' }} />
       <div style={{ position: 'relative', flex: 1, display: 'flex', alignItems: 'center',

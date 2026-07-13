@@ -187,12 +187,18 @@ export default function Header({ cartCount = 0, onCart, onSearch }: {
         .ga-mobile-only { display: block; }
         .ga-desktop-only { display: flex; }
         .ga-logo { width: 180px !important; height: auto !important; }
+        /* Mobile: size each column to its actual content (hamburger | logo | icon cluster) —
+           the desktop equal-thirds grid below assumed a 3-item nav row on both sides, which
+           doesn't exist on mobile (only a hamburger button on the left), so forcing equal
+           columns there made the logo and icon cluster overflow their cells and collide. */
+        .ga-header-row { grid-template-columns: auto 1fr auto; }
         @media (min-width: 768px) {
           .ga-mobile-only { display: none !important; }
+          .ga-header-row { grid-template-columns: minmax(0,1fr) minmax(0,1fr) minmax(0,1fr); }
         }
         @media (max-width: 767px) {
           .ga-desktop-only { display: none !important; }
-          .ga-logo { width: 160px !important; }
+          .ga-logo { width: 128px !important; }
         }
       `}</style>
       <CustomCursor />
@@ -212,10 +218,10 @@ export default function Header({ cartCount = 0, onCart, onSearch }: {
         {/* --color-foreground override is scoped to THIS row only (not the outer <header>) —
             the mega-menu panel below is a sibling with its own opaque background and must keep
             the normal (theme-driven) foreground color, not inherit the transparent-hero white. */}
-        <div style={{
+        <div className="ga-header-row" style={{
           maxWidth: 'var(--page-width)', margin: '0 auto',
           padding: '0 clamp(16px,2.5vw,36px)', height: 'var(--header-height)',
-          display: 'grid', gridTemplateColumns: 'minmax(0,1fr) minmax(0,1fr) minmax(0,1fr)', alignItems: 'center',
+          display: 'grid', alignItems: 'center',
           color: overHero ? '#fff' : 'inherit',
           ...(overHero ? {
             '--color-foreground': '#fff',
@@ -365,6 +371,7 @@ export default function Header({ cartCount = 0, onCart, onSearch }: {
         open={mobileOpen}
         onClose={() => setMobileOpen(false)}
         onNavigate={navigate}
+        onSearch={onSearch}
         categories={CATEGORIES}
         cartCount={cartCount}
       />
