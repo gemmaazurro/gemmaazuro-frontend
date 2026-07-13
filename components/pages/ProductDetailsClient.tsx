@@ -2,7 +2,7 @@
 
 import { useMemo, useState, useRef } from 'react';
 import Image from 'next/image';
-import { Heart } from '@/components/core/Icons';
+import { Heart } from 'lucide-react';
 import type { Product } from '@/lib/data';
 import Accordion from '@/components/core/Accordion';
 import Rating from '@/components/commerce/Rating';
@@ -31,6 +31,7 @@ export default function ProductDetailsClient({ product, related, thumbs }: Produ
   const currentImage = useMemo(() => thumbs[thumbIdx] || product.img, [thumbIdx, thumbs, product.img]);
   const isTouch = typeof window !== 'undefined' && 'ontouchstart' in window;
   const [fullscreenIdx, setFullscreenIdx] = useState(-1);
+  const [wishHover, setWishHover] = useState(false);
   const touchStartX = useRef(0);
   const touchStartY = useRef(0);
 
@@ -190,21 +191,24 @@ export default function ProductDetailsClient({ product, related, thumbs }: Produ
             <button
               aria-label="Wishlist"
               onClick={() => toggleWishlist(product.id)}
+              onMouseEnter={() => setWishHover(true)}
+              onMouseLeave={() => setWishHover(false)}
               style={{
                 width: 58,
                 flexShrink: 0,
                 borderRadius: 'var(--rounded-button)',
-                border: '2px solid var(--color-border-dark)',
+                border: `2px solid ${wished || wishHover ? '#e11d48' : 'var(--color-border-dark)'}`,
                 background: 'var(--color-background)',
                 cursor: 'pointer',
-                color: wished ? 'var(--color-sale-price)' : 'var(--color-foreground)',
+                color: wished || wishHover ? '#e11d48' : 'var(--color-foreground)',
                 display: 'flex',
                 alignItems: 'center',
                 justifyContent: 'center',
-                transition: 'color 0.2s ease, border-color 0.2s ease',
+                transform: wishHover ? 'scale(1.06)' : 'scale(1)',
+                transition: 'color 0.2s ease, border-color 0.2s ease, transform 0.2s ease',
               }}
             >
-              <Heart size={20} fill={wished ? 'currentColor' : 'none'} />
+              <Heart size={20} strokeWidth={1.8} fill={wished ? 'currentColor' : 'none'} />
             </button>
           </div>
 
