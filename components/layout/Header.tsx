@@ -208,16 +208,19 @@ export default function Header({ cartCount = 0, onCart, onSearch }: {
         borderRadius: 0,
         boxShadow: (scrollY > 0 || activeMenu) ? '0 1px 0 var(--color-border)' : 'none',
         transition: 'background 0.4s cubic-bezier(0.4,0,0.2,1), box-shadow 0.3s ease, backdrop-filter 0.4s ease',
-        color: overHero ? '#fff' : 'inherit',
-        ...(overHero ? {
-          '--color-foreground': '#fff',
-          '--color-foreground-muted': 'rgba(255,255,255,0.7)',
-        } as React.CSSProperties : {}),
       }}>
+        {/* --color-foreground override is scoped to THIS row only (not the outer <header>) —
+            the mega-menu panel below is a sibling with its own opaque background and must keep
+            the normal (theme-driven) foreground color, not inherit the transparent-hero white. */}
         <div style={{
           maxWidth: 'var(--page-width)', margin: '0 auto',
           padding: '0 clamp(16px,2.5vw,36px)', height: 'var(--header-height)',
           display: 'grid', gridTemplateColumns: 'minmax(0,1fr) minmax(0,1fr) minmax(0,1fr)', alignItems: 'center',
+          color: overHero ? '#fff' : 'inherit',
+          ...(overHero ? {
+            '--color-foreground': '#fff',
+            '--color-foreground-muted': 'rgba(255,255,255,0.7)',
+          } as React.CSSProperties : {}),
         }}>
           <nav style={{ display: 'flex', alignItems: 'center', gap: 0, justifySelf: 'start', minWidth: 0, width: '100%', overflow: 'hidden' }}>
             <button className="ga-mobile-only" onClick={() => setMobileOpen(true)}
