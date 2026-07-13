@@ -35,14 +35,6 @@
   --color-error: #F87171; --color-error-bg: rgba(248,113,113,0.14); --color-success: #86D95B; --color-success-bg: rgba(134,217,91,0.14);
   --color-footer-bg: #0A0A0B; --color-footer-text: #FFFFFF;
   --color-focus: #5AA6FF;
-  /* Card border/elevation shadows were rgba(near-black) everywhere with no dark-mode
-     equivalent — invisible against a near-black card background. Light-tinted border for
-     the resting/subtle states, a soft glow (not a dark shadow, which reads as nothing here)
-     for the raised/hover elevation states. */
-  --shadow-card: rgba(255,255,255,0.14) 0 0 0 1px;
-  --shadow-card-subtle: rgba(255,255,255,0.08) 0 0 0 1px;
-  --shadow-raised: 0 12px 32px -12px rgba(0,0,0,0.5), 0 0 0 1px rgba(255,255,255,0.1);
-  --shadow-hover: 0 16px 40px -12px rgba(0,0,0,0.6), 0 0 0 1px rgba(255,255,255,0.16);
   color-scheme: dark;
 }
 
@@ -128,6 +120,19 @@
   --shadow-card-subtle: rgba(29,29,31,0.06) 0 0 0 1px;
   --shadow-raised: 0 12px 32px -12px rgba(29,29,31,0.18);
   --shadow-hover: 0 16px 40px -12px rgba(29,29,31,0.22);
+}
+
+/* Dark-mode shadow override MUST come after the `:root` block above — `.dark` and `:root`
+   have identical specificity, so whichever is later in source wins on a tie. The original
+   .dark block (near the top of this file) is BEFORE this :root re-declaration, which is why
+   the light-mode near-black shadow values were silently winning in dark mode until this was
+   moved down here. Light-tinted border for resting/subtle states, a soft glow (not a dark
+   shadow, invisible on a near-black bg) for raised/hover elevation. */
+.dark {
+  --shadow-card: rgba(255,255,255,0.14) 0 0 0 1px;
+  --shadow-card-subtle: rgba(255,255,255,0.08) 0 0 0 1px;
+  --shadow-raised: 0 12px 32px -12px rgba(0,0,0,0.5), 0 0 0 1px rgba(255,255,255,0.1);
+  --shadow-hover: 0 16px 40px -12px rgba(0,0,0,0.6), 0 0 0 1px rgba(255,255,255,0.16);
 }
 
 /* Base reset */
