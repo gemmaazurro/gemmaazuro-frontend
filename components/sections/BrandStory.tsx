@@ -13,7 +13,7 @@ const STORY_IMAGES = [
 export default function BrandStory() {
   return (
     <section style={{ maxWidth: 'var(--page-width)', margin: '0 auto',
-      padding: '0 clamp(20px,3vw,40px) 80px' }}>
+      padding: '0 clamp(20px,3vw,40px) var(--section-pad-y)' }}>
       <div style={{ display: 'grid', gridTemplateColumns: 'var(--grid-brand-story)', gap: 'clamp(24px,5vw,80px)',
         alignItems: 'stretch', background: 'var(--color-surface)',
         borderRadius: 'var(--border-radius)', overflow: 'hidden', minHeight: 420,

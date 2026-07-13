@@ -57,7 +57,7 @@ export default function HomePage() {
         <HomeFeaturedProducts />
         <BrandStory />
         <section style={{ maxWidth: 'var(--page-width)', margin: '0 auto',
-          padding: '56px clamp(20px,3vw,40px)',
+          padding: '0 clamp(20px,3vw,40px) var(--section-pad-y)',
           display: 'grid', gridTemplateColumns: 'var(--grid-trust)', gap: 32 }}>
           {trustItems.map(({ Icon, title, desc }, i) => (
             <RevealBlock key={i} delay={i * 0.12}>

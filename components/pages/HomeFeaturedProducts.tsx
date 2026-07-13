@@ -17,7 +17,7 @@ export default function HomeFeaturedProducts() {
       style={{
         maxWidth: 'var(--page-width)',
         margin: '0 auto',
-        padding: '16px clamp(20px,3vw,40px) 56px',
+        padding: 'var(--section-pad-y) clamp(20px,3vw,40px)',
       }}
     >
       <RevealBlock>
