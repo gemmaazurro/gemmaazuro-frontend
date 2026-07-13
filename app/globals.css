@@ -70,6 +70,9 @@
   --section-pad-y: clamp(2.5rem, 6vw, 4rem);
   --gap-card: var(--sp-4); --gap-section: var(--section-pad-y);
 }
+@media (max-width: 767px) {
+  :root { --header-height: 72px; }
+}
 
 /* Shape: Radius, Border, Shadow */
 :root {

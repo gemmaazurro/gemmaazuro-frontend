@@ -125,26 +125,26 @@ export default function Footer() {
            throughout. Store hours are dropped here (lowest-value line; address +
            phone carry the same intent in less space). */
         @media (max-width: 767px) {
-          .ga-footer { padding-top: 40px; }
+          .ga-footer { padding-top: 24px; }
           .ga-footer-grid {
             grid-template-columns: 1fr 1fr;
             grid-template-areas:
               "brand   brand"
               "shop    house"
               "contact contact";
-            gap: 26px 20px;
-            padding-bottom: 26px;
+            gap: 18px 20px;
+            padding-bottom: 16px;
           }
           .ga-f-tagline { display: none; }
           .ga-f-social { margin-bottom: 0; gap: 8px; }
-          .ga-f-social a { width: 38px; height: 38px; }
-          .ga-f-h4 { margin-bottom: 12px; }
-          .ga-f-list { gap: 9px; }
+          .ga-f-social a { width: 34px; height: 34px; }
+          .ga-f-h4 { margin-bottom: 8px; }
+          .ga-f-list { gap: 7px; }
           .ga-f-hours { display: none; }
-          .ga-f-contact-list { gap: 9px; margin-bottom: 16px; }
+          .ga-f-contact-list { gap: 7px; margin-bottom: 12px; }
           .ga-footer-bottom {
-            padding: 16px 0 22px; justify-content: center; text-align: center;
-            flex-direction: column; gap: 8px; font-size: 12px;
+            padding: 12px 0 16px; justify-content: center; text-align: center;
+            flex-direction: column; gap: 6px; font-size: 12px;
           }
         }
       `}</style>
