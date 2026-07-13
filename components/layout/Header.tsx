@@ -217,9 +217,9 @@ export default function Header({ cartCount = 0, onCart, onSearch }: {
         <div style={{
           maxWidth: 'var(--page-width)', margin: '0 auto',
           padding: '0 clamp(16px,2.5vw,36px)', height: 'var(--header-height)',
-          display: 'grid', gridTemplateColumns: '1fr 1fr 1fr', alignItems: 'center',
+          display: 'grid', gridTemplateColumns: 'minmax(0,1fr) minmax(0,1fr) minmax(0,1fr)', alignItems: 'center',
         }}>
-          <nav style={{ display: 'flex', alignItems: 'center', gap: 0, justifySelf: 'start' }}>
+          <nav style={{ display: 'flex', alignItems: 'center', gap: 0, justifySelf: 'start', minWidth: 0, width: '100%', overflow: 'hidden' }}>
             <button className="ga-mobile-only" onClick={() => setMobileOpen(true)}
               aria-label="Open navigation menu"
               style={{
