@@ -5,7 +5,7 @@ import Button from '@/components/core/Button';
 import { Heart, ArrowRight } from '@/components/core/Icons';
 import RevealBlock from '@/components/motion/RevealBlock';
 import RevealList from '@/components/motion/RevealList';
-import SplitWords from '@/components/motion/SplitWords';
+import { TextEffect } from '@/components/core/text-effect';
 import { PRODUCTS } from '@/lib/data';
 import { useStore } from '@/lib/store';
 
@@ -39,10 +39,12 @@ export default function WishlistContent() {
             flexWrap: 'wrap',
           }}
         >
-          <SplitWords
-            text="Saved Pieces"
-            tag="h1"
-            baseDelay={0.1}
+          <TextEffect
+            as="h1"
+            per="char"
+            preset="fade"
+            delay={0.1}
+            speedReveal={2.2}
             style={{
               margin: 0,
               fontFamily: 'var(--font-heading)',
@@ -50,7 +52,9 @@ export default function WishlistContent() {
               fontSize: 'clamp(2rem,5vw,3.2rem)',
               lineHeight: 1,
             }}
-          />
+          >
+            Saved Pieces
+          </TextEffect>
           {items.length > 0 && (
             <span style={{ fontSize: 14, color: 'var(--color-foreground-muted)' }}>
               {items.length} {items.length === 1 ? 'piece' : 'pieces'} saved

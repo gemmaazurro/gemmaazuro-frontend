@@ -3,7 +3,7 @@ import StorefrontShell from '@/components/layout/StorefrontShell';
 import PageTransition from '@/components/motion/PageTransition';
 import HeroSection from '@/components/sections/HeroSection';
 import BrandStory from '@/components/sections/BrandStory';
-import Marquee from '@/components/motion/Marquee';
+import { InfiniteSlider } from '@/components/core/infinite-slider';
 import RevealBlock from '@/components/motion/RevealBlock';
 import { Shield, Truck } from '@/components/core/Icons';
 import HomeFeaturedProducts from '@/components/pages/HomeFeaturedProducts';
@@ -46,9 +46,13 @@ export default function HomePage() {
     <StorefrontShell>
       <PageTransition>
         <HeroSection />
-        <div style={{ background: 'var(--color-brand)', padding: '18px 0', overflow: 'hidden' }}>
-          <Marquee items={marqItems} gap={72} speed={42}
-            style={{ fontFamily: 'var(--font-body)', fontSize: 14, letterSpacing: '0.04em', color: '#fff' }} />
+        <div style={{ background: 'var(--color-brand)', padding: '18px 0' }}>
+          <InfiniteSlider gap={72} speed={50} speedOnHover={20}
+            style={{ fontFamily: 'var(--font-body)', fontSize: 14, letterSpacing: '0.04em', color: '#fff' }}>
+            {marqItems.map((item, i) => (
+              <span key={i} style={{ whiteSpace: 'nowrap', display: 'flex', alignItems: 'center', gap: 10 }}>{item}</span>
+            ))}
+          </InfiniteSlider>
         </div>
         <section style={{ maxWidth: 'var(--page-width)', margin: '0 auto',
           padding: '56px clamp(20px,3vw,40px)',
@@ -75,7 +79,11 @@ export default function HomePage() {
         <BrandStory />
         <div style={{ background: 'var(--color-surface)', padding: '22px 0',
           borderTop: '1px solid var(--color-border)', borderBottom: '1px solid var(--color-border)' }}>
-          <Marquee gap={80} speed={55} items={igiMarqItems} />
+          <InfiniteSlider gap={80} speed={36} speedOnHover={16}>
+            {igiMarqItems.map((item, i) => (
+              <span key={i} style={{ whiteSpace: 'nowrap', display: 'flex', alignItems: 'center', gap: 10 }}>{item}</span>
+            ))}
+          </InfiniteSlider>
         </div>
       </PageTransition>
     </StorefrontShell>

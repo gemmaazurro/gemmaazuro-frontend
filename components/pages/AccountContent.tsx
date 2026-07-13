@@ -2,7 +2,7 @@
 
 import { useState } from 'react';
 import RevealBlock from '@/components/motion/RevealBlock';
-import SplitWords from '@/components/motion/SplitWords';
+import { TextEffect } from '@/components/core/text-effect';
 import { Shield, ArrowRight } from '@/components/core/Icons';
 import { WA_PHONE } from '@/lib/data';
 
@@ -146,8 +146,10 @@ export default function AccountContent() {
           Welcome back
         </span>
         <div style={{ display: 'flex', alignItems: 'flex-end', justifyContent: 'space-between', marginBottom: 48, gap: 16, flexWrap: 'wrap' }}>
-          <SplitWords text={`Hello, ${firstName}.`} tag="h1" baseDelay={0.1}
-            style={{ margin: 0, fontFamily: 'var(--font-heading)', fontWeight: 500, fontSize: 'clamp(2rem,5vw,3.2rem)', lineHeight: 1 }} />
+          <TextEffect as="h1" per="char" preset="fade" delay={0.1} speedReveal={2.2}
+            style={{ margin: 0, fontFamily: 'var(--font-heading)', fontWeight: 500, fontSize: 'clamp(2rem,5vw,3.2rem)', lineHeight: 1 }}>
+            {`Hello, ${firstName}.`}
+          </TextEffect>
           <button onClick={() => { setLoggedIn(false); setTab('signin'); }}
             style={{ background: 'transparent', border: 'none', cursor: 'pointer', fontSize: 13, color: 'var(--color-foreground-muted)', textDecoration: 'underline' }}>
             Sign out

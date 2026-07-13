@@ -1,7 +1,7 @@
 'use client';
 import { ArrowRight } from '@/components/core/Icons';
 import Button from '../core/Button';
-import SplitWords from '../motion/SplitWords';
+import { TextEffect } from '../core/text-effect';
 
 export default function HeroSection() {
   return (
@@ -22,14 +22,16 @@ export default function HeroSection() {
             letterSpacing: '0.22em', textTransform: 'uppercase', color: 'rgba(255,255,255,0.82)',
             animation: 'ga-appear-up 0.5s ease 0.1s both', marginBottom: 22,
           }}>Egypt&apos;s Pioneering Lab Diamond House</span>
-          <SplitWords text="Pioneering lab diamonds."
-            tag="h1" baseDelay={0.2}
-            style={{ fontFamily: 'var(--font-heading)', fontWeight: 500,
-              fontSize: 'var(--title-lg)', lineHeight: 1, color: '#fff', marginBottom: 16, textWrap: 'balance' }} />
-          <SplitWords text="Timeless by design."
-            tag="p" baseDelay={0.55}
-            style={{ fontFamily: 'var(--font-heading)', fontWeight: 400,
-              fontSize: 'clamp(1.5rem, 3vw, 2.25rem)', lineHeight: 1, color: 'rgba(255,255,255,0.88)', marginBottom: 30 }} />
+          <TextEffect as="h1" per="char" preset="fade" delay={0.2} speedReveal={2.2}
+            style={{ fontFamily: 'var(--font-heading)', fontWeight: 500, margin: 0,
+              fontSize: 'var(--title-lg)', lineHeight: 1, color: '#fff', marginBottom: 16, textWrap: 'balance' }}>
+            Pioneering lab diamonds.
+          </TextEffect>
+          <TextEffect as="p" per="char" preset="fade" delay={0.55} speedReveal={2.2}
+            style={{ fontFamily: 'var(--font-heading)', fontWeight: 400, margin: 0,
+              fontSize: 'clamp(1.5rem, 3vw, 2.25rem)', lineHeight: 1, color: 'rgba(255,255,255,0.88)', marginBottom: 30 }}>
+            Timeless by design.
+          </TextEffect>
           <p style={{ fontSize: 17, lineHeight: 1.6, color: 'rgba(255,255,255,0.85)', maxWidth: 480,
             marginBottom: 36, animation: 'ga-appear-up 0.6s ease 0.85s both' }}>
             Lab diamonds indistinguishable from mined, at a fraction of the cost.</p>

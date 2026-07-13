@@ -12,7 +12,7 @@ import Button from '@/components/core/Button';
 import ProductCard from '@/components/commerce/ProductCard';
 import RevealBlock from '@/components/motion/RevealBlock';
 import RevealList from '@/components/motion/RevealList';
-import SplitWords from '@/components/motion/SplitWords';
+import { TextEffect } from '@/components/core/text-effect';
 import { useStore } from '@/lib/store';
 
 interface ProductDetailsClientProps {
@@ -134,10 +134,12 @@ export default function ProductDetailsClient({ product, related, thumbs }: Produ
         </RevealBlock>
 
         <RevealBlock delay={0.12}>
-          <SplitWords
-            text={product.name}
-            tag="h1"
-            baseDelay={0.18}
+          <TextEffect
+            as="h1"
+            per="char"
+            preset="fade"
+            delay={0.18}
+            speedReveal={2.2}
             style={{
               margin: '0 0 8px',
               fontFamily: 'var(--font-heading)',
@@ -145,7 +147,9 @@ export default function ProductDetailsClient({ product, related, thumbs }: Produ
               fontSize: 'clamp(1.6rem, 3vw, 2.2rem)',
               lineHeight: 1.05,
             }}
-          />
+          >
+            {product.name}
+          </TextEffect>
           <p style={{ margin: '0 0 14px', color: 'var(--color-foreground-muted)', fontSize: 15 }}>{product.meta}</p>
           <Rating value={product.rating} count={product.reviews} style={{ marginBottom: 22 }} />
 
