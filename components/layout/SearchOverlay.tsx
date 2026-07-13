@@ -67,10 +67,10 @@ export default function SearchOverlay() {
             ref={inputRef} value={searchQuery} onChange={e => setSearchQuery(e.target.value)}
             placeholder="Search rings, necklaces, lab diamond..."
             style={{
-              flex: 1, border: 'none', outline: 'none', background: 'transparent',
-              fontFamily: 'var(--font-heading)', fontSize: 'clamp(1.5rem,3vw,2.25rem)',
+              flex: 1, minWidth: 0, border: 'none', outline: 'none', background: 'transparent',
+              fontFamily: 'var(--font-heading)', fontSize: 'clamp(1.0625rem,5vw,2.25rem)',
               fontWeight: 400, color: 'var(--color-foreground)', letterSpacing: '-0.02em',
-              height: 48,
+              height: 48, overflow: 'hidden', textOverflow: 'ellipsis',
             }} />
           {searchQuery && (
             <button onClick={() => setSearchQuery('')} style={{
