@@ -34,7 +34,7 @@ export default function SearchOverlay() {
   return (
     <div style={{
       position: 'fixed', inset: 0, zIndex: 100,
-      background: 'rgba(255,255,255,0.98)', backdropFilter: 'blur(16px)',
+      background: 'color-mix(in srgb, var(--color-background) 98%, transparent)', backdropFilter: 'blur(16px)',
       transform: searchOpen ? 'translateY(0)' : 'translateY(-100%)',
       transition: 'transform 0.45s cubic-bezier(0.075,0.82,0.165,1)',
       overflowY: 'auto',

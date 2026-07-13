@@ -1,30 +1,13 @@
 'use client';
-import { useRef, useState, useEffect } from 'react';
+import { useState, useEffect } from 'react';
 import Image from 'next/image';
 import { Instagram, TikTok, Pin, Phone, Clock, ArrowRight } from '@/components/core/Icons';
 
 export default function Footer() {
-  const footerRef = useRef<HTMLElement>(null);
   // Computed client-side only — `new Date()` during prerender/SSR trips Cache Components'
   // non-deterministic-value check (no Suspense boundary above this client component).
   const [year, setYear] = useState<number | null>(null);
   useEffect(() => setYear(new Date().getFullYear()), []);
-
-  // Publish the real rendered footer height as a CSS var so StorefrontShell can pull
-  // <main> up over it by the same amount (the "reveal under the page" sticky trick) —
-  // no scroll listener, no JS-driven transform, just CSS sticky + a measured offset.
-  useEffect(() => {
-    const el = footerRef.current;
-    if (!el) return;
-    const setHeight = () => {
-      document.documentElement.style.setProperty('--footer-height', `${el.offsetHeight}px`);
-    };
-    setHeight();
-    const ro = new ResizeObserver(setHeight);
-    ro.observe(el);
-    window.addEventListener('resize', setHeight);
-    return () => { ro.disconnect(); window.removeEventListener('resize', setHeight); };
-  }, []);
 
   const col = (title: string, items: string[]) => (
     <div>
@@ -42,12 +25,11 @@ export default function Footer() {
   );
 
   return (
-    <div style={{ position: 'sticky', bottom: 0, zIndex: 0 }}>
-      <footer ref={footerRef} style={{
-        background: 'var(--color-footer-bg)', color: 'var(--color-footer-text)',
-        borderStartStartRadius: 'var(--border-radius)', borderStartEndRadius: 'var(--border-radius)',
-        padding: '88px 0 0',
-      }}>
+    <footer style={{
+      background: 'var(--color-footer-bg)', color: 'var(--color-footer-text)',
+      borderStartStartRadius: 'var(--border-radius)', borderStartEndRadius: 'var(--border-radius)',
+      padding: '88px 0 0',
+    }}>
         <div style={{ maxWidth: 'var(--page-width)', margin: '0 auto', padding: '0 clamp(20px,3vw,40px)' }}>
           <div style={{ display: 'grid', gridTemplateColumns: 'var(--grid-footer)', gap: 'clamp(28px,4vw,64px)', paddingBottom: 64 }}>
             <div>
@@ -113,6 +95,5 @@ export default function Footer() {
           </div>
         </div>
       </footer>
-    </div>
   );
 }

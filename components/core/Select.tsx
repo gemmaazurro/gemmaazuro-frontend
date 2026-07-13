@@ -54,7 +54,7 @@ export default function Select({
             padding: '0 2.75rem 0 1rem',
             border: `1.5px solid ${focus ? 'var(--color-brand)' : 'var(--color-border-dark)'}`,
             borderRadius: 'var(--rounded-input)',
-            background: '#fff',
+            background: 'var(--color-background)',
             fontFamily: 'var(--font-body)', fontSize: '0.9375rem',
             color: 'var(--color-foreground)',
             appearance: 'none', cursor: disabled ? 'not-allowed' : 'pointer',

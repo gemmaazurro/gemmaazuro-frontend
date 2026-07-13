@@ -51,7 +51,7 @@ export default function Dropdown({ trigger, items = [], align = 'left', style }:
         [align === 'right' ? 'right' : 'left']: 0,
         minWidth: 200,
         zIndex: 50,
-        background: '#fff',
+        background: 'var(--color-background)',
         borderRadius: 'var(--rounded-card)',
         boxShadow: '0 8px 32px rgba(0,0,0,0.10), 0 2px 6px rgba(0,0,0,0.06)',
         border: '1px solid var(--color-border)',

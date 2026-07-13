@@ -92,7 +92,7 @@ export default function CollectionContent() {
             padding: '0 18px',
             borderRadius: 'var(--rounded-button)',
             border: '1px solid var(--color-border-dark)',
-            background: '#fff',
+            background: 'var(--color-background)',
             fontFamily: 'var(--font-body)',
             fontSize: 14,
             color: 'var(--color-foreground)',

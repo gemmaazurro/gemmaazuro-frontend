@@ -27,7 +27,7 @@ export default function CartDrawer() {
       <div style={{
         position: 'fixed', top: 0, right: 0, bottom: 0,
         width: 'min(480px,100vw)', height: '100dvh', zIndex: 50,
-        background: '#fff', display: 'flex', flexDirection: 'column',
+        background: 'var(--color-background)', display: 'flex', flexDirection: 'column',
         transform: cartOpen ? 'translateX(0)' : 'translateX(100%)',
         transition: 'transform 0.45s cubic-bezier(0.075,0.82,0.165,1)',
         boxShadow: '-4px 0 48px rgba(0,0,0,0.10)',

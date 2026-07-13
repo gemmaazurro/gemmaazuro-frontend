@@ -191,7 +191,7 @@ export default function ProductDetailsClient({ product, related, thumbs }: Produ
                 flexShrink: 0,
                 borderRadius: 'var(--rounded-button)',
                 border: '2px solid var(--color-border-dark)',
-                background: '#fff',
+                background: 'var(--color-background)',
                 cursor: 'pointer',
                 color: wished ? 'var(--color-sale-price)' : 'var(--color-foreground)',
                 display: 'flex',

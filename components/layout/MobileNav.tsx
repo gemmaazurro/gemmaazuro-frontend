@@ -119,7 +119,7 @@ export default function MobileNav({ open, onClose, onNavigate, categories, cartC
           bottom: 0,
           width: 'min(320px, 85vw)',
           zIndex: 101,
-          background: '#fff',
+          background: 'var(--color-background)',
           display: 'flex',
           flexDirection: 'column',
           transform: open ? 'translateX(0)' : 'translateX(-100%)',

@@ -20,7 +20,7 @@ export default function AccountContent() {
     fontFamily: 'var(--font-body)',
     fontSize: 15,
     color: 'var(--color-foreground)',
-    background: '#fff',
+    background: 'var(--color-background)',
     outline: 'none',
     boxSizing: 'border-box',
     transition: 'border-color 0.2s ease',

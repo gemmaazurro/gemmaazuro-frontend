@@ -42,7 +42,7 @@ export default function Button({
 
   const palettes = {
     primary:   { bg: 'var(--color-brand)', fg: '#fff', border: 'transparent', fill: '#fff', fillFg: 'var(--color-brand)' },
-    secondary: { bg: 'transparent', fg: 'var(--color-foreground)', border: 'var(--color-foreground)', fill: 'var(--color-foreground)', fillFg: '#fff' },
+    secondary: { bg: 'transparent', fg: 'var(--color-foreground)', border: 'var(--color-foreground)', fill: 'var(--color-foreground)', fillFg: 'var(--color-background)' },
     whatsapp:  { bg: 'var(--color-whatsapp)', fg: '#fff', border: 'transparent', fill: '#fff', fillFg: 'var(--color-whatsapp)' },
     ghost:     { bg: 'transparent', fg: 'var(--color-brand)', border: 'transparent', fill: 'var(--color-brand-light)', fillFg: 'var(--color-brand)' },
   };
