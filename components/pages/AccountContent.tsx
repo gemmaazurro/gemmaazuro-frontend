@@ -4,7 +4,7 @@ import { useState } from 'react';
 import RevealBlock from '@/components/motion/RevealBlock';
 import { TextEffect } from '@/components/core/text-effect';
 import { Shield, ArrowRight } from '@/components/core/Icons';
-import { WA_PHONE } from '@/lib/data';
+import { WA_PHONE } from '@/lib/contact';
 
 export default function AccountContent() {
   const [tab, setTab] = useState('signin');

@@ -6,12 +6,13 @@ import { Heart, ArrowRight } from '@/components/core/Icons';
 import RevealBlock from '@/components/motion/RevealBlock';
 import RevealList from '@/components/motion/RevealList';
 import { TextEffect } from '@/components/core/text-effect';
-import { PRODUCTS } from '@/lib/data';
+import { useCatalog } from '@/lib/catalog-context';
 import { useStore } from '@/lib/store';
 
 export default function WishlistContent() {
   const { wishlist, toggleWishlist, navigate } = useStore();
-  const items = PRODUCTS.filter((p) => wishlist.includes(p.id));
+  const { products } = useCatalog();
+  const items = products.filter((p) => wishlist.includes(p.id));
 
   return (
     <>
@@ -102,7 +103,8 @@ export default function WishlistContent() {
                 href={`/products/${p.id}`}
                 name={p.name}
                 meta={p.meta}
-                igi={p.igi}
+                // Commented out: no backend field. Restore if products.Item gains these.
+                // igi={p.igi}
                 price={p.price}
                 salePrice={p.salePrice}
                 currency="EGP"

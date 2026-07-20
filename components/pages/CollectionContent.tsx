@@ -6,7 +6,8 @@ import RevealBlock from '@/components/motion/RevealBlock';
 import RevealList from '@/components/motion/RevealList';
 import Dropdown from '@/components/core/Dropdown';
 import { ChevronDown } from '@/components/core/Icons';
-import { CATEGORIES, PRODUCTS } from '@/lib/data';
+import type { Product } from '@/lib/data';
+import type { SubGroupSummary } from '@/lib/products-cache';
 import { useStore } from '@/lib/store';
 
 const SORT_OPTIONS = [
@@ -15,21 +16,38 @@ const SORT_OPTIONS = [
   { value: 'high', label: 'Price · High to Low' },
 ];
 
-export default function CollectionContent() {
+interface CollectionContentProps {
+  products: Product[];
+  subgroups: SubGroupSummary[];
+}
+
+export default function CollectionContent({ products, subgroups }: CollectionContentProps) {
   const { wishlist, toggleWishlist, navigate } = useStore();
   const [active, setActive] = useState('All');
   const [sort, setSort] = useState('featured');
   const [key, setKey] = useState(0);
 
+  const CATEGORIES = useMemo(
+    () => ['All', ...subgroups.map((subgroup) => subgroup.name)],
+    [subgroups],
+  );
+
   const sorted = useMemo(() => {
-    const filtered = active === 'All' ? PRODUCTS : PRODUCTS.filter((p) => p.cat === active);
+    // Filter by subgroup ID, not by `cat`: list responses omit `subgroups_`, so
+    // every product's `cat` is an empty string. IDs are always present.
+    const activeId = subgroups.find((subgroup) => subgroup.name === active)?.id;
+
+    const filtered =
+      active === 'All' || activeId === undefined
+        ? products
+        : products.filter((product) => product.subgroupIds.includes(activeId));
 
     return [...filtered].sort((a, b) => {
       if (sort === 'low') return (a.salePrice || a.price) - (b.salePrice || b.price);
       if (sort === 'high') return (b.salePrice || b.price) - (a.salePrice || a.price);
       return 0;
     });
-  }, [active, sort]);
+  }, [active, sort, products, subgroups]);
 
   const handleCat = (category: string) => {
     setActive(category);
@@ -125,7 +143,8 @@ export default function CollectionContent() {
               href={`/products/${p.id}`}
               name={p.name}
               meta={p.meta}
-              igi={p.igi}
+              // Commented out: no backend field. Restore if products.Item gains these.
+              // igi={p.igi}
               price={p.price}
               salePrice={p.salePrice}
               currency="EGP"

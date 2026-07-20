@@ -28,6 +28,57 @@ export default function ProductDetailsClient({ product, related, thumbs }: Produ
   const [thumbIdx, setThumbIdx] = useState(0);
   const wished = wishlist.includes(product.id);
 
+  // --- Variant selection -------------------------------------------------
+  // Default to the first in-stock variant so the page opens on something
+  // purchasable rather than a sold-out combination.
+  const defaultVariant = useMemo(
+    () => product.variants.find((variant) => variant.inStock) ?? product.variants[0],
+    [product.variants],
+  );
+
+  const [selectedColorId, setSelectedColorId] = useState<number | null>(
+    defaultVariant?.colorId ?? null,
+  );
+  const [selectedSizeId, setSelectedSizeId] = useState<number | null>(
+    defaultVariant?.sizeId ?? null,
+  );
+
+  const colorOptions = useMemo(() => {
+    const seen = new Map<number, { label: string; value: string; color?: string }>();
+    for (const variant of product.variants) {
+      if (variant.colorId === null || seen.has(variant.colorId)) continue;
+      seen.set(variant.colorId, {
+        label: variant.colorLabel ?? `Colour ${variant.colorId}`,
+        value: String(variant.colorId),
+        color: variant.colorHex ?? undefined,
+      });
+    }
+    return [...seen.values()];
+  }, [product.variants]);
+
+  const sizeOptions = useMemo(() => {
+    const seen = new Map<number, { label: string; value: string }>();
+    for (const variant of product.variants) {
+      if (variant.sizeId === null || seen.has(variant.sizeId)) continue;
+      seen.set(variant.sizeId, {
+        label: variant.sizeLabel ?? String(variant.sizeId),
+        value: String(variant.sizeId),
+      });
+    }
+    return [...seen.values()];
+  }, [product.variants]);
+
+  /** The concrete InventoryItem the cart and order API need. */
+  const selectedVariant = useMemo(() => {
+    return (
+      product.variants.find(
+        (variant) =>
+          (selectedColorId === null || variant.colorId === selectedColorId) &&
+          (selectedSizeId === null || variant.sizeId === selectedSizeId),
+      ) ?? defaultVariant
+    );
+  }, [product.variants, selectedColorId, selectedSizeId, defaultVariant]);
+
   const currentImage = useMemo(() => thumbs[thumbIdx] || product.img, [thumbIdx, thumbs, product.img]);
   const isTouch = typeof window !== 'undefined' && 'ontouchstart' in window;
   const [fullscreenIdx, setFullscreenIdx] = useState(-1);
@@ -152,7 +203,9 @@ export default function ProductDetailsClient({ product, related, thumbs }: Produ
             {product.name}
           </TextEffect>
           <p style={{ margin: '0 0 14px', color: 'var(--color-foreground-muted)', fontSize: 15 }}>{product.meta}</p>
-          <Rating value={product.rating} count={product.reviews} style={{ marginBottom: 22 }} />
+          {/* Commented out: no backend field. There is no review system in the
+              Django schema. Restore if products.Item gains rating/reviews.
+          <Rating value={product.rating} count={product.reviews} style={{ marginBottom: 22 }} /> */}
 
           <div style={{ display: 'flex', alignItems: 'baseline', gap: 12, marginBottom: 22 }}>
             {product.salePrice ? (
@@ -169,24 +222,37 @@ export default function ProductDetailsClient({ product, related, thumbs }: Produ
             )}
           </div>
 
-          <VariantSelector
-            label="Metal"
-            style={{ marginBottom: 20 }}
-            options={[
-              { label: '18k White Gold', value: 'wg' },
-              { label: '18k Yellow Gold', value: 'yg' },
-              { label: 'Sterling Silver', value: 'ss' },
-            ]}
-          />
-          <VariantSelector
-            label="Ring Size"
-            style={{ marginBottom: 28 }}
-            options={['5', '5.5', '6', '6.5', '7', '7.5'].map((size) => ({ label: size, value: size }))}
-          />
+          {/* Real variants, controlled. Previously these were hardcoded and
+              uncontrolled, so the selected metal/size never reached the cart. */}
+          {colorOptions.length > 0 && (
+            <VariantSelector
+              label="Metal"
+              type="swatch"
+              style={{ marginBottom: 20 }}
+              value={selectedColorId === null ? undefined : String(selectedColorId)}
+              onChange={(value) => setSelectedColorId(Number(value))}
+              options={colorOptions}
+            />
+          )}
+          {sizeOptions.length > 0 && (
+            <VariantSelector
+              label="Size"
+              style={{ marginBottom: 28 }}
+              value={selectedSizeId === null ? undefined : String(selectedSizeId)}
+              onChange={(value) => setSelectedSizeId(Number(value))}
+              options={sizeOptions}
+            />
+          )}
 
           <div style={{ display: 'flex', gap: 12, marginBottom: 14 }}>
-            <Button variant="primary" size="lg" fullWidth onClick={() => addToCart(product)}>
-              Add to Cart
+            <Button
+              variant="primary"
+              size="lg"
+              fullWidth
+              disabled={!selectedVariant || !selectedVariant.inStock}
+              onClick={() => selectedVariant && addToCart(selectedVariant, product)}
+            >
+              {selectedVariant?.inStock === false ? 'Sold Out' : 'Add to Cart'}
             </Button>
             <button
               aria-label="Wishlist"
@@ -220,7 +286,11 @@ export default function ProductDetailsClient({ product, related, thumbs }: Produ
 
           <div style={{ borderTop: '1px solid var(--color-border)' }}>
             <Accordion title="Materials & Specifications" defaultOpen>
-              {product.stone} · {product.carat} · {product.color}/{product.clarity} · {product.cut} cut. {product.meta}.
+              {/* Commented out: no backend field. Per-stone certification data
+                  (stone/carat/color/clarity/cut) lives on the ERP mirror tables
+                  behind a GenericForeignKey, not on the product.
+                  {product.stone} · {product.carat} · {product.color}/{product.clarity} · {product.cut} cut. */}
+              {product.description || product.meta}
             </Accordion>
             <Accordion title="Care Guide">
               Store in the pouch provided, away from moisture. Clean gently with a soft cloth. Complimentary professional
@@ -256,7 +326,8 @@ export default function ProductDetailsClient({ product, related, thumbs }: Produ
                 href={`/products/${item.id}`}
                 name={item.name}
                 meta={item.meta}
-                igi={item.igi}
+                // Commented out: no backend field.
+                // igi={item.igi}
                 price={item.price}
                 salePrice={item.salePrice}
                 currency="EGP"

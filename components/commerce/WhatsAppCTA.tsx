@@ -1,7 +1,7 @@
 'use client';
 import React, { useRef } from 'react';
 import { WhatsApp } from '@/components/core/Icons';
-import { WA_PHONE } from '@/lib/data';
+import { WA_PHONE } from '@/lib/contact';
 
 /** WhatsApp CTA with signature fill-wipe hover (white blob rises from bottom). */
 interface WhatsAppCTAProps {

@@ -3,14 +3,26 @@ import Image from 'next/image';
 import Button from '../core/Button';
 import RevealBlock from '../motion/RevealBlock';
 import { Carousel, CarouselContent, CarouselItem, CarouselNavigation, CarouselIndicator } from '../core/carousel';
-import { PRODUCTS } from '@/lib/data';
+import type { Product } from '@/lib/data';
+import type { Slide } from '@/lib/api/cms';
 
-const STORY_IMAGES = [
-  { src: '/assets/hero-pattern.jpeg', alt: 'Gemma Azzurro' },
-  ...PRODUCTS.slice(0, 4).map((p) => ({ src: p.img, alt: p.name })),
-];
+interface BrandStoryProps {
+  products?: Product[];
+  /** Dashboard-managed carousel slides (Hero rows with placement="carousel"). */
+  slides?: Slide[];
+}
 
-export default function BrandStory() {
+export default function BrandStory({ products = [], slides = [] }: BrandStoryProps) {
+  // Dashboard slides win. Fall back to product photos, then the static asset,
+  // so the section is never empty while the client is still filling it in.
+  const STORY_IMAGES =
+    slides.length > 0
+      ? slides.map((slide) => ({ src: slide.src, alt: slide.alt }))
+      : [
+          { src: '/assets/hero-pattern.jpeg', alt: 'Gemma Azzurro' },
+          ...products.slice(0, 4).map((product) => ({ src: product.img, alt: product.name })),
+        ];
+
   return (
     <section style={{ maxWidth: 'var(--page-width)', margin: '0 auto',
       padding: '0 clamp(20px,3vw,40px) var(--section-pad-y)' }}>

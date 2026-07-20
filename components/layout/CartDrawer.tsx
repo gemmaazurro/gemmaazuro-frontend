@@ -1,15 +1,15 @@
 'use client';
 import Image from 'next/image';
 import { Close, ArrowRight, Shield, Bag } from '@/components/core/Icons';
-import { WA_PHONE } from '@/lib/data';
+import { WA_PHONE } from '@/lib/contact';
 import { useStore } from '@/lib/store';
 
 export default function CartDrawer() {
-  const { cartItems, cartOpen, setCartOpen, removeFromCart, updateQty } = useStore();
+  const { cartItems, cartOpen, setCartOpen, removeFromCart, updateQty, cartSubtotal } = useStore();
 
-  const subtotal = cartItems.reduce((s, i) => s + (i.product.salePrice || i.product.price) * i.qty, 0);
+  const subtotal = cartSubtotal;
   const orderText = cartItems.map(i =>
-    `${i.qty}× ${i.product.name} (${i.product.meta}) — ${(i.product.salePrice||i.product.price).toLocaleString()} EGP`
+    `${i.qty}× ${i.name} (${i.variantLabel}) — ${i.unitPrice.toLocaleString()} EGP`
   ).join('\n');
   const waMsg = encodeURIComponent(
     `Hi Gemma Azzurro, I'd like to order:\n\n${orderText}\n\nTotal: ${subtotal.toLocaleString()} EGP`
@@ -72,8 +72,8 @@ export default function CartDrawer() {
                 display: 'flex', alignItems: 'center', gap: 8,
               }}>Browse the Collection <ArrowRight size={16} /></button>
             </div>
-          ) : cartItems.map((item, idx) => (
-            <div key={item.product.id + idx} style={{
+          ) : cartItems.map((item) => (
+            <div key={item.inventoryId} style={{
               display: 'grid', gridTemplateColumns: '84px 1fr', gap: 16,
               padding: '20px 28px', borderBottom: '1px solid var(--color-border)',
             }}>
@@ -81,15 +81,15 @@ export default function CartDrawer() {
                 width: 84, height: 108, borderRadius: 10, overflow: 'hidden',
                 background: 'var(--color-surface)', position: 'relative',
               }}>
-                <Image src={item.product.img} alt={item.product.name} fill
+                <Image src={item.image} alt={item.name} fill
                   style={{ width: '100%', height: '100%', objectFit: 'cover' }} />
               </div>
               <div style={{ display: 'flex', flexDirection: 'column', justifyContent: 'space-between' }}>
                 <div>
                   <p style={{ margin: '0 0 3px', fontFamily: 'var(--font-heading)', fontWeight: 500, fontSize: 15 }}>
-                    {item.product.name}</p>
+                    {item.name}</p>
                   <p style={{ margin: '0 0 6px', fontSize: 13, color: 'var(--color-foreground-muted)' }}>
-                    {item.product.meta}</p>
+                    {item.variantLabel}</p>
                 </div>
                 <div style={{ display: 'flex', alignItems: 'center', justifyContent: 'space-between', marginTop: 10 }}>
                   <div style={{
@@ -97,14 +97,14 @@ export default function CartDrawer() {
                     border: '1px solid var(--color-border-dark)',
                     borderRadius: 'var(--rounded-button)', overflow: 'hidden',
                   }}>
-                    <button onClick={() => updateQty(idx, -1)} style={{
+                    <button onClick={() => updateQty(item.inventoryId, -1)} style={{
                       width: 34, height: 34, background: 'transparent', border: 'none',
                       cursor: 'pointer', fontSize: 18, color: 'var(--color-foreground)',
                       display: 'flex', alignItems: 'center', justifyContent: 'center',
                     }}>−</button>
                     <span style={{ width: 30, textAlign: 'center', fontSize: 14, fontWeight: 500 }}>
                       {item.qty}</span>
-                    <button onClick={() => updateQty(idx, 1)} style={{
+                    <button onClick={() => updateQty(item.inventoryId, 1)} style={{
                       width: 34, height: 34, background: 'transparent', border: 'none',
                       cursor: 'pointer', fontSize: 18, color: 'var(--color-foreground)',
                       display: 'flex', alignItems: 'center', justifyContent: 'center',
@@ -112,9 +112,9 @@ export default function CartDrawer() {
                   </div>
                   <div style={{ display: 'flex', alignItems: 'center', gap: 10 }}>
                     <span style={{ fontWeight: 600, fontSize: 15 }}>
-                      {((item.product.salePrice || item.product.price) * item.qty).toLocaleString()} EGP
+                      {(item.unitPrice * item.qty).toLocaleString()} EGP
                     </span>
-                    <button onClick={() => removeFromCart(idx)} style={{
+                    <button onClick={() => removeFromCart(item.inventoryId)} style={{
                       background: 'transparent', border: 'none', cursor: 'pointer',
                       color: 'var(--color-foreground-muted)', padding: 4, display: 'flex',
                       transition: 'color 0.2s ease',

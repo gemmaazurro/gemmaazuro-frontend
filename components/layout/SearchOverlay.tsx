@@ -3,7 +3,7 @@ import { useEffect, useRef, useState } from 'react';
 import Image from 'next/image';
 import { useTheme } from 'next-themes';
 import { Close, Search as SearchIcon } from '@/components/core/Icons';
-import { PRODUCTS } from '@/lib/data';
+import { useCatalog } from '@/lib/catalog-context';
 import { useStore } from '@/lib/store';
 import ProductCard from '@/components/commerce/ProductCard';
 import RevealList from '@/components/motion/RevealList';
@@ -12,6 +12,7 @@ const CATS = ['Rings', 'Necklaces', 'Bracelets', 'Earrings'];
 
 export default function SearchOverlay() {
   const { searchOpen, searchQuery, setSearchOpen, setSearchQuery, navigate } = useStore();
+  const { products } = useCatalog();
   const inputRef = useRef<HTMLInputElement>(null);
   const { resolvedTheme } = useTheme();
   const [mounted, setMounted] = useState(false);
@@ -30,9 +31,10 @@ export default function SearchOverlay() {
     return () => window.removeEventListener('keydown', fn);
   }, [setSearchOpen]);
 
+  // `stone` was part of the old match set but has no backend field.
   const results = searchQuery.length > 1
-    ? PRODUCTS.filter(p =>
-        [p.name, p.cat, p.meta, p.stone].join(' ').toLowerCase().includes(searchQuery.toLowerCase())
+    ? products.filter(p =>
+        [p.name, p.cat, p.meta, p.description].join(' ').toLowerCase().includes(searchQuery.toLowerCase())
       )
     : [];
 
@@ -114,7 +116,7 @@ export default function SearchOverlay() {
           <div style={{ display: 'grid', gridTemplateColumns: 'repeat(auto-fill,minmax(220px,1fr))', gap: 28 }}>
             <RevealList stagger={0.06}>
               {results.map(p => (
-                <ProductCard key={p.id} image={p.img} name={p.name} meta={p.meta} igi={p.igi}
+                <ProductCard key={p.id} image={p.img} name={p.name} meta={p.meta}
                   href={`/products/${p.id}`}
                   price={p.price} salePrice={p.salePrice} currency="EGP"
                   onClick={() => { navigate('pdp', p.id); setSearchOpen(false); }} />

@@ -4,12 +4,19 @@ import { useState, useEffect } from 'react';
 import { ThemeProvider } from 'next-themes';
 import { QueryClient, QueryClientProvider } from '@tanstack/react-query';
 import { StoreProvider } from '@/lib/store';
+import { CatalogProvider, type CatalogValue } from '@/lib/catalog-context';
 import { LenisProvider } from './LenisProvider';
 
-export function Providers({ children }: { children: React.ReactNode }) {
+export function Providers({
+  children,
+  catalog,
+}: {
+  children: React.ReactNode;
+  catalog: CatalogValue;
+}) {
   // One QueryClient per browser session (not per render) — created lazily so it survives
-  // Suspense-driven remounts. Infra only for now: lib/data.ts stays the data source until
-  // a real Django-backed fetch layer replaces it (see IMPLEMENTATION.md).
+  // Suspense-driven remounts. Used for client-side mutations (wishlist, cart, checkout);
+  // catalog reads go through lib/products-cache.ts on the server.
   const [queryClient] = useState(() => new QueryClient({
     defaultOptions: { queries: { staleTime: 60 * 1000 } },
   }));
@@ -27,9 +34,11 @@ export function Providers({ children }: { children: React.ReactNode }) {
   return (
     <ThemeProvider attribute="class" defaultTheme="system" enableSystem disableTransitionOnChange={false}>
       <QueryClientProvider client={queryClient}>
-        <StoreProvider>
-          <LenisProvider>{children}</LenisProvider>
-        </StoreProvider>
+        <CatalogProvider value={catalog}>
+          <StoreProvider>
+            <LenisProvider>{children}</LenisProvider>
+          </StoreProvider>
+        </CatalogProvider>
       </QueryClientProvider>
     </ThemeProvider>
   );

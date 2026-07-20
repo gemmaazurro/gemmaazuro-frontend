@@ -8,18 +8,17 @@ import { Search, Heart, Bag, User, ArrowRight } from '@/components/core/Icons';
 import MagnetEl from '../motion/MagnetEl';
 import CustomCursor from '../motion/CustomCursor';
 import ThemeToggle from '../core/ThemeToggle';
-import { PRODUCTS, CATEGORIES } from '@/lib/data';
 import { useStore } from '@/lib/store';
+import { useCatalog, useCategories } from '@/lib/catalog-context';
 import type { Product } from '@/lib/data';
 import MobileNav from './MobileNav';
 
-export const NAV_CONFIG = [
-  { label: 'Rings',     cats: ['Shop All', 'Solitaire', 'Pavé Bands', 'Eternity', 'Stackables'],   catKey: 'Rings' },
-  { label: 'Necklaces', cats: ['Shop All', 'Pendants', 'Tennis', 'Drop Styles', 'Layering Chains'], catKey: 'Necklaces' },
-  { label: 'Bracelets', cats: ['Shop All', 'Tennis Bracelets', 'Bangles', 'Links', 'Chains'],        catKey: 'Bracelets' },
-  { label: 'Earrings',  cats: ['Shop All', 'Studs', 'Drop Earrings', 'Huggies', 'Ear Cuffs'],       catKey: 'Earrings' },
-  { label: 'Piercings', cats: ['Shop All', 'Helix', 'Tragus', 'Lobe', 'Daith'],                     catKey: null },
-];
+/** One mega-menu column, derived from a real SubGroup. */
+export interface NavMenuItem {
+  label: string;
+  cats: string[];
+  subgroupId: number | null;
+}
 
 function MiniCard({ product, onProduct, visible, delay = 0 }: {
   product: Product; onProduct: (id: string) => void; visible: boolean; delay?: number;
@@ -53,7 +52,7 @@ function MiniCard({ product, onProduct, visible, delay = 0 }: {
 }
 
 function NavItem({ item, activeMenu, openMenu, schedClose, navigate }: {
-  item: typeof NAV_CONFIG[number];
+  item: NavMenuItem;
   activeMenu: string | null;
   openMenu: (name: string) => void;
   schedClose: () => void;
@@ -153,6 +152,16 @@ export default function Header({ cartCount = 0, onCart, onSearch }: {
   const [activeMenu, setActiveMenu] = useState<string | null>(null);
   const [mobileOpen, setMobileOpen] = useState(false);
   const closeTimer = useRef<ReturnType<typeof setTimeout> | null>(null);
+  const { subgroups, products: catalogProducts } = useCatalog();
+  const CATEGORIES = useCategories();
+
+  // Mega-menu built from real Groups -> SubGroups.
+  const NAV_CONFIG: NavMenuItem[] = subgroups.map((subgroup) => ({
+    label: subgroup.name,
+    cats: ['Shop All'],
+    subgroupId: subgroup.id,
+  }));
+
   const { navigate } = useStore();
   const { resolvedTheme } = useTheme();
   const [mounted, setMounted] = useState(false);
@@ -171,15 +180,17 @@ export default function Header({ cartCount = 0, onCart, onSearch }: {
   const schedClose = () => { closeTimer.current = setTimeout(() => setActiveMenu(null), 200); };
   const cancelClose = () => { if (closeTimer.current) clearTimeout(closeTimer.current); };
 
-  const getProducts = (catKey: string | null) => {
-    const base = catKey ? PRODUCTS.filter(p => p.cat === catKey) : [];
-    const fill = [...base];
-    PRODUCTS.forEach(p => { if (fill.length < 3 && !fill.find(x => x.id === p.id)) fill.push(p); });
-    return fill.slice(0, 3);
+  // Real products for the hovered subgroup. No padding with unrelated items —
+  // showing a necklace under "Rings" was the old behaviour and it was wrong.
+  const getProducts = (subgroupId: number | null) => {
+    if (subgroupId === null) return [];
+    return catalogProducts
+      .filter((product) => product.subgroupIds.includes(subgroupId))
+      .slice(0, 3);
   };
 
   const currentConfig = NAV_CONFIG.find(n => n.label === activeMenu);
-  const menuProducts = activeMenu ? getProducts(currentConfig?.catKey ?? null) : [];
+  const menuProducts = activeMenu ? getProducts(currentConfig?.subgroupId ?? null) : [];
 
   return (
     <>

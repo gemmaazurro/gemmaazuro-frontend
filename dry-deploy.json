@@ -1,0 +1,1487 @@
+{
+  "framework": {
+    "name": "Next.js",
+    "slug": "nextjs"
+  },
+  "basePath": "E:\\Projects\\SHS\\gemmaazuro\\apps\\gemmaazuro-frontend",
+  "fileCount": 218,
+  "totalSize": 91368348,
+  "ignoredCount": 7,
+  "ignored": [
+    ".env.local",
+    ".git",
+    ".gitignore",
+    ".next",
+    ".vercel",
+    "delegation\\.gitignore",
+    "node_modules"
+  ],
+  "directories": [
+    {
+      "path": "design-extract",
+      "fileCount": 113,
+      "size": 58526893
+    },
+    {
+      "path": "public",
+      "fileCount": 36,
+      "size": 31599757
+    },
+    {
+      "path": "delegation",
+      "fileCount": 15,
+      "size": 721663
+    },
+    {
+      "path": "package-lock.json",
+      "fileCount": 1,
+      "size": 234582
+    },
+    {
+      "path": "tsconfig.tsbuildinfo",
+      "fileCount": 1,
+      "size": 107188
+    },
+    {
+      "path": "components",
+      "fileCount": 29,
+      "size": 93995
+    },
+    {
+      "path": "app",
+      "fileCount": 10,
+      "size": 65968
+    },
+    {
+      "path": "IMPLEMENTATION.md",
+      "fileCount": 1,
+      "size": 9115
+    },
+    {
+      "path": "lib",
+      "fileCount": 2,
+      "size": 5221
+    },
+    {
+      "path": "README.md",
+      "fileCount": 1,
+      "size": 1450
+    },
+    {
+      "path": "tsconfig.json",
+      "fileCount": 1,
+      "size": 666
+    },
+    {
+      "path": "package.json",
+      "fileCount": 1,
+      "size": 573
+    },
+    {
+      "path": "eslint.config.mjs",
+      "fileCount": 1,
+      "size": 465
+    },
+    {
+      "path": "AGENTS.md",
+      "fileCount": 1,
+      "size": 327
+    },
+    {
+      "path": "next-env.d.ts",
+      "fileCount": 1,
+      "size": 247
+    },
+    {
+      "path": "next.config.ts",
+      "fileCount": 1,
+      "size": 133
+    },
+    {
+      "path": "postcss.config.mjs",
+      "fileCount": 1,
+      "size": 94
+    },
+    {
+      "path": "CLAUDE.md",
+      "fileCount": 1,
+      "size": 11
+    },
+    {
+      "path": "dry-deploy.json",
+      "fileCount": 1,
+      "size": 0
+    }
+  ],
+  "largestFiles": [
+    {
+      "path": "design-extract/claudedesign/Gemma Azzurro Design System/assets/logo-landscape-dark.png",
+      "size": 7683871,
+      "mode": 33206,
+      "sha": "ef7c4441902188405de2034c749175aaf5a27d55"
+    },
+    {
+      "path": "design-extract/claudedesign/Gemma Azzurro Design System/uploads/dark_landscape_logo-2b15e367.PNG",
+      "size": 7683871,
+      "mode": 33206,
+      "sha": "ef7c4441902188405de2034c749175aaf5a27d55"
+    },
+    {
+      "path": "design-extract/claudedesign/Gemma Azzurro Design System/uploads/dark_landscape_logo.PNG",
+      "size": 7683871,
+      "mode": 33206,
+      "sha": "ef7c4441902188405de2034c749175aaf5a27d55"
+    },
+    {
+      "path": "public/client_assests/dark_landscape_logo.PNG",
+      "size": 7683871,
+      "mode": 33206,
+      "sha": "ef7c4441902188405de2034c749175aaf5a27d55"
+    },
+    {
+      "path": "design-extract/claudedesign/Gemma Azzurro Design System/assets/logo-portrait-dark.png",
+      "size": 7396233,
+      "mode": 33206,
+      "sha": "9a80dc884cd18497527124845c9d01e18bb8afcf"
+    },
+    {
+      "path": "design-extract/claudedesign/Gemma Azzurro Design System/uploads/dark_portrait_logo-3f4204a7.PNG",
+      "size": 7396233,
+      "mode": 33206,
+      "sha": "9a80dc884cd18497527124845c9d01e18bb8afcf"
+    },
+    {
+      "path": "design-extract/claudedesign/Gemma Azzurro Design System/uploads/dark_portrait_logo.PNG",
+      "size": 7396233,
+      "mode": 33206,
+      "sha": "9a80dc884cd18497527124845c9d01e18bb8afcf"
+    },
+    {
+      "path": "public/client_assests/dark_portrait_logo.PNG",
+      "size": 7396233,
+      "mode": 33206,
+      "sha": "9a80dc884cd18497527124845c9d01e18bb8afcf"
+    },
+    {
+      "path": "public/client_assests/test_subject/IMG_8141.JPG.jpeg",
+      "size": 2174369,
+      "mode": 33206,
+      "sha": "57e3881cbf93396758f79da7765143c76b6941bf"
+    },
+    {
+      "path": "public/client_assests/test_subject/IMG_8142.JPG.jpeg",
+      "size": 2171331,
+      "mode": 33206,
+      "sha": "299bc85f77c3cc651dfc434045375aa3f4cb56db"
+    }
+  ],
+  "files": [
+    {
+      "path": "AGENTS.md",
+      "size": 327,
+      "mode": 33206,
+      "sha": "b402af8a6533dfc73cc5af9164ae5e0c366af9cc"
+    },
+    {
+      "path": "app/account/page.tsx",
+      "size": 14137,
+      "mode": 33206,
+      "sha": "886980b4ebf9e6415eb17da400547fdaf440761e"
+    },
+    {
+      "path": "app/collection/page.tsx",
+      "size": 4026,
+      "mode": 33206,
+      "sha": "e48944b29faac5b9fa5fb446a020359d4457d088"
+    },
+    {
+      "path": "app/favicon.ico",
+      "size": 25931,
+      "mode": 33206,
+      "sha": "9ecfcc8f0ead0bf3d2d7c39e084b88f41cc89a2e"
+    },
+    {
+      "path": "app/globals.css",
+      "size": 1977,
+      "mode": 33206,
+      "sha": "5d606c4726a8ab6607ec7aa6ddbb61a3793dafa1"
+    },
+    {
+      "path": "app/layout.tsx",
+      "size": 1169,
+      "mode": 33206,
+      "sha": "31741beca74c36acbc5560672a458bdac2598889"
+    },
+    {
+      "path": "app/page.tsx",
+      "size": 5733,
+      "mode": 33206,
+      "sha": "0385476889a8588b4f36fc0e5fc7c123e253fbf8"
+    },
+    {
+      "path": "app/products/[id]/page.tsx",
+      "size": 8880,
+      "mode": 33206,
+      "sha": "59646f51a86ad39440c73e2bc1339f2b18af107d"
+    },
+    {
+      "path": "app/robots.ts",
+      "size": 223,
+      "mode": 33206,
+      "sha": "57165ec201ef8972361dfaa02a8c354d676cfa29"
+    },
+    {
+      "path": "app/sitemap.ts",
+      "size": 409,
+      "mode": 33206,
+      "sha": "aa1a8497385fe5c5ea63c2d3e96dfc89d1e68336"
+    },
+    {
+      "path": "app/wishlist/page.tsx",
+      "size": 3483,
+      "mode": 33206,
+      "sha": "daaa511ff1dd6bb3cf6eb4882c61f2f1246ac76a"
+    },
+    {
+      "path": "CLAUDE.md",
+      "size": 11,
+      "mode": 33206,
+      "sha": "c140473a3a5fbe89301c99d9d0d1b76c5971f2c3"
+    },
+    {
+      "path": "components/commerce/ProductCard.tsx",
+      "size": 5642,
+      "mode": 33206,
+      "sha": "7faf36d69a65f1a30ea02cfe57ba276b7a9cc1d9"
+    },
+    {
+      "path": "components/commerce/Rating.tsx",
+      "size": 3216,
+      "mode": 33206,
+      "sha": "b172f56ea01d719d1a6af035f15bbc0287ba1549"
+    },
+    {
+      "path": "components/commerce/VariantSelector.tsx",
+      "size": 4394,
+      "mode": 33206,
+      "sha": "26e7cd5551a79350c0b93f75117273fa4f3ec284"
+    },
+    {
+      "path": "components/commerce/WhatsAppCTA.tsx",
+      "size": 2520,
+      "mode": 33206,
+      "sha": "8ebb30b0cfaa58bb63b3aefbed921d0eccfcbe81"
+    },
+    {
+      "path": "components/core/Accordion.tsx",
+      "size": 2170,
+      "mode": 33206,
+      "sha": "7d1c56b5dc8d8c7057e2eedaedc77f102fad7656"
+    },
+    {
+      "path": "components/core/Badge.tsx",
+      "size": 1834,
+      "mode": 33206,
+      "sha": "2e117907917f4a4ee20b39da210bac736f141135"
+    },
+    {
+      "path": "components/core/Button.tsx",
+      "size": 4101,
+      "mode": 33206,
+      "sha": "d2b34b6d73653287fd9ece79e2c7d645d5a1f6c0"
+    },
+    {
+      "path": "components/core/Dropdown.tsx",
+      "size": 4326,
+      "mode": 33206,
+      "sha": "a4dedff1a58ded645d822b77c4a76bb3133b95c7"
+    },
+    {
+      "path": "components/core/Icons.tsx",
+      "size": 3127,
+      "mode": 33206,
+      "sha": "b6c2c8ec47b5f1c161047ecc0271685ae55c4dc5"
+    },
+    {
+      "path": "components/core/Input.tsx",
+      "size": 2560,
+      "mode": 33206,
+      "sha": "c96322144609d9a78f2fa914e0021d737bfcf9d2"
+    },
+    {
+      "path": "components/core/Select.tsx",
+      "size": 2896,
+      "mode": 33206,
+      "sha": "f8f0724041793f5404489dc4b9fd472e2059b97a"
+    },
+    {
+      "path": "components/core/TextEffect.tsx",
+      "size": 1906,
+      "mode": 33206,
+      "sha": "a6302bf62c550f46748785b8fd7e3dd75f6914bf"
+    },
+    {
+      "path": "components/layout/CartDrawer.tsx",
+      "size": 9460,
+      "mode": 33206,
+      "sha": "2230d47a6edfd27f40601b7bf6f429382e008a79"
+    },
+    {
+      "path": "components/layout/Footer.tsx",
+      "size": 7470,
+      "mode": 33206,
+      "sha": "adbaea30ef0ddd90ea69ddd596f11dc0bb47d6e6"
+    },
+    {
+      "path": "components/layout/Header.tsx",
+      "size": 14879,
+      "mode": 33206,
+      "sha": "16c92f5d4382afa1dd17eaf15291860e941fc320"
+    },
+    {
+      "path": "components/layout/PromoBar.tsx",
+      "size": 949,
+      "mode": 33206,
+      "sha": "7ec5c45460eb82c409e0d83b191d4ddb3f9e13f7"
+    },
+    {
+      "path": "components/layout/SearchOverlay.tsx",
+      "size": 6287,
+      "mode": 33206,
+      "sha": "c5518ca66569f73c4c86bcab7ea1abeca554f12b"
+    },
+    {
+      "path": "components/layout/StorefrontShell.tsx",
+      "size": 700,
+      "mode": 33206,
+      "sha": "c96e73c0322078e56a3413c1a56840dc5be001ff"
+    },
+    {
+      "path": "components/motion/CustomCursor.tsx",
+      "size": 2200,
+      "mode": 33206,
+      "sha": "154427730673aeaadadf1365730aabed699d185e"
+    },
+    {
+      "path": "components/motion/MagnetEl.tsx",
+      "size": 1126,
+      "mode": 33206,
+      "sha": "a6815c954dad6b47484c8b1352bc86789db77272"
+    },
+    {
+      "path": "components/motion/Marquee.tsx",
+      "size": 978,
+      "mode": 33206,
+      "sha": "4df5aced57f0bc4e49b29abf029a1b552e5e46b0"
+    },
+    {
+      "path": "components/motion/RevealBlock.tsx",
+      "size": 1452,
+      "mode": 33206,
+      "sha": "a4319c15f8ce2c4e640f43b2f4ab0828f187201c"
+    },
+    {
+      "path": "components/motion/RevealList.tsx",
+      "size": 554,
+      "mode": 33206,
+      "sha": "2a787daea8c7f67187d3e9acbb11029761ca1954"
+    },
+    {
+      "path": "components/motion/SplitWords.tsx",
+      "size": 1007,
+      "mode": 33206,
+      "sha": "422257cdc7c7f7605f92c5dba4d8ebe87797f6cd"
+    },
+    {
+      "path": "components/Providers.tsx",
+      "size": 188,
+      "mode": 33206,
+      "sha": "161e488246f689b1e30bae8ba584117640a39b3a"
+    },
+    {
+      "path": "components/sections/BrandStory.tsx",
+      "size": 1982,
+      "mode": 33206,
+      "sha": "14fb3344c1b53a866cb5ac8eb71c144ccd277cb2"
+    },
+    {
+      "path": "components/sections/CollectionGrid.tsx",
+      "size": 1578,
+      "mode": 33206,
+      "sha": "62a562779561cbb903cb0d514d58ed56fda3b2f5"
+    },
+    {
+      "path": "components/sections/FeaturedGrid.tsx",
+      "size": 1762,
+      "mode": 33206,
+      "sha": "4c175370896ecfe68498054f9b79065fa50f8ef4"
+    },
+    {
+      "path": "components/sections/HeroSection.tsx",
+      "size": 2731,
+      "mode": 33206,
+      "sha": "368f571ae7926d57c3046bad8d3fc8d282b35f1f"
+    },
+    {
+      "path": "delegation/gemmaazuro-frontend-2026-06-29T16-54-11-872Z/brief.md",
+      "size": 56939,
+      "mode": 33206,
+      "sha": "fa29e171cd1f2a96e13ad761cedb4d8643d9608d"
+    },
+    {
+      "path": "delegation/gemmaazuro-frontend-2026-06-29T16-54-11-872Z/diff.patch",
+      "size": 16702,
+      "mode": 33206,
+      "sha": "66bc76d3f05c6a018eb504db7b06c49fa46580b4"
+    },
+    {
+      "path": "delegation/gemmaazuro-frontend-2026-06-29T16-54-11-872Z/result.json",
+      "size": 1619,
+      "mode": 33206,
+      "sha": "c47a8ae47de5656a824f67cf8c478b2357431e5f"
+    },
+    {
+      "path": "delegation/gemmaazuro-frontend-2026-06-29T16-54-11-872Z/stderr.txt",
+      "size": 258495,
+      "mode": 33206,
+      "sha": "fe903a443f04c6645551a25efff28b40e720b63b"
+    },
+    {
+      "path": "delegation/gemmaazuro-frontend-2026-06-29T16-54-11-872Z/stdout.txt",
+      "size": 5424,
+      "mode": 33206,
+      "sha": "006fa86156ce6826b23effba2d5bf0e52cb1aede"
+    },
+    {
+      "path": "delegation/gemmaazuro-frontend-2026-06-29T17-00-26-469Z/brief.md",
+      "size": 3632,
+      "mode": 33206,
+      "sha": "499b683f59c1cb7f6212d8836c55c0338e81fe8a"
+    },
+    {
+      "path": "delegation/gemmaazuro-frontend-2026-06-29T17-00-26-469Z/diff.patch",
+      "size": 16702,
+      "mode": 33206,
+      "sha": "66bc76d3f05c6a018eb504db7b06c49fa46580b4"
+    },
+    {
+      "path": "delegation/gemmaazuro-frontend-2026-06-29T17-00-26-469Z/result.json",
+      "size": 1973,
+      "mode": 33206,
+      "sha": "e1c517f2970bfe382971065caa513aecd90e8935"
+    },
+    {
+      "path": "delegation/gemmaazuro-frontend-2026-06-29T17-00-26-469Z/stderr.txt",
+      "size": 172234,
+      "mode": 33206,
+      "sha": "6dc63da71285196f30ef8829882f47d1bddd8fec"
+    },
+    {
+      "path": "delegation/gemmaazuro-frontend-2026-06-29T17-00-26-469Z/stdout.txt",
+      "size": 409,
+      "mode": 33206,
+      "sha": "5357a04db047bb4d303a24c65806d4699c7419ca"
+    },
+    {
+      "path": "delegation/gemmaazuro-frontend-2026-06-29T17-03-27-626Z/brief.md",
+      "size": 1855,
+      "mode": 33206,
+      "sha": "82880e14c5221e82c99a6aa45df4227957af50a1"
+    },
+    {
+      "path": "delegation/gemmaazuro-frontend-2026-06-29T17-03-27-626Z/diff.patch",
+      "size": 0,
+      "mode": 33206,
+      "sha": "da39a3ee5e6b4b0d3255bfef95601890afd80709"
+    },
+    {
+      "path": "delegation/gemmaazuro-frontend-2026-06-29T17-03-27-626Z/result.json",
+      "size": 1369,
+      "mode": 33206,
+      "sha": "ac341d8dac9d6b3c5d3bba0f2f362120969b8ae5"
+    },
+    {
+      "path": "delegation/gemmaazuro-frontend-2026-06-29T17-03-27-626Z/stderr.txt",
+      "size": 184079,
+      "mode": 33206,
+      "sha": "ac83512d6fac0b84aeb64f39dbd8449d05a93ce2"
+    },
+    {
+      "path": "delegation/gemmaazuro-frontend-2026-06-29T17-03-27-626Z/stdout.txt",
+      "size": 231,
+      "mode": 33206,
+      "sha": "219ae8ca1ae5c32a49c5e1558222fbe5a564fce7"
+    },
+    {
+      "path": "design-extract/claudedesign/Gemma Azzurro Design System/_adherence.oxlintrc.json",
+      "size": 13497,
+      "mode": 33206,
+      "sha": "d100a796904cdfae5aa903587fb90673bcd98790"
+    },
+    {
+      "path": "design-extract/claudedesign/Gemma Azzurro Design System/_ds_bundle.js",
+      "size": 128739,
+      "mode": 33206,
+      "sha": "f8684f657b67cc3acb64714aff273d41d33533a8"
+    },
+    {
+      "path": "design-extract/claudedesign/Gemma Azzurro Design System/_ds_manifest.json",
+      "size": 17551,
+      "mode": 33206,
+      "sha": "fb8152150eea380eb4b89edeebcbe5403b651431"
+    },
+    {
+      "path": "design-extract/claudedesign/Gemma Azzurro Design System/assets/hero-pattern.jpeg",
+      "size": 31174,
+      "mode": 33206,
+      "sha": "266dea1ad94abbe4ce55cff334b5b26f95b30a7a"
+    },
+    {
+      "path": "design-extract/claudedesign/Gemma Azzurro Design System/assets/logo-landscape-dark.png",
+      "size": 7683871,
+      "mode": 33206,
+      "sha": "ef7c4441902188405de2034c749175aaf5a27d55"
+    },
+    {
+      "path": "design-extract/claudedesign/Gemma Azzurro Design System/assets/logo-landscape.png",
+      "size": 2047966,
+      "mode": 33206,
+      "sha": "2ac51e30e802d200807c162722c5ed9ddb874eb0"
+    },
+    {
+      "path": "design-extract/claudedesign/Gemma Azzurro Design System/assets/logo-portrait-dark.png",
+      "size": 7396233,
+      "mode": 33206,
+      "sha": "9a80dc884cd18497527124845c9d01e18bb8afcf"
+    },
+    {
+      "path": "design-extract/claudedesign/Gemma Azzurro Design System/assets/logo-portrait.png",
+      "size": 2094545,
+      "mode": 33206,
+      "sha": "081f4c6f77f7b5e967336419dbaa8c77010557bb"
+    },
+    {
+      "path": "design-extract/claudedesign/Gemma Azzurro Design System/assets/logo-wordmark-white.png",
+      "size": 11471,
+      "mode": 33206,
+      "sha": "ab07d03fa2e1ed68485ef1fd1e57dc4e1016f856"
+    },
+    {
+      "path": "design-extract/claudedesign/Gemma Azzurro Design System/assets/logo-wordmark.png",
+      "size": 14446,
+      "mode": 33206,
+      "sha": "c2a70092efc434ce18f557c65cc434a1477cdc69"
+    },
+    {
+      "path": "design-extract/claudedesign/Gemma Azzurro Design System/components/commerce/commerce.card.html",
+      "size": 3357,
+      "mode": 33206,
+      "sha": "9bbdfea2ae82e21cabe574ee492fde0cbc56ac9d"
+    },
+    {
+      "path": "design-extract/claudedesign/Gemma Azzurro Design System/components/commerce/ProductCard.d.ts",
+      "size": 895,
+      "mode": 33206,
+      "sha": "17492962b308d66bd6d4ca28771c8911bda65ca8"
+    },
+    {
+      "path": "design-extract/claudedesign/Gemma Azzurro Design System/components/commerce/ProductCard.jsx",
+      "size": 5014,
+      "mode": 33206,
+      "sha": "beb335869b02ac5042803584f519c3d7c394e541"
+    },
+    {
+      "path": "design-extract/claudedesign/Gemma Azzurro Design System/components/commerce/ProductCard.prompt.md",
+      "size": 491,
+      "mode": 33206,
+      "sha": "2561048436ad44dcb00e844043fad3ef26861f18"
+    },
+    {
+      "path": "design-extract/claudedesign/Gemma Azzurro Design System/components/commerce/Rating.d.ts",
+      "size": 355,
+      "mode": 33206,
+      "sha": "bddd6e9ea19f70b26bc86b4bda346b350cb3d2cc"
+    },
+    {
+      "path": "design-extract/claudedesign/Gemma Azzurro Design System/components/commerce/Rating.jsx",
+      "size": 2903,
+      "mode": 33206,
+      "sha": "195b9d28f327c670d2376cbd188b574a2673a7c4"
+    },
+    {
+      "path": "design-extract/claudedesign/Gemma Azzurro Design System/components/commerce/VariantSelector.d.ts",
+      "size": 547,
+      "mode": 33206,
+      "sha": "5a39b391b734ebda12a448a140233ff0982ae70b"
+    },
+    {
+      "path": "design-extract/claudedesign/Gemma Azzurro Design System/components/commerce/VariantSelector.jsx",
+      "size": 4181,
+      "mode": 33206,
+      "sha": "6dcd632318c1be1c38810b2bc64e11b02843faa0"
+    },
+    {
+      "path": "design-extract/claudedesign/Gemma Azzurro Design System/components/commerce/WhatsAppCTA.d.ts",
+      "size": 415,
+      "mode": 33206,
+      "sha": "389862170b4d08d22ca4c452670ffac22127fbf9"
+    },
+    {
+      "path": "design-extract/claudedesign/Gemma Azzurro Design System/components/commerce/WhatsAppCTA.jsx",
+      "size": 2769,
+      "mode": 33206,
+      "sha": "3edbe13ef9038074b7ca9a235d1ed9486ac93094"
+    },
+    {
+      "path": "design-extract/claudedesign/Gemma Azzurro Design System/components/core/Accordion.d.ts",
+      "size": 331,
+      "mode": 33206,
+      "sha": "2f21fca421e1ab715c3bea96b8374e0fa3fefbf2"
+    },
+    {
+      "path": "design-extract/claudedesign/Gemma Azzurro Design System/components/core/Accordion.jsx",
+      "size": 2060,
+      "mode": 33206,
+      "sha": "a96bb7c46810bcab4896bac479ea6a3b09132c4b"
+    },
+    {
+      "path": "design-extract/claudedesign/Gemma Azzurro Design System/components/core/Badge.d.ts",
+      "size": 558,
+      "mode": 33206,
+      "sha": "a3f8d5012c4a928f54a687eb9a06a8b40697c6d8"
+    },
+    {
+      "path": "design-extract/claudedesign/Gemma Azzurro Design System/components/core/Badge.jsx",
+      "size": 1526,
+      "mode": 33206,
+      "sha": "1f843f50657445bab3bd5d7001383367219072b8"
+    },
+    {
+      "path": "design-extract/claudedesign/Gemma Azzurro Design System/components/core/Badge.prompt.md",
+      "size": 428,
+      "mode": 33206,
+      "sha": "09742a1146d426964555fb44aa05788392fd03cd"
+    },
+    {
+      "path": "design-extract/claudedesign/Gemma Azzurro Design System/components/core/Button.d.ts",
+      "size": 710,
+      "mode": 33206,
+      "sha": "334afc3180836011104cebb473f20bcf90665666"
+    },
+    {
+      "path": "design-extract/claudedesign/Gemma Azzurro Design System/components/core/Button.jsx",
+      "size": 3363,
+      "mode": 33206,
+      "sha": "9b5762d91b371a3d9b035a9654ddb05a40f2eed7"
+    },
+    {
+      "path": "design-extract/claudedesign/Gemma Azzurro Design System/components/core/Button.prompt.md",
+      "size": 597,
+      "mode": 33206,
+      "sha": "cf78a691166efe7c7303109464e3023785171f55"
+    },
+    {
+      "path": "design-extract/claudedesign/Gemma Azzurro Design System/components/core/core.card.html",
+      "size": 4654,
+      "mode": 33206,
+      "sha": "2b558a062d59228f256a8a25e3154a850c111fc6"
+    },
+    {
+      "path": "design-extract/claudedesign/Gemma Azzurro Design System/components/core/Dropdown.d.ts",
+      "size": 765,
+      "mode": 33206,
+      "sha": "a3ff48f86235bf7ad266603d70c94e5bab588a1e"
+    },
+    {
+      "path": "design-extract/claudedesign/Gemma Azzurro Design System/components/core/Dropdown.jsx",
+      "size": 4402,
+      "mode": 33206,
+      "sha": "1a4e067a5d818f46a698a2bc80c1d5bd1699733d"
+    },
+    {
+      "path": "design-extract/claudedesign/Gemma Azzurro Design System/components/core/Input.d.ts",
+      "size": 400,
+      "mode": 33206,
+      "sha": "e8a1908a564b0d9740c6bd68df94d270e4182997"
+    },
+    {
+      "path": "design-extract/claudedesign/Gemma Azzurro Design System/components/core/Input.jsx",
+      "size": 2233,
+      "mode": 33206,
+      "sha": "358046afd0845ba1a937a5d10cd6ec07000b3683"
+    },
+    {
+      "path": "design-extract/claudedesign/Gemma Azzurro Design System/components/core/Select.d.ts",
+      "size": 402,
+      "mode": 33206,
+      "sha": "adc0ce4573df673ee33c78574d44725ad72ea36a"
+    },
+    {
+      "path": "design-extract/claudedesign/Gemma Azzurro Design System/components/core/Select.jsx",
+      "size": 2505,
+      "mode": 33206,
+      "sha": "2f6e8af7ad662e3fb65a2c8fa167d36d0e796030"
+    },
+    {
+      "path": "design-extract/claudedesign/Gemma Azzurro Design System/components/core/TextEffect.d.ts",
+      "size": 864,
+      "mode": 33206,
+      "sha": "3e1f407d6c7d393d0c3c14115713ea243d90af75"
+    },
+    {
+      "path": "design-extract/claudedesign/Gemma Azzurro Design System/components/core/TextEffect.jsx",
+      "size": 1604,
+      "mode": 33206,
+      "sha": "218302638dc0e69348253809dbf1c44e778e84c7"
+    },
+    {
+      "path": "design-extract/claudedesign/Gemma Azzurro Design System/guidelines/brand-logo.card.html",
+      "size": 2300,
+      "mode": 33206,
+      "sha": "261c22ec3094119c546dc14f6af3e6774782ff85"
+    },
+    {
+      "path": "design-extract/claudedesign/Gemma Azzurro Design System/guidelines/brand-pattern.card.html",
+      "size": 715,
+      "mode": 33206,
+      "sha": "a4148c3b226a0aec9baa85a831100672588b94c9"
+    },
+    {
+      "path": "design-extract/claudedesign/Gemma Azzurro Design System/guidelines/color-brand.card.html",
+      "size": 1022,
+      "mode": 33206,
+      "sha": "86c83540c263d58f499475f004f8ef379a635712"
+    },
+    {
+      "path": "design-extract/claudedesign/Gemma Azzurro Design System/guidelines/color-commerce.card.html",
+      "size": 1279,
+      "mode": 33206,
+      "sha": "cf297ecdfb44eecac3106a2a9e8e363884e9555e"
+    },
+    {
+      "path": "design-extract/claudedesign/Gemma Azzurro Design System/guidelines/color-foreground.card.html",
+      "size": 1205,
+      "mode": 33206,
+      "sha": "231e34ba157a72047850d9ae6ca9d29d56afbfad"
+    },
+    {
+      "path": "design-extract/claudedesign/Gemma Azzurro Design System/guidelines/color-metals.card.html",
+      "size": 838,
+      "mode": 33206,
+      "sha": "293298a22fbe608a6a8376b6e761f68dfe1c9da7"
+    },
+    {
+      "path": "design-extract/claudedesign/Gemma Azzurro Design System/guidelines/motion-cursor.card.html",
+      "size": 1836,
+      "mode": 33206,
+      "sha": "c66bd5f22ed1e82d74408fba3adbbb0780e91e8d"
+    },
+    {
+      "path": "design-extract/claudedesign/Gemma Azzurro Design System/guidelines/motion-entrance.card.html",
+      "size": 977,
+      "mode": 33206,
+      "sha": "ad591692d350538adfb78bd14c9e14aecacc578c"
+    },
+    {
+      "path": "design-extract/claudedesign/Gemma Azzurro Design System/guidelines/motion-fill.card.html",
+      "size": 1227,
+      "mode": 33206,
+      "sha": "f3ab158a676ee5838f63cdb503f12bcfec40d253"
+    },
+    {
+      "path": "design-extract/claudedesign/Gemma Azzurro Design System/guidelines/motion-marquee.card.html",
+      "size": 1429,
+      "mode": 33206,
+      "sha": "97af17c247655011d04966ccfdb67608d05287a4"
+    },
+    {
+      "path": "design-extract/claudedesign/Gemma Azzurro Design System/guidelines/motion-text.card.html",
+      "size": 2221,
+      "mode": 33206,
+      "sha": "f558d2902d226ad11328833e1983c874175df537"
+    },
+    {
+      "path": "design-extract/claudedesign/Gemma Azzurro Design System/guidelines/shape-radius.card.html",
+      "size": 1323,
+      "mode": 33206,
+      "sha": "7f076356a3b2920e63b56036a0509b2b7fb87659"
+    },
+    {
+      "path": "design-extract/claudedesign/Gemma Azzurro Design System/guidelines/spacing-scale.card.html",
+      "size": 941,
+      "mode": 33206,
+      "sha": "1776a70296e8bd4cb1478d8c3e9bd892ffa2f49b"
+    },
+    {
+      "path": "design-extract/claudedesign/Gemma Azzurro Design System/guidelines/type-body.card.html",
+      "size": 1049,
+      "mode": 33206,
+      "sha": "ed2bae28c83da403856decb8d9deff153d7206f5"
+    },
+    {
+      "path": "design-extract/claudedesign/Gemma Azzurro Design System/guidelines/type-display.card.html",
+      "size": 870,
+      "mode": 33206,
+      "sha": "acf9413e729d4654a8eade1867eaea85b301f880"
+    },
+    {
+      "path": "design-extract/claudedesign/Gemma Azzurro Design System/guidelines/type-wordmark.card.html",
+      "size": 745,
+      "mode": 33206,
+      "sha": "00c90a66849a54193a30b4834e7c96692e9c5c65"
+    },
+    {
+      "path": "design-extract/claudedesign/Gemma Azzurro Design System/readme.md",
+      "size": 8035,
+      "mode": 33206,
+      "sha": "91de02ab8cf6a39a9c67c6be2980a95714e26a8b"
+    },
+    {
+      "path": "design-extract/claudedesign/Gemma Azzurro Design System/SKILL.md",
+      "size": 1296,
+      "mode": 33206,
+      "sha": "f84000f109327bffa6639840a12ad90934db68d7"
+    },
+    {
+      "path": "design-extract/claudedesign/Gemma Azzurro Design System/styles.css",
+      "size": 330,
+      "mode": 33206,
+      "sha": "05565b4b47dffa03ee1fd3aa441516db5be97639"
+    },
+    {
+      "path": "design-extract/claudedesign/Gemma Azzurro Design System/tokens/colors.css",
+      "size": 1941,
+      "mode": 33206,
+      "sha": "3d6b3c78a4f41dd6b178c2dae8dc301026469505"
+    },
+    {
+      "path": "design-extract/claudedesign/Gemma Azzurro Design System/tokens/fonts.css",
+      "size": 367,
+      "mode": 33206,
+      "sha": "1f6bdaed097f3beb977ecc853b0c8ea99af14b82"
+    },
+    {
+      "path": "design-extract/claudedesign/Gemma Azzurro Design System/tokens/motion.css",
+      "size": 1719,
+      "mode": 33206,
+      "sha": "091f2d62ced9c06cc767a05b283da24f1f802f52"
+    },
+    {
+      "path": "design-extract/claudedesign/Gemma Azzurro Design System/tokens/shape.css",
+      "size": 801,
+      "mode": 33206,
+      "sha": "dd558fdcccb7e670e31f0e1b120088609eea3179"
+    },
+    {
+      "path": "design-extract/claudedesign/Gemma Azzurro Design System/tokens/spacing.css",
+      "size": 961,
+      "mode": 33206,
+      "sha": "63f7edb87966b0fd7b936f62d31d78badcdbceec"
+    },
+    {
+      "path": "design-extract/claudedesign/Gemma Azzurro Design System/tokens/typography.css",
+      "size": 1932,
+      "mode": 33206,
+      "sha": "eeb89679d3214fc85c633cb39ba1d1746891602a"
+    },
+    {
+      "path": "design-extract/claudedesign/Gemma Azzurro Design System/tweaks-panel.jsx",
+      "size": 24657,
+      "mode": 33206,
+      "sha": "ab9082689acb58bc90b3a3971793dddf8dd6ec88"
+    },
+    {
+      "path": "design-extract/claudedesign/Gemma Azzurro Design System/ui_kits/storefront/Account.jsx",
+      "size": 13328,
+      "mode": 33206,
+      "sha": "a8f743ec97906abb99a36ae5751a40617f4a9645"
+    },
+    {
+      "path": "design-extract/claudedesign/Gemma Azzurro Design System/ui_kits/storefront/CartDrawer.jsx",
+      "size": 9324,
+      "mode": 33206,
+      "sha": "38ab4d26d9ab12bebc42477d88d21f73423fc88e"
+    },
+    {
+      "path": "design-extract/claudedesign/Gemma Azzurro Design System/ui_kits/storefront/Collection.jsx",
+      "size": 3514,
+      "mode": 33206,
+      "sha": "0a8cbed07f2094173beeb26b3610cb7bc510109b"
+    },
+    {
+      "path": "design-extract/claudedesign/Gemma Azzurro Design System/ui_kits/storefront/data.js",
+      "size": 1989,
+      "mode": 33206,
+      "sha": "7223582cb2ea13724b873f50d331576fb37f985a"
+    },
+    {
+      "path": "design-extract/claudedesign/Gemma Azzurro Design System/ui_kits/storefront/Footer.jsx",
+      "size": 7354,
+      "mode": 33206,
+      "sha": "eb044015c81dde90c9e1708feebf59ca0099e6b9"
+    },
+    {
+      "path": "design-extract/claudedesign/Gemma Azzurro Design System/ui_kits/storefront/Header.jsx",
+      "size": 15136,
+      "mode": 33206,
+      "sha": "650f3e93e9d09622ea0d0cba7757421421fbe967"
+    },
+    {
+      "path": "design-extract/claudedesign/Gemma Azzurro Design System/ui_kits/storefront/Home.jsx",
+      "size": 9639,
+      "mode": 33206,
+      "sha": "cc6f3f4f83e66d567d755867e6124d17e36c74a7"
+    },
+    {
+      "path": "design-extract/claudedesign/Gemma Azzurro Design System/ui_kits/storefront/Icons.jsx",
+      "size": 2014,
+      "mode": 33206,
+      "sha": "d41d7776e18f47cfb2fa64bcadf4833669e4504c"
+    },
+    {
+      "path": "design-extract/claudedesign/Gemma Azzurro Design System/ui_kits/storefront/index.html",
+      "size": 12039,
+      "mode": 33206,
+      "sha": "be4f18dd1c30c9f0302024e91fb5e83fca84ccb7"
+    },
+    {
+      "path": "design-extract/claudedesign/Gemma Azzurro Design System/ui_kits/storefront/Motion.jsx",
+      "size": 5494,
+      "mode": 33206,
+      "sha": "162510d83955cefec603e43f7434f27303e5e443"
+    },
+    {
+      "path": "design-extract/claudedesign/Gemma Azzurro Design System/ui_kits/storefront/PDP.jsx",
+      "size": 8056,
+      "mode": 33206,
+      "sha": "f9cfdd09023e20b996a81e7b91c5863ac9c3d28a"
+    },
+    {
+      "path": "design-extract/claudedesign/Gemma Azzurro Design System/ui_kits/storefront/products/bracelet.png",
+      "size": 23878,
+      "mode": 33206,
+      "sha": "ba25f7559059cec4e1b5f835fa97b0dfa02489fc"
+    },
+    {
+      "path": "design-extract/claudedesign/Gemma Azzurro Design System/ui_kits/storefront/products/earring.png",
+      "size": 18561,
+      "mode": 33206,
+      "sha": "8d7f719bc915acd4a32ed4029fe5993d972437ce"
+    },
+    {
+      "path": "design-extract/claudedesign/Gemma Azzurro Design System/ui_kits/storefront/products/necklace.png",
+      "size": 21401,
+      "mode": 33206,
+      "sha": "1873d579e269c7ad626dfd7590f4746e2acb9806"
+    },
+    {
+      "path": "design-extract/claudedesign/Gemma Azzurro Design System/ui_kits/storefront/products/pendant.png",
+      "size": 17678,
+      "mode": 33206,
+      "sha": "ce887b98777f64f017a578c03b89ac07432c3d6a"
+    },
+    {
+      "path": "design-extract/claudedesign/Gemma Azzurro Design System/ui_kits/storefront/products/ring.png",
+      "size": 22576,
+      "mode": 33206,
+      "sha": "b62c13187290d81c19e238a2ae20425f0efad2d0"
+    },
+    {
+      "path": "design-extract/claudedesign/Gemma Azzurro Design System/ui_kits/storefront/products/solitaire.png",
+      "size": 22073,
+      "mode": 33206,
+      "sha": "9b68e9372a6325518c53e22a0f99b4c90fd6990b"
+    },
+    {
+      "path": "design-extract/claudedesign/Gemma Azzurro Design System/ui_kits/storefront/README.md",
+      "size": 1124,
+      "mode": 33206,
+      "sha": "462e80b22cfdd104df3e64fb2815966598dede2f"
+    },
+    {
+      "path": "design-extract/claudedesign/Gemma Azzurro Design System/ui_kits/storefront/Search.jsx",
+      "size": 6031,
+      "mode": 33206,
+      "sha": "fde655743c7637cf27f3005f1fd67b0c915b2317"
+    },
+    {
+      "path": "design-extract/claudedesign/Gemma Azzurro Design System/ui_kits/storefront/Wishlist.jsx",
+      "size": 3071,
+      "mode": 33206,
+      "sha": "559a0abc868f0bad6aca7f838924cc70b030d60e"
+    },
+    {
+      "path": "design-extract/claudedesign/Gemma Azzurro Design System/uploads/dark_landscape_logo-2b15e367.PNG",
+      "size": 7683871,
+      "mode": 33206,
+      "sha": "ef7c4441902188405de2034c749175aaf5a27d55"
+    },
+    {
+      "path": "design-extract/claudedesign/Gemma Azzurro Design System/uploads/dark_landscape_logo.PNG",
+      "size": 7683871,
+      "mode": 33206,
+      "sha": "ef7c4441902188405de2034c749175aaf5a27d55"
+    },
+    {
+      "path": "design-extract/claudedesign/Gemma Azzurro Design System/uploads/dark_portrait_logo-3f4204a7.PNG",
+      "size": 7396233,
+      "mode": 33206,
+      "sha": "9a80dc884cd18497527124845c9d01e18bb8afcf"
+    },
+    {
+      "path": "design-extract/claudedesign/Gemma Azzurro Design System/uploads/dark_portrait_logo.PNG",
+      "size": 7396233,
+      "mode": 33206,
+      "sha": "9a80dc884cd18497527124845c9d01e18bb8afcf"
+    },
+    {
+      "path": "design-extract/claudedesign/Gemma Azzurro Design System/uploads/gemmaazuro.design.md",
+      "size": 27723,
+      "mode": 33206,
+      "sha": "59fa038b5539a1d845798cf4fc3d370d9d9f2b3a"
+    },
+    {
+      "path": "design-extract/claudedesign/Gemma Azzurro Design System/uploads/gemmaazuro.product.md",
+      "size": 12798,
+      "mode": 33206,
+      "sha": "51890dd06b73e0ba1bc18d5a5849f72db28fab07"
+    },
+    {
+      "path": "design-extract/claudedesign/Gemma Azzurro Design System/uploads/light_hero_1.jpeg",
+      "size": 31174,
+      "mode": 33206,
+      "sha": "266dea1ad94abbe4ce55cff334b5b26f95b30a7a"
+    },
+    {
+      "path": "design-extract/claudedesign/Gemma Azzurro Design System/uploads/light_landscape_logo-92c8c9f7.PNG",
+      "size": 2047966,
+      "mode": 33206,
+      "sha": "2ac51e30e802d200807c162722c5ed9ddb874eb0"
+    },
+    {
+      "path": "design-extract/claudedesign/Gemma Azzurro Design System/uploads/light_landscape_logo.PNG",
+      "size": 2047966,
+      "mode": 33206,
+      "sha": "2ac51e30e802d200807c162722c5ed9ddb874eb0"
+    },
+    {
+      "path": "design-extract/claudedesign/Gemma Azzurro Design System/uploads/light_portrait_logo-5f164017.PNG",
+      "size": 2094545,
+      "mode": 33206,
+      "sha": "081f4c6f77f7b5e967336419dbaa8c77010557bb"
+    },
+    {
+      "path": "design-extract/claudedesign/Gemma Azzurro Design System/uploads/light_portrait_logo.PNG",
+      "size": 2094545,
+      "mode": 33206,
+      "sha": "081f4c6f77f7b5e967336419dbaa8c77010557bb"
+    },
+    {
+      "path": "design-extract/claudedesign/Gemma Azzurro Design System/uploads/roartheme-concept.design.md",
+      "size": 39596,
+      "mode": 33206,
+      "sha": "7c200dc43b81631faac59a936b4679af6b68887e"
+    },
+    {
+      "path": "design-extract/claudedesign/Gemma Azzurro Design System/uploads/roartheme-concept.product.md",
+      "size": 17229,
+      "mode": 33206,
+      "sha": "79a49aad341fd7b245d50222815ce7f9edc20ea1"
+    },
+    {
+      "path": "design-extract/GUIDEBOOK.md",
+      "size": 11746,
+      "mode": 33206,
+      "sha": "add2fb3093b3c324927dc00ee6569c73018f9193"
+    },
+    {
+      "path": "design-extract/HARVEST.js",
+      "size": 4419,
+      "mode": 33206,
+      "sha": "a8831dc8febe8324a018244cce05a7500615f639"
+    },
+    {
+      "path": "design-extract/MOTION-PROBE.js",
+      "size": 44711,
+      "mode": 33206,
+      "sha": "767c23d71de8766c1943d9f375e1262b05f1ce81"
+    },
+    {
+      "path": "design-extract/opendesign",
+      "size": 0,
+      "mode": 16822
+    },
+    {
+      "path": "design-extract/output/.gitkeep",
+      "size": 0,
+      "mode": 33206,
+      "sha": "da39a3ee5e6b4b0d3255bfef95601890afd80709"
+    },
+    {
+      "path": "design-extract/output/gemmaazuro.design.md",
+      "size": 27723,
+      "mode": 33206,
+      "sha": "59fa038b5539a1d845798cf4fc3d370d9d9f2b3a"
+    },
+    {
+      "path": "design-extract/output/gemmaazuro.product.md",
+      "size": 12798,
+      "mode": 33206,
+      "sha": "51890dd06b73e0ba1bc18d5a5849f72db28fab07"
+    },
+    {
+      "path": "design-extract/output/raw/INDEX.md",
+      "size": 2915,
+      "mode": 33206,
+      "sha": "1b4e584f00dddb5b75eaad5a35826031b3f6c609"
+    },
+    {
+      "path": "design-extract/output/raw/roartheme-components-raw.json",
+      "size": 2399,
+      "mode": 33206,
+      "sha": "aa24103c9442734b96efdd8324a918e5a802a14a"
+    },
+    {
+      "path": "design-extract/output/raw/roartheme-harvest-raw.json",
+      "size": 509,
+      "mode": 33206,
+      "sha": "5354c162832f5a49478a5bc1d7c2415b3b9b6313"
+    },
+    {
+      "path": "design-extract/output/raw/roartheme-motion-raw.json",
+      "size": 1471,
+      "mode": 33206,
+      "sha": "99fd7b8b9005ca85cf026ba5e781af71c1ef77aa"
+    },
+    {
+      "path": "design-extract/output/raw/roartheme-tokens-raw.json",
+      "size": 165,
+      "mode": 33206,
+      "sha": "f4eba6dbedc26e38757074329ae2c99e4fd182fd"
+    },
+    {
+      "path": "design-extract/output/roartheme-concept.design.md",
+      "size": 39596,
+      "mode": 33206,
+      "sha": "7c200dc43b81631faac59a936b4679af6b68887e"
+    },
+    {
+      "path": "design-extract/output/roartheme-concept.product.md",
+      "size": 17229,
+      "mode": 33206,
+      "sha": "79a49aad341fd7b245d50222815ce7f9edc20ea1"
+    },
+    {
+      "path": "design-extract/README.md",
+      "size": 2519,
+      "mode": 33206,
+      "sha": "df23dbcffa017e9e2e638b7be342569ed9927e43"
+    },
+    {
+      "path": "design-extract/REASSEMBLY.md",
+      "size": 5299,
+      "mode": 33206,
+      "sha": "bff23e115ea8f30f3affa50ff5818220d3c4c65f"
+    },
+    {
+      "path": "design-extract/V3-ROADMAP.md",
+      "size": 5526,
+      "mode": 33206,
+      "sha": "de030f38642f1131a6a79e0599702531827bb7cb"
+    },
+    {
+      "path": "dry-deploy.json",
+      "size": 0,
+      "mode": 33206,
+      "sha": "da39a3ee5e6b4b0d3255bfef95601890afd80709"
+    },
+    {
+      "path": "eslint.config.mjs",
+      "size": 465,
+      "mode": 33206,
+      "sha": "44d5bed565a8dd284af3e17f3b16a1c752008d0e"
+    },
+    {
+      "path": "IMPLEMENTATION.md",
+      "size": 9115,
+      "mode": 33206,
+      "sha": "20674d298fdf3e4c4be8fea9a7fc050409655626"
+    },
+    {
+      "path": "lib/data.ts",
+      "size": 2250,
+      "mode": 33206,
+      "sha": "6558c17882709a19fb656dd4a2ddb42006e3d1c7"
+    },
+    {
+      "path": "lib/store.tsx",
+      "size": 2971,
+      "mode": 33206,
+      "sha": "928f3f0b46531569aa1cb7c0bd17435f5f6dba9f"
+    },
+    {
+      "path": "next-env.d.ts",
+      "size": 247,
+      "mode": 33206,
+      "sha": "9bfff799abb9a4d30186f7a8b68f91ac35157611"
+    },
+    {
+      "path": "next.config.ts",
+      "size": 133,
+      "mode": 33206,
+      "sha": "89327ac52fc9a00fb8b885afd6654f18e58b3156"
+    },
+    {
+      "path": "package-lock.json",
+      "size": 234582,
+      "mode": 33206,
+      "sha": "82aaf0c8669850f9436796e01ac5a18e6532cc8c"
+    },
+    {
+      "path": "package.json",
+      "size": 573,
+      "mode": 33206,
+      "sha": "a8de84841849fdc97fd3b06e11dc60ee89c0df44"
+    },
+    {
+      "path": "postcss.config.mjs",
+      "size": 94,
+      "mode": 33206,
+      "sha": "8f8be689e9af58f80351df6e6b551146822f42a4"
+    },
+    {
+      "path": "public/assets/hero-pattern.jpeg",
+      "size": 31174,
+      "mode": 33206,
+      "sha": "266dea1ad94abbe4ce55cff334b5b26f95b30a7a"
+    },
+    {
+      "path": "public/assets/logo-wordmark-white.png",
+      "size": 11471,
+      "mode": 33206,
+      "sha": "ab07d03fa2e1ed68485ef1fd1e57dc4e1016f856"
+    },
+    {
+      "path": "public/assets/logo-wordmark.png",
+      "size": 14446,
+      "mode": 33206,
+      "sha": "c2a70092efc434ce18f557c65cc434a1477cdc69"
+    },
+    {
+      "path": "public/client_assests/dark_landscape_logo.PNG",
+      "size": 7683871,
+      "mode": 33206,
+      "sha": "ef7c4441902188405de2034c749175aaf5a27d55"
+    },
+    {
+      "path": "public/client_assests/dark_portrait_logo.PNG",
+      "size": 7396233,
+      "mode": 33206,
+      "sha": "9a80dc884cd18497527124845c9d01e18bb8afcf"
+    },
+    {
+      "path": "public/client_assests/light_hero_1.jpeg",
+      "size": 31174,
+      "mode": 33206,
+      "sha": "266dea1ad94abbe4ce55cff334b5b26f95b30a7a"
+    },
+    {
+      "path": "public/client_assests/light_landscape_logo.PNG",
+      "size": 2047966,
+      "mode": 33206,
+      "sha": "2ac51e30e802d200807c162722c5ed9ddb874eb0"
+    },
+    {
+      "path": "public/client_assests/light_portrait_logo.PNG",
+      "size": 2094545,
+      "mode": 33206,
+      "sha": "081f4c6f77f7b5e967336419dbaa8c77010557bb"
+    },
+    {
+      "path": "public/client_assests/test_subject/IMG_8141.JPG.jpeg",
+      "size": 2174369,
+      "mode": 33206,
+      "sha": "57e3881cbf93396758f79da7765143c76b6941bf"
+    },
+    {
+      "path": "public/client_assests/test_subject/IMG_8142.JPG.jpeg",
+      "size": 2171331,
+      "mode": 33206,
+      "sha": "299bc85f77c3cc651dfc434045375aa3f4cb56db"
+    },
+    {
+      "path": "public/client_assests/test_subject/IMG_8143.JPG.jpeg",
+      "size": 143008,
+      "mode": 33206,
+      "sha": "6ee2408f266aff1c8406cfaf3657e5a6d5a88dcb"
+    },
+    {
+      "path": "public/client_assests/test_subject/IMG_8144.JPG.jpeg",
+      "size": 141006,
+      "mode": 33206,
+      "sha": "d365403abff228b40c52572ebbcda41eb541ba0c"
+    },
+    {
+      "path": "public/client_assests/test_subject/IMG_8145.JPG.jpeg",
+      "size": 785799,
+      "mode": 33206,
+      "sha": "579b13fdc4d2e02df00d0973812533a35b8d485e"
+    },
+    {
+      "path": "public/client_assests/test_subject/IMG_8146.JPG.jpeg",
+      "size": 181040,
+      "mode": 33206,
+      "sha": "ce522712ed8c0c251df97360ec388e9a2165b1b0"
+    },
+    {
+      "path": "public/client_assests/test_subject/IMG_8147.JPG.jpeg",
+      "size": 770802,
+      "mode": 33206,
+      "sha": "09653d45de4355ecc07bed759bf2133573d1727d"
+    },
+    {
+      "path": "public/client_assests/test_subject/IMG_8148.JPG.jpeg",
+      "size": 1280961,
+      "mode": 33206,
+      "sha": "4eba238047ff77ade4cdbfac559c638e3d823f68"
+    },
+    {
+      "path": "public/client_assests/test_subject/IMG_8149.JPG.jpeg",
+      "size": 635493,
+      "mode": 33206,
+      "sha": "879faee6ba59dcfb0f452490df20e1ebf313f73d"
+    },
+    {
+      "path": "public/client_assests/test_subject/IMG_8150.JPG.jpeg",
+      "size": 888512,
+      "mode": 33206,
+      "sha": "2cd772cdb191b9fcbc50aabbc87dc28086a1a215"
+    },
+    {
+      "path": "public/client_assests/test_subject/IMG_8151.JPG.jpeg",
+      "size": 848782,
+      "mode": 33206,
+      "sha": "c1f4bc38bf0b1c5055b5a1d602dff1d33769d768"
+    },
+    {
+      "path": "public/client_assests/test_subject/IMG_8152.JPG.jpeg",
+      "size": 407399,
+      "mode": 33206,
+      "sha": "2537316fa79e4fb9053222c6f7ed1c79c455f95e"
+    },
+    {
+      "path": "public/client_assests/test_subject/IMG_8153.JPG.jpeg",
+      "size": 509164,
+      "mode": 33206,
+      "sha": "7a8b995b82c091a13b2ae358583664bcd2cc259e"
+    },
+    {
+      "path": "public/client_assests/test_subject/IMG_8154.JPG.jpeg",
+      "size": 177594,
+      "mode": 33206,
+      "sha": "21e9a46fa3f56ce0c4127902683f4525a82bde88"
+    },
+    {
+      "path": "public/client_assests/test_subject/IMG_8155.JPG.jpeg",
+      "size": 123131,
+      "mode": 33206,
+      "sha": "e429587080e20b268b92bcdbfe8917b75dc8aa45"
+    },
+    {
+      "path": "public/client_assests/test_subject/IMG_8156.JPG.jpeg",
+      "size": 137687,
+      "mode": 33206,
+      "sha": "2423e73fa5536f514d371d45be0139fe805b6610"
+    },
+    {
+      "path": "public/client_assests/test_subject/IMG_8157.JPG.jpeg",
+      "size": 783318,
+      "mode": 33206,
+      "sha": "d6be2ac85edc2a70f7737702ba4cf5eb29e7c083"
+    },
+    {
+      "path": "public/file.svg",
+      "size": 391,
+      "mode": 33206,
+      "sha": "fb380eeffe87d50b597383664c02982964d0d28c"
+    },
+    {
+      "path": "public/globe.svg",
+      "size": 1035,
+      "mode": 33206,
+      "sha": "2eba23b01a46733bb8423e6d38ebf5f7e95abec5"
+    },
+    {
+      "path": "public/next.svg",
+      "size": 1375,
+      "mode": 33206,
+      "sha": "3f3e95622612b989c5bd6a03299a308c6f3c7e6b"
+    },
+    {
+      "path": "public/products/bracelet.png",
+      "size": 23878,
+      "mode": 33206,
+      "sha": "ba25f7559059cec4e1b5f835fa97b0dfa02489fc"
+    },
+    {
+      "path": "public/products/earring.png",
+      "size": 18561,
+      "mode": 33206,
+      "sha": "8d7f719bc915acd4a32ed4029fe5993d972437ce"
+    },
+    {
+      "path": "public/products/necklace.png",
+      "size": 21401,
+      "mode": 33206,
+      "sha": "1873d579e269c7ad626dfd7590f4746e2acb9806"
+    },
+    {
+      "path": "public/products/pendant.png",
+      "size": 17678,
+      "mode": 33206,
+      "sha": "ce887b98777f64f017a578c03b89ac07432c3d6a"
+    },
+    {
+      "path": "public/products/ring.png",
+      "size": 22576,
+      "mode": 33206,
+      "sha": "b62c13187290d81c19e238a2ae20425f0efad2d0"
+    },
+    {
+      "path": "public/products/solitaire.png",
+      "size": 22073,
+      "mode": 33206,
+      "sha": "9b68e9372a6325518c53e22a0f99b4c90fd6990b"
+    },
+    {
+      "path": "public/vercel.svg",
+      "size": 128,
+      "mode": 33206,
+      "sha": "cebb8852d58c8886be3e9051a26957f42bb82f1a"
+    },
+    {
+      "path": "public/window.svg",
+      "size": 385,
+      "mode": 33206,
+      "sha": "54c48e0daa6caa317fe1b4c419007fd93e948db9"
+    },
+    {
+      "path": "README.md",
+      "size": 1450,
+      "mode": 33206,
+      "sha": "7ba16f1bf099196063e5d413cf00a5aa850b043d"
+    },
+    {
+      "path": "tsconfig.json",
+      "size": 666,
+      "mode": 33206,
+      "sha": "3cce6f8b2540d983756b909e9e5c181034da4c38"
+    },
+    {
+      "path": "tsconfig.tsbuildinfo",
+      "size": 107188,
+      "mode": 33206,
+      "sha": "1579575e2f55c76cf5a44df53d4d8f0799b524c6"
+    }
+  ]
+}

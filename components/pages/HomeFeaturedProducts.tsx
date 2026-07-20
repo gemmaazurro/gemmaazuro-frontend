@@ -5,12 +5,13 @@ import Button from '@/components/core/Button';
 import { ArrowRight } from '@/components/core/Icons';
 import RevealBlock from '@/components/motion/RevealBlock';
 import RevealList from '@/components/motion/RevealList';
-import { PRODUCTS } from '@/lib/data';
+import type { Product } from '@/lib/data';
 import { useStore } from '@/lib/store';
 
-export default function HomeFeaturedProducts() {
+/** Data is fetched server-side in app/page.tsx and passed down. */
+export default function HomeFeaturedProducts({ products }: { products: Product[] }) {
   const { wishlist, toggleWishlist, navigate } = useStore();
-  const featured = PRODUCTS.slice(0, 4);
+  const featured = products.slice(0, 4);
 
   return (
     <section
@@ -71,7 +72,8 @@ export default function HomeFeaturedProducts() {
               href={`/products/${p.id}`}
               name={p.name}
               meta={p.meta}
-              igi={p.igi}
+              // Commented out: no backend field. Restore if products.Item gains these.
+              // igi={p.igi}
               price={p.price}
               salePrice={p.salePrice}
               currency="EGP"

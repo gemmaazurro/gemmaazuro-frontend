@@ -7,12 +7,13 @@ import { InfiniteSlider } from '@/components/core/infinite-slider';
 import RevealBlock from '@/components/motion/RevealBlock';
 import { Shield, Truck } from '@/components/core/Icons';
 import HomeFeaturedProducts from '@/components/pages/HomeFeaturedProducts';
+import { getProducts } from '@/lib/products-cache';
+import { getCarouselSlides } from '@/lib/api/cms';
 
 // Next 16 Cache Components (cacheComponents: true in next.config.ts) replaces the old
-// `export const revalidate` segment config — this page has no server data fetch of its
-// own (HomeFeaturedProducts reads the static PRODUCTS array client-side), so there's
-// nothing here that needs a `use cache` boundary; see lib/products-cache.ts for the
-// one that exists (PDP metadata + static params).
+// `export const revalidate` segment config. Catalog data is fetched here on the server
+// via lib/products-cache.ts, which owns the `use cache` boundary, and passed down to
+// the client components as props.
 
 export const metadata: Metadata = {
   alternates: {
@@ -41,7 +42,12 @@ const trustItems = [
   { Icon: Shield, title: 'Custom & Engrave', desc: 'Personalize any piece via WhatsApp.' },
 ];
 
-export default function HomePage() {
+export default async function HomePage() {
+  const [products, carouselSlides] = await Promise.all([
+    getProducts(),
+    getCarouselSlides(),
+  ]);
+
   return (
     <StorefrontShell>
       <PageTransition>
@@ -55,8 +61,8 @@ export default function HomePage() {
             </InfiniteSlider>
           </div>
         } />
-        <HomeFeaturedProducts />
-        <BrandStory />
+        <HomeFeaturedProducts products={products} />
+        <BrandStory products={products} slides={carouselSlides} />
         <section style={{ maxWidth: 'var(--page-width)', margin: '0 auto',
           padding: '0 clamp(20px,3vw,40px) var(--section-pad-y)',
           display: 'grid', gridTemplateColumns: 'var(--grid-trust)', gap: 32 }}>

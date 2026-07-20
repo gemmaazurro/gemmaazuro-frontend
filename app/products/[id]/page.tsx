@@ -1,14 +1,20 @@
 import type { Metadata } from 'next';
 import { notFound } from 'next/navigation';
-import { getProducts, getProductById } from '@/lib/products-cache';
+import { getProducts, getProductById, getRelatedProducts } from '@/lib/products-cache';
 import StorefrontShell from '@/components/layout/StorefrontShell';
 import PageTransition from '@/components/motion/PageTransition';
 import ProductDetailsClient from '@/components/pages/ProductDetailsClient';
 import { absoluteUrl } from '@/lib/site';
 
 export async function generateStaticParams() {
-  const products = await getProducts();
-  return products.map((product) => ({ id: product.id }));
+  // Guarded: an unreachable backend must not fail the whole build. Falling back
+  // to [] renders every PDP on demand instead.
+  try {
+    const products = await getProducts();
+    return products.map((product) => ({ id: product.id }));
+  } catch {
+    return [];
+  }
 }
 
 export async function generateMetadata({ params }: { params: Promise<{ id: string }> }): Promise<Metadata> {
@@ -59,21 +65,17 @@ export async function generateMetadata({ params }: { params: Promise<{ id: strin
 
 export default async function ProductPage({ params }: { params: Promise<{ id: string }> }) {
   const { id } = await params;
-  const [p, PRODUCTS] = await Promise.all([getProductById(id), getProducts()]);
+  const p = await getProductById(id);
 
   if (!p) {
     notFound();
   }
 
-  const currentIndex = PRODUCTS.findIndex((item) => item.id === p.id);
-  const related = PRODUCTS.filter((item) => item.cat === p.cat && item.id !== p.id)
-    .concat(PRODUCTS.filter((item) => item.cat !== p.cat))
-    .slice(0, 4);
-  const thumbs = [
-    p.img,
-    PRODUCTS[(currentIndex + 1) % PRODUCTS.length].img,
-    PRODUCTS[(currentIndex + 2) % PRODUCTS.length].img,
-  ];
+  // Real related items (shared subgroup) and this product's OWN gallery.
+  // Previously both were faked: `related` padded with unrelated products and
+  // `thumbs` spliced in other products' photos.
+  const related = await getRelatedProducts(p, 4);
+  const thumbs = p.images.length > 0 ? p.images : [p.img];
 
   const productJsonLd = {
     '@context': 'https://schema.org',
@@ -86,7 +88,9 @@ export default async function ProductPage({ params }: { params: Promise<{ id: st
       '@type': 'Offer',
       priceCurrency: 'EGP',
       price: p.salePrice ?? p.price,
-      availability: 'https://schema.org/InStock',
+      availability: p.inStock
+        ? 'https://schema.org/InStock'
+        : 'https://schema.org/OutOfStock',
       url: absoluteUrl(`/products/${p.id}`),
     },
   };

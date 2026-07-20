@@ -1,6 +1,8 @@
 import type { Metadata } from 'next';
 import { Outfit } from 'next/font/google';
 import { Providers } from '@/components/Providers';
+import { getGroupsWithSubGroups, getProducts, getSubGroups } from '@/lib/products-cache';
+import type { CatalogValue } from '@/lib/catalog-context';
 import { absoluteUrl, getSiteUrl } from '@/lib/site';
 import './globals.css';
 
@@ -59,7 +61,21 @@ const organizationJsonLd = {
   sameAs: [] as string[],
 };
 
-export default function RootLayout({ children }: { children: React.ReactNode }) {
+export default async function RootLayout({ children }: { children: React.ReactNode }) {
+  // Nav taxonomy + a product sample, fetched once for every route. Guarded so an
+  // unreachable backend degrades the nav instead of failing the whole render.
+  let catalog: CatalogValue = { navGroups: [], subgroups: [], products: [] };
+  try {
+    const [navGroups, subgroups, products] = await Promise.all([
+      getGroupsWithSubGroups(),
+      getSubGroups(),
+      getProducts(),
+    ]);
+    catalog = { navGroups, subgroups, products };
+  } catch {
+    // Keep the empty default.
+  }
+
   return (
     <html lang="en" className={outfit.variable} suppressHydrationWarning>
       <body>
@@ -68,7 +84,7 @@ export default function RootLayout({ children }: { children: React.ReactNode }) 
           // eslint-disable-next-line react/no-danger
           dangerouslySetInnerHTML={{ __html: JSON.stringify(organizationJsonLd) }}
         />
-        <Providers>{children}</Providers>
+        <Providers catalog={catalog}>{children}</Providers>
       </body>
     </html>
   );

@@ -2,6 +2,7 @@ import type { Metadata } from 'next';
 import StorefrontShell from '@/components/layout/StorefrontShell';
 import PageTransition from '@/components/motion/PageTransition';
 import CollectionContent from '@/components/pages/CollectionContent';
+import { getAllProducts, getSubGroups } from '@/lib/products-cache';
 import { absoluteUrl } from '@/lib/site';
 
 export const metadata: Metadata = {
@@ -21,7 +22,9 @@ const breadcrumbJsonLd = {
   ],
 };
 
-export default function CollectionPage() {
+export default async function CollectionPage() {
+  const [products, subgroups] = await Promise.all([getAllProducts(), getSubGroups()]);
+
   return (
     <StorefrontShell>
       <PageTransition>
@@ -31,7 +34,7 @@ export default function CollectionPage() {
           dangerouslySetInnerHTML={{ __html: JSON.stringify(breadcrumbJsonLd) }}
         />
         <div style={{ maxWidth: 'var(--page-width)', margin: '0 auto', padding: '40px clamp(20px,3vw,40px) 80px' }}>
-          <CollectionContent />
+          <CollectionContent products={products} subgroups={subgroups} />
         </div>
       </PageTransition>
     </StorefrontShell>
