@@ -49,15 +49,23 @@ export async function getProductsPage(query: CatalogQuery = {}): Promise<Catalog
 
   const { locale = 'en', ...params } = query;
 
-  const page = await apiFetchPaginated<DjangoItem>(ENDPOINTS.ITEMS, {
-    searchParams: { ...params },
-  });
+  // Fail soft: an unreachable backend must degrade to an empty catalog rather
+  // than reject. Errors raised inside a `use cache` boundary surface during
+  // render, where a caller's try/catch cannot reach them — so the guard has to
+  // live here.
+  try {
+    const page = await apiFetchPaginated<DjangoItem>(ENDPOINTS.ITEMS, {
+      searchParams: { ...params },
+    });
 
-  return {
-    products: adaptItems(page, locale),
-    count: page.count,
-    hasNext: Boolean(page.next),
-  };
+    return {
+      products: adaptItems(page, locale),
+      count: page.count,
+      hasNext: Boolean(page.next),
+    };
+  } catch {
+    return { products: [], count: 0, hasNext: false };
+  }
 }
 
 export async function getProducts(query: CatalogQuery = {}): Promise<Product[]> {
@@ -74,8 +82,12 @@ export async function getAllProducts(locale: Locale = 'en'): Promise<Product[]> 
   cacheTag('products');
   cacheLife('hours');
 
-  const items = await fetchAllPages<DjangoItem>(ENDPOINTS.ITEMS);
-  return adaptItems(items, locale);
+  try {
+    const items = await fetchAllPages<DjangoItem>(ENDPOINTS.ITEMS);
+    return adaptItems(items, locale);
+  } catch {
+    return [];
+  }
 }
 
 export async function getProductById(
@@ -107,13 +119,17 @@ export async function getRelatedProducts(
   const subgroup = product.subgroupIds[0];
   if (subgroup === undefined) return [];
 
-  const page = await apiFetchPaginated<DjangoItem>(ENDPOINTS.ITEMS, {
-    searchParams: { subgroup, page_size: limit + 1 },
-  });
+  try {
+    const page = await apiFetchPaginated<DjangoItem>(ENDPOINTS.ITEMS, {
+      searchParams: { subgroup, page_size: limit + 1 },
+    });
 
-  return adaptItems(page, locale)
-    .filter((candidate) => candidate.id !== product.id)
-    .slice(0, limit);
+    return adaptItems(page, locale)
+      .filter((candidate) => candidate.id !== product.id)
+      .slice(0, limit);
+  } catch {
+    return [];
+  }
 }
 
 export interface SubGroupSummary {
@@ -127,7 +143,12 @@ export async function getSubGroups(locale: Locale = 'en'): Promise<SubGroupSumma
   cacheTag('taxonomy');
   cacheLife('hours');
 
-  const page = await apiFetchPaginated<DjangoSubGroup>(ENDPOINTS.SUBGROUPS);
+  let page;
+  try {
+    page = await apiFetchPaginated<DjangoSubGroup>(ENDPOINTS.SUBGROUPS);
+  } catch {
+    return [];
+  }
 
   return page.results.map((subgroup) => ({
     id: subgroup.id,
@@ -152,10 +173,16 @@ export async function getGroupsWithSubGroups(locale: Locale = 'en'): Promise<Nav
   cacheTag('taxonomy');
   cacheLife('hours');
 
-  const [groupsPage, subgroups] = await Promise.all([
-    apiFetchPaginated<DjangoGroup>(ENDPOINTS.GROUPS),
-    getSubGroups(locale),
-  ]);
+  let groupsPage;
+  let subgroups;
+  try {
+    [groupsPage, subgroups] = await Promise.all([
+      apiFetchPaginated<DjangoGroup>(ENDPOINTS.GROUPS),
+      getSubGroups(locale),
+    ]);
+  } catch {
+    return [];
+  }
 
   return groupsPage.results.map((group) => ({
     id: group.id,

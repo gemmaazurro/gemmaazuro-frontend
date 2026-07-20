@@ -6,20 +6,35 @@ import PageTransition from '@/components/motion/PageTransition';
 import ProductDetailsClient from '@/components/pages/ProductDetailsClient';
 import { absoluteUrl } from '@/lib/site';
 
+/**
+ * Sentinel used when the backend is unreachable at build time.
+ *
+ * Cache Components requires generateStaticParams to return at least one param
+ * so it can validate the route has no stray cookies()/headers()/searchParams
+ * access — an empty array is a hard build error. Returning a param that cannot
+ * match a real product satisfies that check; the page notFound()s it.
+ */
+const PLACEHOLDER_ID = '__placeholder__';
+
 export async function generateStaticParams() {
-  // Guarded: an unreachable backend must not fail the whole build. Falling back
-  // to [] renders every PDP on demand instead.
+  // The backend is not reachable from every build environment (Vercel builds
+  // cannot see a local or private Django). Degrade to rendering PDPs on demand
+  // rather than failing the whole deployment.
   try {
     const products = await getProducts();
-    return products.map((product) => ({ id: product.id }));
+    if (products.length > 0) {
+      return products.map((product) => ({ id: product.id }));
+    }
   } catch {
-    return [];
+    // fall through to the sentinel
   }
+
+  return [{ id: PLACEHOLDER_ID }];
 }
 
 export async function generateMetadata({ params }: { params: Promise<{ id: string }> }): Promise<Metadata> {
   const { id } = await params;
-  const product = await getProductById(id);
+  const product = id === PLACEHOLDER_ID ? undefined : await getProductById(id);
 
   if (!product) {
     return {
@@ -65,6 +80,12 @@ export async function generateMetadata({ params }: { params: Promise<{ id: strin
 
 export default async function ProductPage({ params }: { params: Promise<{ id: string }> }) {
   const { id } = await params;
+
+  // The build-time sentinel is never a real product.
+  if (id === PLACEHOLDER_ID) {
+    notFound();
+  }
+
   const p = await getProductById(id);
 
   if (!p) {
