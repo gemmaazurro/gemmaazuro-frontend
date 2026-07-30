@@ -3,7 +3,7 @@ import { useRef, useState, useEffect } from 'react';
 import Image from 'next/image';
 import { Instagram, TikTok, Pin, Phone, Clock, ArrowRight } from '@/components/core/Icons';
 import { WA_PHONE } from '@/lib/contact';
-import { pageHref } from '@/lib/api/page-routes';
+import { toPageLinks } from '@/lib/api/page-routes';
 import type { Branch, ContactDetails, Footer as FooterData, PaymentMethod } from '@/lib/api/cms';
 
 interface FooterProps {
@@ -72,8 +72,11 @@ export default function Footer({
       }))
     : [{ label: 'All Jewelry', href: '/collection' }];
 
-  const houseItems = footer?.section1_pages?.length
-    ? footer.section1_pages.map((page) => ({ label: page.title, href: pageHref(page.slug) }))
+  // Curated pages whose slug maps to a real route. Unmapped slugs are dropped
+  // rather than linked, so this list can end up shorter than the CMS one.
+  const curatedHouseItems = toPageLinks(footer?.section1_pages);
+  const houseItems = curatedHouseItems.length
+    ? curatedHouseItems
     : [
         { label: 'About Us', href: '/about-us' },
         { label: 'Policies', href: '/policies' },

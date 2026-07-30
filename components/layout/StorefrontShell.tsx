@@ -18,7 +18,7 @@ import {
   getNav,
   getPaymentMethods,
 } from '@/lib/api/cms';
-import { pageHref } from '@/lib/api/page-routes';
+import { toPageLinks } from '@/lib/api/page-routes';
 
 export default async function StorefrontShell({ children }: { children: ReactNode }) {
   const [promo, footer, paymentMethods, contact, branches, nav] = await Promise.all([
@@ -42,10 +42,7 @@ export default async function StorefrontShell({ children }: { children: ReactNod
       contact={contact}
       branch={branches[0] ?? null}
       navGroupIds={nav?.groups_display?.map((group) => group.id) ?? []}
-      navPages={nav?.pages_display?.map((page) => ({
-        label: page.title,
-        href: pageHref(page.slug),
-      })) ?? []}
+      navPages={toPageLinks(nav?.pages_display)}
     >
       {children}
     </StorefrontShellClient>
