@@ -141,10 +141,18 @@ function GhostLink({ label, onClick, href }: { label: string; onClick?: () => vo
   );
 }
 
-export default function Header({ cartCount = 0, onCart, onSearch }: {
+export default function Header({ cartCount = 0, onCart, onSearch, navGroupIds, navPages }: {
   cartCount?: number;
   onCart?: () => void;
   onSearch?: () => void;
+  /**
+   * Group ids the editor curated on the dashboard's Nav page. Empty or absent
+   * means "show everything", which is the safer default — an unconfigured nav
+   * should not hide the catalog.
+   */
+  navGroupIds?: number[];
+  /** Curated CMS pages, rendered beside Home. */
+  navPages?: { label: string; href: string }[];
 }) {
   const pathname = usePathname();
   const isHome = pathname === '/';
@@ -155,12 +163,18 @@ export default function Header({ cartCount = 0, onCart, onSearch }: {
   const { subgroups, products: catalogProducts } = useCatalog();
   const CATEGORIES = useCategories();
 
-  // Mega-menu built from real Groups -> SubGroups.
-  const NAV_CONFIG: NavMenuItem[] = subgroups.map((subgroup) => ({
-    label: subgroup.name,
-    cats: ['Shop All'],
-    subgroupId: subgroup.id,
-  }));
+  // Mega-menu built from real Groups -> SubGroups, narrowed to whatever the
+  // editor curated on the Nav page. No curation means show everything.
+  const NAV_CONFIG: NavMenuItem[] = subgroups
+    .filter((subgroup) =>
+      !navGroupIds?.length ||
+      (subgroup.groupId !== null && navGroupIds.includes(subgroup.groupId)),
+    )
+    .map((subgroup) => ({
+      label: subgroup.name,
+      cats: ['Shop All'],
+      subgroupId: subgroup.id,
+    }));
 
   const { navigate } = useStore();
   const { resolvedTheme } = useTheme();
@@ -259,6 +273,9 @@ export default function Header({ cartCount = 0, onCart, onSearch }: {
               {NAV_CONFIG.map(item => (
                 <NavItem key={item.label} item={item} activeMenu={activeMenu}
                   openMenu={openMenu} schedClose={schedClose} navigate={navigate} />
+              ))}
+              {navPages?.map(page => (
+                <GhostLink key={page.href} label={page.label} href={page.href} />
               ))}
             </div>
           </nav>

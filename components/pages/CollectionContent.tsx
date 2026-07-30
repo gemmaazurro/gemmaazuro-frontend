@@ -1,6 +1,7 @@
 'use client';
 
 import { useMemo, useState } from 'react';
+import { useSearchParams } from 'next/navigation';
 import ProductCard from '@/components/commerce/ProductCard';
 import RevealBlock from '@/components/motion/RevealBlock';
 import RevealList from '@/components/motion/RevealList';
@@ -23,7 +24,17 @@ interface CollectionContentProps {
 
 export default function CollectionContent({ products, subgroups }: CollectionContentProps) {
   const { wishlist, toggleWishlist, navigate } = useStore();
-  const [active, setActive] = useState('All');
+
+  // ?subgroup=<id> preselects a category, so footer and nav links can point at
+  // an actual filtered view instead of dumping everyone on the unfiltered grid.
+  const searchParams = useSearchParams();
+  const initialCategory = useMemo(() => {
+    const requested = Number(searchParams.get('subgroup'));
+    if (!Number.isFinite(requested)) return 'All';
+    return subgroups.find((subgroup) => subgroup.id === requested)?.name ?? 'All';
+  }, [searchParams, subgroups]);
+
+  const [active, setActive] = useState(initialCategory);
   const [sort, setSort] = useState('featured');
   const [key, setKey] = useState(0);
 

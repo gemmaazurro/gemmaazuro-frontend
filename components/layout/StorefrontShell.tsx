@@ -1,46 +1,53 @@
-'use client';
-import { ReactNode } from 'react';
-import { usePathname } from 'next/navigation';
-import PromoBar from './PromoBar';
-import Header from './Header';
-import CartDrawer from './CartDrawer';
-import Footer from './Footer';
-import SearchOverlay from './SearchOverlay';
-import { useStore } from '@/lib/store';
+// Server half of the storefront shell.
+//
+// Every page already wraps itself in <StorefrontShell>, so resolving the chrome
+// content here means the footer, promo bar and contact details are fetched in
+// one place instead of once per page — and through the `use cache` readers in
+// lib/api/cms.ts, so it costs nothing per request.
+//
+// The interactive parts live in StorefrontShellClient. Keeping this file's name
+// means no page had to change its import.
 
-export default function StorefrontShell({ children }: { children: ReactNode }) {
-  const pathname = usePathname();
-  const isHome = pathname === '/';
-  const { cartCount, setCartOpen, setSearchOpen } = useStore();
+import type { ReactNode } from 'react';
+import StorefrontShellClient from './StorefrontShellClient';
+import {
+  getAnnouncements,
+  getBranches,
+  getContactDetails,
+  getFooter,
+  getNav,
+  getPaymentMethods,
+} from '@/lib/api/cms';
+import { pageHref } from '@/lib/api/page-routes';
+
+export default async function StorefrontShell({ children }: { children: ReactNode }) {
+  const [promo, footer, paymentMethods, contact, branches, nav] = await Promise.all([
+    getAnnouncements('promo'),
+    getFooter(),
+    getPaymentMethods(),
+    getContactDetails(),
+    getBranches(),
+    getNav(),
+  ]);
 
   return (
-    <>
-      {!isHome && <PromoBar />}
-      <Header
-        cartCount={cartCount}
-        onCart={() => setCartOpen(true)}
-        onSearch={() => setSearchOpen(true)}
-      />
-      {/* Reveal-under-page footer: <main> is solid + higher z-index and covers the footer,
-          which sits `position: fixed` at the viewport bottom (lower z-index) the whole time.
-          The spacer below adds REAL scroll room equal to the footer's measured height (see
-          Footer.tsx's ResizeObserver) — as the user scrolls through it, main's bottom edge
-          retreats up the screen and the fixed footer is progressively uncovered underneath. */}
-      {/* Header is always `position: fixed` now (Header.tsx) — it no longer occupies flow
-          height, so compensate with padding-top (topbar + header on inner pages; home's hero
-          is intentionally full-bleed behind the transparent-then-blurred header). */}
-      <main style={{
-        position: 'relative', zIndex: 1, background: 'var(--color-background)', minHeight: '100vh',
-        paddingTop: isHome ? 0 : 'calc(var(--topbar-height) + var(--header-height))',
-      }}>
-        {children}
-      </main>
-      <div aria-hidden style={{ height: 'var(--footer-height, 0px)' }} />
-      <div style={{ position: 'fixed', bottom: 0, left: 0, right: 0, zIndex: 0 }}>
-        <Footer />
-      </div>
-      <CartDrawer />
-      <SearchOverlay />
-    </>
+    <StorefrontShellClient
+      promoMessages={promo.map((row) => row.content)}
+      footer={footer}
+      // The footer already nests payment methods, but they are also editable on
+      // their own page — prefer the standalone list when it has rows.
+      paymentMethods={
+        paymentMethods.length ? paymentMethods : footer?.section3_payment_methods ?? []
+      }
+      contact={contact}
+      branch={branches[0] ?? null}
+      navGroupIds={nav?.groups_display?.map((group) => group.id) ?? []}
+      navPages={nav?.pages_display?.map((page) => ({
+        label: page.title,
+        href: pageHref(page.slug),
+      })) ?? []}
+    >
+      {children}
+    </StorefrontShellClient>
   );
 }

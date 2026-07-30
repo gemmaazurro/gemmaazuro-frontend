@@ -10,7 +10,20 @@ function normalizeUrl(value: string) {
 }
 
 export function getBackendUrl(): string {
-  return normalizeUrl(process.env.NEXT_PUBLIC_BACKEND_API_URL || FALLBACK_BACKEND_URL);
+  const configured = process.env.NEXT_PUBLIC_BACKEND_API_URL;
+
+  // Falling back to localhost in production is silent death: every catalog and
+  // CMS read resolves to a host that does not exist, and the site renders as if
+  // the store were simply empty. Fail loudly instead — a missing env var in
+  // Vercel should stop the deploy, not ship a blank shop.
+  if (!configured && process.env.NODE_ENV === 'production') {
+    throw new Error(
+      'NEXT_PUBLIC_BACKEND_API_URL is not set. Set it in the Vercel project ' +
+        'settings (see .env.example); the localhost fallback is dev-only.',
+    );
+  }
+
+  return normalizeUrl(configured || FALLBACK_BACKEND_URL);
 }
 
 /**

@@ -2,8 +2,24 @@
 import { useRef, useState, useEffect } from 'react';
 import Image from 'next/image';
 import { Instagram, TikTok, Pin, Phone, Clock, ArrowRight } from '@/components/core/Icons';
+import { WA_PHONE } from '@/lib/contact';
+import { pageHref } from '@/lib/api/page-routes';
+import type { Branch, ContactDetails, Footer as FooterData, PaymentMethod } from '@/lib/api/cms';
 
-export default function Footer() {
+interface FooterProps {
+  footer?: FooterData | null;
+  paymentMethods?: PaymentMethod[];
+  contact?: ContactDetails | null;
+  /** First branch only — the footer has room for one address. */
+  branch?: Branch | null;
+}
+
+export default function Footer({
+  footer = null,
+  paymentMethods = [],
+  contact = null,
+  branch = null,
+}: FooterProps) {
   const footerRef = useRef<HTMLElement>(null);
   // Computed client-side only — `new Date()` during prerender/SSR trips Cache Components'
   // non-deterministic-value check (no Suspense boundary above this client component).
@@ -34,16 +50,50 @@ export default function Footer() {
     return () => { ro.disconnect(); window.removeEventListener('resize', setHeight); };
   }, []);
 
-  const col = (title: string, items: string[]) => (
+  const col = (title: string, items: { label: string; href: string }[]) => (
     <div>
       <h4 className="ga-f-h4">{title}</h4>
       <ul className="ga-f-list">
         {items.map(item => (
-          <li key={item}><a href="#" className="ga-f-link">{item}</a></li>
+          <li key={`${item.label}-${item.href}`}>
+            <a href={item.href} className="ga-f-link">{item.label}</a>
+          </li>
         ))}
       </ul>
     </div>
   );
+
+  // Every link below resolves to a real route. Where the CMS has nothing yet we
+  // fall back to routes that exist — never to "#".
+  const shopItems = footer?.section2_subgroups?.length
+    ? footer.section2_subgroups.map((subgroup) => ({
+        label: subgroup.name,
+        href: `/collection?subgroup=${subgroup.id}`,
+      }))
+    : [{ label: 'All Jewelry', href: '/collection' }];
+
+  const houseItems = footer?.section1_pages?.length
+    ? footer.section1_pages.map((page) => ({ label: page.title, href: pageHref(page.slug) }))
+    : [
+        { label: 'About Us', href: '/about-us' },
+        { label: 'Policies', href: '/policies' },
+        { label: 'Contact Us', href: '/contact-us' },
+        { label: 'Visit Us', href: '/branches' },
+      ];
+
+  // Only render a social circle when there is somewhere to send people. The
+  // map pin points at the branch location, which is a real destination too.
+  const socials: { Icon: typeof Instagram; href: string; label: string }[] = [
+    footer?.instagram_link && { Icon: Instagram, href: footer.instagram_link, label: 'Instagram' },
+    footer?.tiktok_link && { Icon: TikTok, href: footer.tiktok_link, label: 'TikTok' },
+    branch?.location && { Icon: Pin, href: branch.location, label: 'Find us' },
+  ].filter(Boolean) as { Icon: typeof Instagram; href: string; label: string }[];
+
+  const addressLine = [branch?.area, branch?.address].filter(Boolean).join(' · ');
+  const phoneLine = contact?.phone || contact?.whatsapp || null;
+  const payMethods = paymentMethods.length
+    ? paymentMethods.map((method) => method.name)
+    : ['Visa', 'InstaPay', 'Cash on Delivery'];
 
   return (
     <footer ref={footerRef} className="ga-footer">
@@ -155,28 +205,64 @@ export default function Footer() {
             <Image src="/assets/logo-wordmark-white.png" alt="Gemma Azzurro" width={140} height={22}
               style={{ marginBottom: 16, display: 'block' }} />
             <p className="ga-f-tagline">
-              Pioneering lab-diamond fine jewelry.<br />Founded in Los Angeles, certified in Cairo.</p>
-            <div className="ga-f-social">
-              {[Instagram, TikTok, Pin].map((Icon, i) => (
-                <a key={i} href="#" aria-label="Gemma Azzurro social"><Icon size={18} /></a>
-              ))}
-            </div>
+              {footer?.description?.trim() || (
+                <>Pioneering lab-diamond fine jewelry.<br />Founded in Los Angeles, certified in Cairo.</>
+              )}
+            </p>
+            {socials.length > 0 && (
+              <div className="ga-f-social">
+                {socials.map(({ Icon, href, label }) => (
+                  <a key={label} href={href} target="_blank" rel="noreferrer" aria-label={label}>
+                    <Icon size={18} />
+                  </a>
+                ))}
+              </div>
+            )}
           </div>
 
-          <div className="ga-f-shop">{col('Shop', ['Rings', 'Necklaces', 'Bracelets', 'Earrings', 'Piercings'])}</div>
-          <div className="ga-f-house">{col('House', ['About Us', 'Returns & Exchange', 'Contact Us', 'Visit Us'])}</div>
+          <div className="ga-f-shop">{col(footer?.section2_title?.trim() || 'Shop', shopItems)}</div>
+          <div className="ga-f-house">{col(footer?.section1_title?.trim() || 'House', houseItems)}</div>
 
           <div className="ga-f-contact">
             <h4 className="ga-f-h4">Visit &amp; Contact</h4>
             <ul className="ga-f-contact-list">
-              <li><Pin size={16} style={{ flexShrink: 0 }} /><span>Zamalek, Cairo · Egypt</span></li>
-              <li><Phone size={16} style={{ flexShrink: 0 }} /><span>+20 100 000 0000</span></li>
-              <li className="ga-f-hours"><Clock size={16} style={{ flexShrink: 0 }} /><span>Daily · 11:00 – 22:00</span></li>
+              {addressLine && (
+                <li><Pin size={16} style={{ flexShrink: 0 }} /><span>{addressLine}</span></li>
+              )}
+              {phoneLine && (
+                <li>
+                  <Phone size={16} style={{ flexShrink: 0 }} />
+                  <a href={`tel:${phoneLine.replace(/[^\d+]/g, '')}`} className="ga-f-link">{phoneLine}</a>
+                </li>
+              )}
+              {branch?.working_hours && (
+                <li className="ga-f-hours"><Clock size={16} style={{ flexShrink: 0 }} /><span>{branch.working_hours}</span></li>
+              )}
             </ul>
-            <p className="ga-f-news-label">Early access &amp; private viewings</p>
-            <form onSubmit={e => e.preventDefault()} className="ga-f-form">
-              <input placeholder="Email address" aria-label="Email address" />
-              <button type="submit" aria-label="Subscribe"><ArrowRight size={18} /></button>
+            <p className="ga-f-news-label">{footer?.newsletter_title?.trim() || 'Early access & private viewings'}</p>
+            {/*
+              There is no subscriber model or newsletter endpoint in the backend,
+              so this cannot POST anywhere. Rather than silently swallow the
+              address, it hands off to WhatsApp — the same channel the rest of
+              the store uses. Wire it to a real endpoint if a list is ever added.
+            */}
+            <form
+              onSubmit={(e) => {
+                e.preventDefault();
+                const input = e.currentTarget.elements.namedItem('email') as HTMLInputElement | null;
+                const email = input?.value?.trim();
+                if (!email) return;
+
+                const text = encodeURIComponent(
+                  `Hello, please add me to Gemma Azzurro early access: ${email}`,
+                );
+                window.open(`https://wa.me/${WA_PHONE}?text=${text}`, '_blank', 'noopener');
+                e.currentTarget.reset();
+              }}
+              className="ga-f-form"
+            >
+              <input name="email" type="email" required placeholder="Email address" aria-label="Email address" />
+              <button type="submit" aria-label="Request early access"><ArrowRight size={18} /></button>
             </form>
           </div>
         </div>
@@ -184,7 +270,7 @@ export default function Footer() {
         <div className="ga-footer-bottom">
           <span>&copy; {year ?? ''} Gemma Azzurro Jewelry — Egypt · Los Angeles</span>
           <span className="ga-f-pay">
-            {['Visa', 'InstaPay', 'Cash on Delivery'].map(t => (
+            {payMethods.map(t => (
               <span key={t}>{t}</span>
             ))}
           </span>

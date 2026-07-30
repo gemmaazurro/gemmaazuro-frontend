@@ -23,6 +23,7 @@ export interface CartItem {
 }
 
 const CART_STORAGE_KEY = 'ga_cart_v1';
+const WISHLIST_STORAGE_KEY = 'ga_wishlist_v1';
 
 interface StoreContextType {
   // Cart
@@ -39,6 +40,8 @@ interface StoreContextType {
   // Wishlist
   wishlist: string[];
   toggleWishlist: (id: string) => void;
+  /** True once the server list has loaded, so favourites survive a refresh. */
+  wishlistSignedIn: boolean;
 
   // Search
   searchOpen: boolean;
@@ -59,6 +62,7 @@ export function StoreProvider({ children }: { children: ReactNode }) {
   const router = useRouter();
   const [cartItems, setCartItems] = useState<CartItem[]>([]);
   const [wishlist, setWishlist] = useState<string[]>([]);
+  const [wishlistSignedIn, setWishlistSignedIn] = useState(false);
   const [cartOpen, setCartOpen] = useState(false);
   const [searchOpen, setSearchOpenState] = useState(false);
   const [searchQuery, setSearchQuery] = useState('');
@@ -71,12 +75,63 @@ export function StoreProvider({ children }: { children: ReactNode }) {
     try {
       const stored = window.localStorage.getItem(CART_STORAGE_KEY);
       if (stored) setCartItems(JSON.parse(stored) as CartItem[]);
+
+      const storedWishlist = window.localStorage.getItem(WISHLIST_STORAGE_KEY);
+      if (storedWishlist) setWishlist(JSON.parse(storedWishlist) as string[]);
     } catch {
       // Corrupt or unavailable storage — start with an empty cart.
     } finally {
       setHydrated(true);
     }
   }, []);
+
+  // Reconcile with the server once we know whether anyone is signed in.
+  //
+  // Anything favourited while signed out is pushed up, then the server list
+  // becomes the truth. Without the push, signing in would silently discard
+  // whatever the shopper hearted on the way there.
+  useEffect(() => {
+    if (!hydrated) return;
+
+    let cancelled = false;
+
+    (async () => {
+      try {
+        const response = await fetch('/api/wishlist', { cache: 'no-store' });
+        if (!response.ok) return;
+
+        const { signedIn, ids } = (await response.json()) as {
+          signedIn: boolean;
+          ids: string[];
+        };
+
+        if (cancelled || !signedIn) return;
+
+        const pending = wishlist.filter((id) => !ids.includes(id));
+        await Promise.all(
+          pending.map((id) =>
+            fetch('/api/wishlist', {
+              method: 'POST',
+              headers: { 'Content-Type': 'application/json' },
+              body: JSON.stringify({ itemId: Number(id) }),
+            }).catch(() => null),
+          ),
+        );
+
+        if (cancelled) return;
+        setWishlist([...new Set([...ids, ...pending])]);
+        setWishlistSignedIn(true);
+      } catch {
+        // Offline or backend down — the local list keeps working.
+      }
+    })();
+
+    return () => {
+      cancelled = true;
+    };
+    // Runs once per hydration; `wishlist` is read as the pending set, not tracked.
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [hydrated]);
 
   useEffect(() => {
     // Must not run before hydration. The initial state is [], so writing on
@@ -90,6 +145,19 @@ export function StoreProvider({ children }: { children: ReactNode }) {
       // Quota or private mode — the cart still works for this session.
     }
   }, [cartItems, hydrated]);
+
+  // Mirror the wishlist locally too, even when signed in. It makes the hearts
+  // correct on the very first paint after a reload, before /api/wishlist
+  // answers, instead of flashing empty.
+  useEffect(() => {
+    if (!hydrated) return;
+
+    try {
+      window.localStorage.setItem(WISHLIST_STORAGE_KEY, JSON.stringify(wishlist));
+    } catch {
+      // Quota or private mode — favourites still work for this session.
+    }
+  }, [wishlist, hydrated]);
 
   const setSearchOpen = (open: boolean) => {
     setSearchOpenState(open);
@@ -146,8 +214,31 @@ export function StoreProvider({ children }: { children: ReactNode }) {
 
   const clearCart = () => setCartItems([]);
 
-  const toggleWishlist = (id: string) =>
-    setWishlist((w) => (w.includes(id) ? w.filter((x) => x !== id) : [...w, id]));
+  /**
+   * Flip the heart immediately, then tell the server.
+   *
+   * Optimistic on purpose — a heart that waits for a round trip feels broken.
+   * If the server rejects it we put the old value back, so the UI never claims
+   * something was saved when it was not.
+   */
+  const toggleWishlist = (id: string) => {
+    const wasWished = wishlist.includes(id);
+    setWishlist((w) => (wasWished ? w.filter((x) => x !== id) : [...w, id]));
+
+    if (!wishlistSignedIn) return;
+
+    fetch('/api/wishlist', {
+      method: 'POST',
+      headers: { 'Content-Type': 'application/json' },
+      body: JSON.stringify({ itemId: Number(id) }),
+    })
+      .then((response) => {
+        if (!response.ok) throw new Error('toggle failed');
+      })
+      .catch(() => {
+        setWishlist((w) => (wasWished ? [...w, id] : w.filter((x) => x !== id)));
+      });
+  };
 
   const navigate = (name: string, id?: string) => {
     const href =
@@ -165,7 +256,7 @@ export function StoreProvider({ children }: { children: ReactNode }) {
     <StoreContext.Provider value={{
       cartItems, cartCount, cartSubtotal, cartOpen,
       addToCart, removeFromCart, updateQty, clearCart, setCartOpen,
-      wishlist, toggleWishlist,
+      wishlist, toggleWishlist, wishlistSignedIn,
       searchOpen, searchQuery, setSearchOpen, setSearchQuery,
       navigate,
     }}>

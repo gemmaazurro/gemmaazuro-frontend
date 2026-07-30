@@ -8,7 +8,7 @@ import RevealBlock from '@/components/motion/RevealBlock';
 import { Shield, Truck } from '@/components/core/Icons';
 import HomeFeaturedProducts from '@/components/pages/HomeFeaturedProducts';
 import { getProducts } from '@/lib/products-cache';
-import { getCarouselSlides } from '@/lib/api/cms';
+import { getAnnouncements, getCarouselSlides, getHeroSlides } from '@/lib/api/cms';
 
 // Next 16 Cache Components (cacheComponents: true in next.config.ts) replaces the old
 // `export const revalidate` segment config. Catalog data is fetched here on the server
@@ -29,7 +29,10 @@ const marqItems = [
   <span key="7">Insured delivery — Cairo</span>,
 ];
 
-const igiMarqItems = [
+// Named for the strip it fills (the dark accent ribbon), not for IGI — per
+// PRODUCT.md, certification is disclosed at checkout only and must not appear
+// as a sitewide badge. Keep it that way when editing these.
+const accentMarqItems = [
   <span key="b" style={{ fontSize: 13, fontFamily: 'var(--font-wordmark)', letterSpacing: '0.12em', textTransform: 'uppercase' as const, color: 'var(--color-gold)' }}>18k Gold</span>,
   <span key="c" style={{ fontSize: 13, fontFamily: 'var(--font-wordmark)', letterSpacing: '0.12em', textTransform: 'uppercase' as const, color: 'var(--color-foreground-muted)' }}>Sterling Silver</span>,
   <span key="d" style={{ fontSize: 13, fontFamily: 'var(--font-wordmark)', letterSpacing: '0.12em', textTransform: 'uppercase' as const, color: 'var(--color-brand)' }}>Lab Diamond</span>,
@@ -43,19 +46,37 @@ const trustItems = [
 ];
 
 export default async function HomePage() {
-  const [products, carouselSlides] = await Promise.all([
+  const [products, heroSlides, carouselSlides, heroRibbon, accentRibbon] = await Promise.all([
     getProducts(),
+    getHeroSlides(),
     getCarouselSlides(),
+    getAnnouncements('hero_ribbon'),
+    getAnnouncements('accent_ribbon'),
   ]);
+
+  // Authored announcements win; the designed copy is the fallback so an empty
+  // CMS never leaves a blank strip.
+  const heroRibbonItems: React.ReactNode[] = heroRibbon.length
+    ? heroRibbon.map((row) => <span key={row.id}>{row.content}</span>)
+    : marqItems;
+
+  const accentRibbonItems: React.ReactNode[] = accentRibbon.length
+    ? accentRibbon.map((row) => (
+        <span key={row.id} style={{
+          fontSize: 13, fontFamily: 'var(--font-wordmark)', letterSpacing: '0.12em',
+          textTransform: 'uppercase' as const, color: 'var(--color-foreground-muted)',
+        }}>{row.content}</span>
+      ))
+    : accentMarqItems;
 
   return (
     <StorefrontShell>
       <PageTransition>
-        <HeroSection ribbon={
+        <HeroSection slides={heroSlides} ribbon={
           <div style={{ background: 'var(--color-brand)', padding: '18px 0' }}>
             <InfiniteSlider gap={72} speed={50} speedOnHover={20}
               style={{ fontFamily: 'var(--font-body)', fontSize: 14, letterSpacing: '0.04em', color: '#fff' }}>
-              {marqItems.map((item, i) => (
+              {heroRibbonItems.map((item, i) => (
                 <span key={i} style={{ whiteSpace: 'nowrap', display: 'flex', alignItems: 'center', gap: 10 }}>{item}</span>
               ))}
             </InfiniteSlider>
@@ -87,7 +108,7 @@ export default async function HomePage() {
         <div style={{ background: 'var(--color-surface)', padding: '22px 0',
           borderTop: '1px solid var(--color-border)', borderBottom: '1px solid var(--color-border)' }}>
           <InfiniteSlider gap={80} speed={36} speedOnHover={16}>
-            {igiMarqItems.map((item, i) => (
+            {accentRibbonItems.map((item, i) => (
               <span key={i} style={{ whiteSpace: 'nowrap', display: 'flex', alignItems: 'center', gap: 10 }}>{item}</span>
             ))}
           </InfiniteSlider>
