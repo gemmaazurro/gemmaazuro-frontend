@@ -81,7 +81,9 @@ export default function CartDrawer() {
                 width: 84, height: 108, borderRadius: 10, overflow: 'hidden',
                 background: 'var(--color-surface)', position: 'relative',
               }}>
-                <Image src={item.image} alt={item.name} fill
+                {/* The slot is 84px. Without `sizes`, `fill` defaults to 100vw
+                    and imgproxy would be asked for a full-width render. */}
+                <Image src={item.image} alt={item.name} fill sizes="84px"
                   style={{ width: '100%', height: '100%', objectFit: 'cover' }} />
               </div>
               <div style={{ display: 'flex', flexDirection: 'column', justifyContent: 'space-between' }}>

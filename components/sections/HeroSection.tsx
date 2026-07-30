@@ -4,6 +4,7 @@ import { ArrowRight } from '@/components/core/Icons';
 import Button from '../core/Button';
 import { TextEffect } from '../core/text-effect';
 import type { Slide } from '@/lib/api/cms';
+import { variantUrl } from '@/lib/media/imgproxy';
 
 /** The shipped artwork, used whenever no hero photo has been uploaded. */
 const FALLBACK_HERO = '/assets/hero-pattern.jpeg';
@@ -83,9 +84,11 @@ export default function HeroSection({ ribbon, slides = [] }: HeroSectionProps) {
               style={{ width: '100%', height: '100%', objectFit: 'cover' }}
             />
           ) : (
+            // A CSS background skips next/image, so ask imgproxy for the
+            // `large` variant explicitly rather than shipping the original.
             <div style={{
               width: '100%', height: '100%',
-              backgroundImage: `url('${slide.src}')`,
+              backgroundImage: `url('${variantUrl(slide.src, 'large')}')`,
               backgroundSize: 'cover', backgroundPosition: 'center',
             }} />
           )}
