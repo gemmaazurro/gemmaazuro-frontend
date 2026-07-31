@@ -6,9 +6,6 @@ import { TextEffect } from '../core/text-effect';
 import type { Slide } from '@/lib/api/cms';
 import { variantUrl } from '@/lib/media/imgproxy';
 
-/** The shipped artwork, used whenever no hero photo has been uploaded. */
-const FALLBACK_HERO = '/assets/hero-pattern.jpeg';
-
 const HERO_ROTATE_MS = 6000;
 
 const prefersReduced = () =>
@@ -20,7 +17,8 @@ interface HeroSectionProps {
   ribbon?: ReactNode;
   /**
    * Hero photos managed from the dashboard (Hero rows with placement="hero").
-   * Empty falls back to the shipped artwork rather than rendering a blank hero.
+   * This is the only source of hero artwork — nothing is shipped in the repo,
+   * so an empty dashboard renders the brand colour rather than a stale photo.
    */
   slides?: Slide[];
 }
@@ -52,15 +50,10 @@ export default function HeroSection({ ribbon, slides = [] }: HeroSectionProps) {
     <section className="ga-hero" style={{
       position: 'relative',
       display: 'flex', flexDirection: 'column',
-      // Only paint the fallback here. Uploaded photos are layered below so
-      // they can crossfade, and a video cannot be a background-image at all.
-      ...(slides.length === 0
-        ? {
-            backgroundImage: `url('${FALLBACK_HERO}')`,
-            backgroundSize: 'cover',
-            backgroundPosition: 'center',
-          }
-        : { background: 'var(--color-foreground)' }),
+      // Uploaded photos are layered below so they can crossfade, and a video
+      // cannot be a background-image at all — so this only paints the base
+      // colour the copy sits on until the dashboard has artwork.
+      background: 'var(--color-foreground)',
       overflow: 'hidden',
     }}>
       {slides.map((slide, i) => (

@@ -83,7 +83,7 @@ export default async function HomePage() {
           </div>
         } />
         <HomeFeaturedProducts products={products} />
-        <BrandStory products={products} slides={carouselSlides} />
+        <BrandStory slides={carouselSlides} />
         <section style={{ maxWidth: 'var(--page-width)', margin: '0 auto',
           padding: '0 clamp(20px,3vw,40px) var(--section-pad-y)',
           display: 'grid', gridTemplateColumns: 'var(--grid-trust)', gap: 32 }}>
