@@ -44,6 +44,49 @@ export function getImgproxyUrl(): string | undefined {
   return value.endsWith('/') ? value.slice(0, -1) : value;
 }
 
+/**
+ * Bucket whose HTTP URLs get rewritten to `s3://` before imgproxy fetches them.
+ *
+ * Garage, unlike MinIO, has no per-prefix anonymous read -- its only public
+ * path is a Host-routed web endpoint on a different port. Rather than expose
+ * the bucket, imgproxy is given S3 credentials and asked for `s3://bucket/key`,
+ * so nothing is ever world-readable. The credentials live on the imgproxy
+ * container; nothing secret is needed here, which matters because this module
+ * is imported by the Next image loader and therefore ships to the browser.
+ *
+ * Unset means "leave sources alone", which is what local dev wants.
+ */
+export function getMediaBucket(): string | undefined {
+  return process.env.NEXT_PUBLIC_MEDIA_S3_BUCKET || undefined;
+}
+
+/**
+ * Rewrite `https://<garage-host>/<bucket>/<key>` to `s3://<bucket>/<key>`.
+ *
+ * Deliberately narrow: only URLs whose first path segment is exactly our
+ * bucket are touched, so a CDN, a third-party image, or a future different
+ * origin all pass through untouched rather than becoming broken s3 URLs.
+ */
+function toS3Source(source: string): string {
+  const bucket = getMediaBucket();
+  if (!bucket) return source;
+
+  let url: URL;
+  try {
+    url = new URL(source);
+  } catch {
+    return source;
+  }
+
+  const prefix = `/${bucket}/`;
+  if (!url.pathname.startsWith(prefix)) return source;
+
+  // Drop any query string: presigned parameters are meaningless once imgproxy
+  // authenticates with its own credentials, and keeping them would change the
+  // cache key on every render.
+  return `s3://${bucket}/${url.pathname.slice(prefix.length)}`;
+}
+
 /** URL-safe base64 without padding, which is what imgproxy expects. */
 function encodeSource(source: string): string {
   const base64 =
@@ -82,7 +125,7 @@ export function buildImgproxyUrl(source: string, options: ImgproxyOptions): stri
   ].join('/');
 
   // "insecure" is the unsigned-mode signature placeholder.
-  return `${base}/insecure/${processing}/${encodeSource(source)}.${format}`;
+  return `${base}/insecure/${processing}/${encodeSource(toS3Source(source))}.${format}`;
 }
 
 /** Convenience wrapper for the named ladder. */
