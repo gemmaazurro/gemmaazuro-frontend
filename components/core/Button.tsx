@@ -87,7 +87,9 @@ export default function Button({
   const onLeave = () => {
     if (!fillRef.current) return;
     fillRef.current.style.transform = 'translate3d(0,76%,0)';
-    if (txtRef.current) txtRef.current.style.color = p.fg;
+    // Back to inherit rather than p.fg, so a `style` colour override survives
+    // the first hover instead of being reset to the palette default.
+    if (txtRef.current) txtRef.current.style.color = 'inherit';
   };
 
   const fill = (
@@ -99,10 +101,14 @@ export default function Button({
     }} />
   );
 
+  // `inherit`, not p.fg: the text sits in its own span above the fill circle,
+  // so hardcoding the palette colour here silently beat any `color` passed in
+  // via `style` -- that only ever landed on the outer element. A secondary
+  // button on a dark band (the hero) then rendered near-black on near-black.
   const inner = (
     <span ref={txtRef} style={{
       position: 'relative', zIndex: 1, display: 'inline-flex',
-      alignItems: 'center', gap: '0.625rem', color: p.fg,
+      alignItems: 'center', gap: '0.625rem', color: 'inherit',
       transition: 'color 0.3s ease 0.1s',
     }}>
       {icon}{children}{iconRight}
