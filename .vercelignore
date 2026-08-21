@@ -1,0 +1,25 @@
+# A Git-integration deploy only ships tracked files, so this file exists for
+# CLI deploys (`vercel deploy` / `--prebuilt`), which upload the working
+# directory instead. Without it that upload is ~91MB, of which design-extract
+# alone is 58MB of build-irrelevant reference art.
+design-extract
+delegation
+
+# Tests and their artifacts never run on Vercel.
+e2e
+test
+test-results
+playwright-report
+blob-report
+playwright.config.ts
+vitest.config.ts
+
+# Local build state -- Vercel builds from source.
+.next
+tsconfig.tsbuildinfo
+
+# Notes, not runtime input.
+AGENTS.md
+CLAUDE.md
+IMPLEMENTATION.md
+dry-deploy.json
