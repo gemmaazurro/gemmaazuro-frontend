@@ -28,6 +28,10 @@ function imageHosts() {
 }
 
 const nextConfig: NextConfig = {
+  // Emit .next/standalone (server.js + traced node_modules) for the Docker
+  // prod stage; without this the image build has nothing to COPY.
+  output: "standalone",
+
   // Next 16 Cache Components (replaces experimental.ppr) — enables `use cache` +
   // cacheLife/cacheTag on data reads (see lib/products-cache.ts).
   cacheComponents: true,
